@@ -10,7 +10,8 @@ APP_DIRECTORY=$1
 DEB_PACKAGE=$2
 DISPLAY_NAME=$3
 LOGO_FILE=$4
-LOCAL_SOURCE_DIR=${5:-}
+LOCAL_SOURCE_DIR_OVERRIDE=${5:-}
+LOCAL_SOURCE_DIR=$LOCAL_SOURCE_DIR_OVERRIDE
 REPOSITORY_URL=${ELECTRON_APPS_REPOSITORY_URL:-https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS.git}
 REPOSITORY_DIR=${ELECTRON_APPS_REPOSITORY_DIR:-$HOME/electron-apps/linux-desktop-apps}
 
@@ -63,7 +64,7 @@ if [ "$node_major" -lt 22 ]; then
 fi
 
 LOGO_SOURCE=$REPOSITORY_DIR/csc-main/logo/$LOGO_FILE
-if [ -n "${5:-}" ]; then
+if [ -n "$LOCAL_SOURCE_DIR_OVERRIDE" ]; then
   LOGO_SOURCE=$(CDPATH= cd -- "$LOCAL_SOURCE_DIR/../../.." && pwd)/csc-main/logo/$LOGO_FILE
 fi
 if [ ! -f "$LOGO_SOURCE" ]; then
