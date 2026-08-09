@@ -10,7 +10,7 @@ APP_DIRECTORY=$1
 APP_ID=$2
 DISPLAY_NAME=$3
 REPOSITORY_URL=${ELECTRON_APPS_REPOSITORY_URL:-https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS.git}
-REPOSITORY_DIR=${ELECTRON_APPS_REPOSITORY_DIR:-$HOME/electron-apps/csc}
+REPOSITORY_DIR=${ELECTRON_APPS_REPOSITORY_DIR:-$HOME/electron-apps/linux-desktop-apps}
 INSTALL_DIR=$REPOSITORY_DIR/csc-main/$APP_DIRECTORY
 
 if [ "$(uname -s)" != Linux ]; then
@@ -23,20 +23,34 @@ if ! command -v apt-get >/dev/null 2>&1; then
   exit 1
 fi
 
-if [ "$(id -u)" -eq 0 ]; then
-  SUDO=
-elif command -v sudo >/dev/null 2>&1; then
-  SUDO=sudo
-else
-  printf '%s\n' 'Run as root or install sudo before continuing.' >&2
-  exit 1
+needs_prerequisites=0
+for tool in flatpak flatpak-builder git unzip; do
+  if ! command -v "$tool" >/dev/null 2>&1; then
+    needs_prerequisites=1
+    break
+  fi
+done
+
+if [ "$needs_prerequisites" -eq 1 ]; then
+  if [ "$(id -u)" -eq 0 ]; then
+    SUDO=
+  elif command -v sudo >/dev/null 2>&1; then
+    SUDO=sudo
+  else
+    printf '%s\n' 'Run as root or install sudo before continuing.' >&2
+    exit 1
+  fi
+  printf '%s\n' "Installing prerequisites for $DISPLAY_NAME..."
+  $SUDO apt-get update
+  $SUDO apt-get install -y flatpak flatpak-builder git ca-certificates unzip
 fi
 
-printf '%s\n' "Installing prerequisites for $DISPLAY_NAME..."
-$SUDO apt-get update
-$SUDO apt-get install -y flatpak flatpak-builder git ca-certificates unzip
-
 if [ -d "$REPOSITORY_DIR/.git" ]; then
+  current_remote=$(git -C "$REPOSITORY_DIR" remote get-url origin 2>/dev/null || true)
+  if [ -n "$current_remote" ] && [ "$current_remote" != "$REPOSITORY_URL" ]; then
+    printf '%s\n' "Repository at $REPOSITORY_DIR points to $current_remote; choose another directory with ELECTRON_APPS_REPOSITORY_DIR." >&2
+    exit 1
+  fi
   git -C "$REPOSITORY_DIR" pull --ff-only
 elif [ -e "$REPOSITORY_DIR" ]; then
   printf '%s\n' "$REPOSITORY_DIR exists but is not a Git checkout." >&2
