@@ -4,6 +4,18 @@ This is an unofficial Electron wrapper around Microsoft's official web applicati
 
 Official service: `https://app.powerbi.com/`
 
+## Ubuntu Installation
+
+```bash
+curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | bash
+```
+
+## Ubuntu Uninstallation
+
+```bash
+curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | bash
+```
+
 ## Requirements and installation
 Linux x64, Node.js 22.12+, and npm. Run `npm install`, then `npm start`; use `npm run dev` for development logging.
 

@@ -96,7 +96,7 @@ function createMenu() {
 
 async function createWindow() {
   statePath = path.join(app.getPath('userData'), 'window-state.json');
-  mainWindow = new BrowserWindow({ ...readWindowState(), minWidth: 900, minHeight: 600, title: 'Microsoft Teams', icon: path.join(__dirname, 'assets/icons/teams.svg'), webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false, sandbox: true, webSecurity: true, partition: PARTITION } });
+  mainWindow = new BrowserWindow({ ...readWindowState(), minWidth: 900, minHeight: 600, title: 'Microsoft Teams', icon: path.join(__dirname, 'assets/icons/512.png'), webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false, sandbox: true, webSecurity: true, partition: PARTITION } });
   applyNavigationPolicy(mainWindow);
   mainWindow.on('resize', saveWindowState);
   mainWindow.on('move', saveWindowState);
