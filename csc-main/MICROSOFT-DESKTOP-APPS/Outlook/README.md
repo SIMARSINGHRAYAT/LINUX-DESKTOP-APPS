@@ -4,13 +4,13 @@ This is an unofficial Electron wrapper around Microsoft's official web applicati
 
 Official starting service: `https://outlook.live.com/`; work and school redirects such as `https://outlook.office.com/` remain trusted.
 
-## Ubuntu Installation
+## Linux Installation
 
 ```bash
 curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Outlook/install.sh | bash
 ```
 
-## Ubuntu Uninstallation
+## Linux Uninstallation
 
 ```bash
 curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Outlook/uninstall.sh | bash

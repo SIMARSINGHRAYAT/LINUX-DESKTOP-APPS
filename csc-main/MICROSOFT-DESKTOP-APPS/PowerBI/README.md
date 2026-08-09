@@ -4,13 +4,13 @@ This is an unofficial Electron wrapper around Microsoft's official web applicati
 
 Official service: `https://app.powerbi.com/`
 
-## Ubuntu Installation
+## Linux Installation
 
 ```bash
 curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | bash
 ```
 
-## Ubuntu Uninstallation
+## Linux Uninstallation
 
 ```bash
 curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | bash

@@ -4,13 +4,13 @@ This is an unofficial Electron wrapper around Microsoft's official web applicati
 
 Verified official web service: `https://whiteboard.cloud.microsoft/` (the former `https://whiteboard.office.com` redirects there).
 
-## Ubuntu Installation
+## Linux Installation
 
 ```bash
 curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Whiteboard/install.sh | bash
 ```
 
-## Ubuntu Uninstallation
+## Linux Uninstallation
 
 ```bash
 curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Whiteboard/uninstall.sh | bash

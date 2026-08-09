@@ -5,13 +5,13 @@ This is an unofficial Electron wrapper around Microsoft's official web applicati
 ## Purpose
 Microsoft Teams runs unchanged at `https://teams.microsoft.com/`; Electron supplies the Linux desktop window, persistent profile, navigation policy, permissions, downloads, and native menu.
 
-## Ubuntu Installation
+## Linux Installation
 
 ```bash
 curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Teams/install.sh | bash
 ```
 
-## Ubuntu Uninstallation
+## Linux Uninstallation
 
 ```bash
 curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Teams/uninstall.sh | bash
