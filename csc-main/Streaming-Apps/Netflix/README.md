@@ -5,11 +5,11 @@ Independent Linux desktop access to Netflix with persistent login data and nativ
 ## Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/csc-main/Streaming-Apps/Netflix/install.sh | bash
+curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Streaming-Apps/Netflix/install.sh | bash
 ```
 
 ## Uninstall
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/csc-main/Streaming-Apps/Netflix/uninstall.sh | bash
+curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Streaming-Apps/Netflix/uninstall.sh | bash
 ```

@@ -5,9 +5,9 @@ LOCAL_CHROME_SCRIPT="$(dirname "$0")/../../scripts/install-chrome-streaming-app.
 if [ -f "$LOCAL_CHROME_SCRIPT" ]; then
 	if "$LOCAL_CHROME_SCRIPT" io.github.example.MXPlayerDesktop 'MX Player' https://www.mxplayer.in/ mxplayer-desktop mx-player.png; then exit 0; fi
 else
-	if curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/csc-main/scripts/install-chrome-streaming-app.sh | sh -s -- io.github.example.MXPlayerDesktop 'MX Player' https://www.mxplayer.in/ mxplayer-desktop mx-player.png; then exit 0; fi
+	if curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/scripts/install-chrome-streaming-app.sh | sh -s -- io.github.example.MXPlayerDesktop 'MX Player' https://www.mxplayer.in/ mxplayer-desktop mx-player.png; then exit 0; fi
 fi
 
 LOCAL_SCRIPT="$(dirname "$0")/../../scripts/install-linux-app.sh"
 if [ -f "$LOCAL_SCRIPT" ]; then exec "$LOCAL_SCRIPT" Streaming-Apps/MXPlayer io.github.example.MXPlayerDesktop 'MX Player desktop app'; fi
-curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/csc-main/scripts/install-linux-app.sh | sh -s -- Streaming-Apps/MXPlayer io.github.example.MXPlayerDesktop 'MX Player desktop app'
+curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/scripts/install-linux-app.sh | sh -s -- Streaming-Apps/MXPlayer io.github.example.MXPlayerDesktop 'MX Player desktop app'

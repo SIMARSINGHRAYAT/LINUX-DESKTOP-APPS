@@ -2,4 +2,4 @@
 set -eu
 # Supports local checkouts and curl-piped Ubuntu/Kali uninstallation.
 LOCAL_SCRIPT="$(dirname "$0")/../../scripts/uninstall-linux-app.sh"; if [ -f "$LOCAL_SCRIPT" ]; then exec "$LOCAL_SCRIPT" io.github.example.GitHubDesktop; fi
-curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/csc-main/scripts/uninstall-linux-app.sh | sh -s -- io.github.example.GitHubDesktop
+curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/scripts/uninstall-linux-app.sh | sh -s -- io.github.example.GitHubDesktop

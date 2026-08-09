@@ -5,11 +5,11 @@ Independent Linux desktop access to Prime Video with persistent login data, an i
 ## Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/csc-main/Streaming-Apps/PrimeVideo/install.sh | bash
+curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Streaming-Apps/PrimeVideo/install.sh | bash
 ```
 
 ## Uninstall
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/csc-main/Streaming-Apps/PrimeVideo/uninstall.sh | bash
+curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Streaming-Apps/PrimeVideo/uninstall.sh | bash
 ```

@@ -35,7 +35,7 @@ if [ -n "${STREAMING_APP_REPOSITORY_DIR:-}" ] && [ -f "$STREAMING_APP_REPOSITORY
 elif [ -f "$(dirname "$0")/../logo/$LOGO_FILE" ]; then
   cp "$(dirname "$0")/../logo/$LOGO_FILE" "$ICON_PATH"
 else
-  curl -fsSL "https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/csc-main/logo/$LOGO_FILE" -o "$ICON_PATH"
+  curl -fsSL "https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/logo/$LOGO_FILE" -o "$ICON_PATH"
 fi
 
 cat > "$DESKTOP_FILE" <<EOF

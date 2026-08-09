@@ -5,9 +5,9 @@ LOCAL_CHROME_SCRIPT="$(dirname "$0")/../../scripts/install-chrome-streaming-app.
 if [ -f "$LOCAL_CHROME_SCRIPT" ]; then
 	if "$LOCAL_CHROME_SCRIPT" io.github.example.AppleTVDesktop 'Apple TV' https://tv.apple.com/ apple-tv-desktop apple-tv.png; then exit 0; fi
 else
-	if curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/csc-main/scripts/install-chrome-streaming-app.sh | sh -s -- io.github.example.AppleTVDesktop 'Apple TV' https://tv.apple.com/ apple-tv-desktop apple-tv.png; then exit 0; fi
+	if curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/scripts/install-chrome-streaming-app.sh | sh -s -- io.github.example.AppleTVDesktop 'Apple TV' https://tv.apple.com/ apple-tv-desktop apple-tv.png; then exit 0; fi
 fi
 
 LOCAL_SCRIPT="$(dirname "$0")/../../scripts/install-linux-app.sh"
 if [ -f "$LOCAL_SCRIPT" ]; then exec "$LOCAL_SCRIPT" Streaming-Apps/AppleTV io.github.example.AppleTVDesktop 'Apple TV desktop app'; fi
-curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/csc-main/scripts/install-linux-app.sh | sh -s -- Streaming-Apps/AppleTV io.github.example.AppleTVDesktop 'Apple TV desktop app'
+curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/scripts/install-linux-app.sh | sh -s -- Streaming-Apps/AppleTV io.github.example.AppleTVDesktop 'Apple TV desktop app'

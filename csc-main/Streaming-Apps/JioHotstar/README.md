@@ -5,11 +5,11 @@ Independent Linux desktop access to JioHotstar with persistent login data, an is
 ## Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/csc-main/Streaming-Apps/JioHotstar/install.sh | bash
+curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Streaming-Apps/JioHotstar/install.sh | bash
 ```
 
 ## Uninstall
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/csc-main/Streaming-Apps/JioHotstar/uninstall.sh | bash
+curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Streaming-Apps/JioHotstar/uninstall.sh | bash
 ```
