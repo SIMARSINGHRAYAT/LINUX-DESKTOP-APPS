@@ -11,17 +11,3 @@ Independent Linux desktop applications for streaming services. Every platform ha
 - [Crunchyroll](Crunchyroll/README.md)
 - [MX Player](MXPlayer/README.md)
 
-New streaming applications should use the same layout as the developer apps:
-
-```text
-Streaming-Apps/PlatformName/
-  flatpak/
-  icon/
-  resources/
-  src/
-  install.sh
-  uninstall.sh
-  manifest.yaml
-  package.json
-  README.md
-```
