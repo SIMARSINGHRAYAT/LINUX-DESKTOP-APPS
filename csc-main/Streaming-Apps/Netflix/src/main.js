@@ -4,6 +4,8 @@ const { app, BrowserWindow, Menu, session, shell } = require('electron');
 const { configureSession } = require('./permission-policy');
 const fs = require('node:fs');
 const path = require('node:path');
+const widevinePath = ['/opt/google/chrome/WidevineCdm/_platform_specific/linux_x64/libwidevinecdm.so', '/opt/microsoft/msedge/WidevineCdm/_platform_specific/linux_x64/libwidevinecdm.so'].find(fs.existsSync);
+if (widevinePath) { app.commandLine.appendSwitch('enable-widevine-cdm'); app.commandLine.appendSwitch('widevine-cdm-path', widevinePath); }
 
 const APP_URL = 'https://www.netflix.com/';
 const PARTITION = 'persist:netflix';

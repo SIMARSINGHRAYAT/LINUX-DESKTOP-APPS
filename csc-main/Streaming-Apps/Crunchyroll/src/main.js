@@ -3,6 +3,8 @@
 const { app, BrowserWindow, Menu, session, shell } = require('electron');
 const { configureSession } = require('./permission-policy');
 const fs = require('node:fs'); const path = require('node:path');
+const widevinePath = ['/opt/google/chrome/WidevineCdm/_platform_specific/linux_x64/libwidevinecdm.so', '/opt/microsoft/msedge/WidevineCdm/_platform_specific/linux_x64/libwidevinecdm.so'].find(fs.existsSync);
+if (widevinePath) { app.commandLine.appendSwitch('enable-widevine-cdm'); app.commandLine.appendSwitch('widevine-cdm-path', widevinePath); }
 const APP_URL = 'https://www.crunchyroll.com/'; const PARTITION = 'persist:crunchyroll';
 const APP_HOSTS = new Set(['crunchyroll.com', 'www.crunchyroll.com']); const AUTH_HOSTS = new Set(['accounts.google.com', 'appleid.apple.com', 'login.microsoftonline.com']);
 let mainWindow; let statePath;

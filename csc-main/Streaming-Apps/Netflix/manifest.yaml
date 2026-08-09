@@ -10,6 +10,8 @@ finish-args:
   - --socket=fallback-x11
   - --device=dri
   - --filesystem=xdg-download
+  - --filesystem=/opt/google/chrome:ro
+  - --filesystem=/opt/microsoft/msedge:ro
 modules:
   - name: netflix-desktop
     buildsystem: simple
