@@ -1,0 +1,37 @@
+{
+  "name": "microsoft-teams-desktop",
+  "version": "1.0.0",
+  "description": "Unofficial Electron wrapper around Microsoft's official Teams web application.",
+  "main": "main.js",
+  "homepage": "https://github.com/example/microsoft-desktop-apps",
+  "author": { "name": "Microsoft Desktop Apps contributors", "email": "maintainers@example.com" },
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --enable-logging",
+    "validate": "node --check main.js && node --check preload.js",
+    "build": "electron-builder --linux",
+    "build:linux": "electron-builder --linux AppImage deb",
+    "package": "npm run build:linux"
+  },
+  "devDependencies": {
+    "electron": "43.3.0",
+    "electron-builder": "26.0.12"
+  },
+  "build": {
+    "appId": "com.microsoft.desktop.teams",
+    "productName": "Microsoft Teams",
+    "asar": true,
+    "directories": { "output": "dist" },
+    "files": ["main.js", "preload.js", "offline.html", "assets/**/*", "package.json"],
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "category": "Network;Chat;Office;",
+      "icon": "assets/icons",
+      "synopsis": "Microsoft Teams desktop wrapper",
+      "artifactName": "Microsoft-Teams-${version}-${arch}.${ext}"
+    }
+  },
+  "engines": { "node": ">=22.12.0" }
+}

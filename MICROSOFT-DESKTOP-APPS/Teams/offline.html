@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Microsoft Teams - Offline</title>
+  <style>
+    :root { color-scheme: light dark; font: 16px system-ui, sans-serif; }
+    body { display: grid; min-height: 100vh; place-items: center; margin: 0; background: #f5f7fb; color: #242424; }
+    main { max-width: 30rem; padding: 2.5rem; text-align: center; }
+    h1 { margin: 0 0 1rem; font-size: 1.75rem; }
+    p { line-height: 1.6; }
+    button { padding: .7rem 1.2rem; border: 0; border-radius: .25rem; background: #6264a7; color: white; font: inherit; cursor: pointer; }
+    @media (prefers-color-scheme: dark) { body { background: #1f1f1f; color: #f5f5f5; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>You're offline.</h1>
+    <p>Check your internet connection and try again.</p>
+    <button type="button" id="retry">Retry</button>
+  </main>
+  <script>document.querySelector('#retry').addEventListener('click', () => window.desktopApp.retry());</script>
+</body>
+</html>
