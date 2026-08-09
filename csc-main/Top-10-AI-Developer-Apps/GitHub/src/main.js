@@ -1,6 +1,7 @@
 'use strict';
 
 const { app, BrowserWindow, Menu, session, shell } = require('electron');
+const { configureSession } = require('./permission-policy');
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -120,7 +121,7 @@ else {
   app.whenReady().then(async () => {
     const githubSession = session.fromPartition('persist:github');
     githubSession.setUserAgent(app.userAgentFallback.replace(/\sElectron\/[^\s]+/, ''));
-    githubSession.setPermissionRequestHandler((_webContents, permission, callback) => callback(permission === 'notifications'));
+    configureSession(githubSession, APP_HOSTS, AUTH_HOSTS);
     createMenu();
     await createWindow();
     app.on('activate', () => { if (BrowserWindow.getAllWindows().length === 0) void createWindow(); });
