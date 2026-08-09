@@ -63,7 +63,7 @@ if [ "$node_major" -lt 22 ]; then
 fi
 
 LOGO_SOURCE=$REPOSITORY_DIR/csc-main/logo/$LOGO_FILE
-if [ -n "$5" ]; then
+if [ -n "${5:-}" ]; then
   LOGO_SOURCE=$(CDPATH= cd -- "$LOCAL_SOURCE_DIR/../../.." && pwd)/csc-main/logo/$LOGO_FILE
 fi
 if [ ! -f "$LOGO_SOURCE" ]; then
