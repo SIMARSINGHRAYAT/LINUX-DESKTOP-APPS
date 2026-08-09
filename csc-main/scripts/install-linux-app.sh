@@ -9,9 +9,9 @@ fi
 APP_DIRECTORY=$1
 APP_ID=$2
 DISPLAY_NAME=$3
-REPOSITORY_URL=${ELECTRON_APPS_REPOSITORY_URL:-https://github.com/FANCOINBOY/csc.git}
+REPOSITORY_URL=${ELECTRON_APPS_REPOSITORY_URL:-https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS.git}
 REPOSITORY_DIR=${ELECTRON_APPS_REPOSITORY_DIR:-$HOME/electron-apps/csc}
-INSTALL_DIR=$REPOSITORY_DIR/$APP_DIRECTORY
+INSTALL_DIR=$REPOSITORY_DIR/csc-main/$APP_DIRECTORY
 
 if [ "$(uname -s)" != Linux ]; then
   printf '%s\n' 'This installer supports Linux only.' >&2
@@ -44,6 +44,10 @@ elif [ -e "$REPOSITORY_DIR" ]; then
 else
   mkdir -p "$(dirname "$REPOSITORY_DIR")"
   git clone "$REPOSITORY_URL" "$REPOSITORY_DIR"
+fi
+
+if [ ! -d "$INSTALL_DIR" ] && [ -d "$REPOSITORY_DIR/$APP_DIRECTORY" ]; then
+  INSTALL_DIR=$REPOSITORY_DIR/$APP_DIRECTORY
 fi
 
 if [ ! -d "$INSTALL_DIR" ]; then

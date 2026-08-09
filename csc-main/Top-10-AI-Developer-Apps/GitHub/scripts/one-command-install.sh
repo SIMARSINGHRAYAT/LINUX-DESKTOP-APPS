@@ -2,9 +2,9 @@
 set -eu
 
 APP_ID='io.github.example.GitHubDesktop'
-REPOSITORY_URL='https://github.com/FANCOINBOY/csc.git'
+REPOSITORY_URL='https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS.git'
 REPOSITORY_DIR="${ELECTRON_APPS_REPOSITORY_DIR:-$HOME/electron-apps/csc}"
-INSTALL_DIR="$REPOSITORY_DIR/Top-10-AI-Developer-Apps/GitHub"
+INSTALL_DIR="$REPOSITORY_DIR/csc-main/Top-10-AI-Developer-Apps/GitHub"
 
 printf '%s\n' 'GitHub Desktop for Linux - one-command installer'
 printf '%s\n' 'This installs the unofficial wrapper from the project repository.'

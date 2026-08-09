@@ -2,4 +2,4 @@
 set -eu
 # Supports local checkouts and curl-piped Ubuntu/Kali installation.
 LOCAL_SCRIPT="$(dirname "$0")/../../scripts/install-linux-app.sh"; if [ -f "$LOCAL_SCRIPT" ]; then exec "$LOCAL_SCRIPT" Top-10-AI-Developer-Apps/GitLab io.github.example.GitLabDesktop 'GitLab desktop app'; fi
-curl -fsSL https://raw.githubusercontent.com/FANCOINBOY/csc/main/scripts/install-linux-app.sh | sh -s -- Top-10-AI-Developer-Apps/GitLab io.github.example.GitLabDesktop 'GitLab desktop app'
+curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/csc-main/scripts/install-linux-app.sh | sh -s -- Top-10-AI-Developer-Apps/GitLab io.github.example.GitLabDesktop 'GitLab desktop app'

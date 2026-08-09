@@ -5,11 +5,11 @@ Independent Linux desktop access to Crunchyroll with persistent login data, an i
 ## Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/FANCOINBOY/csc/main/Streaming-Apps/Crunchyroll/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/csc-main/Streaming-Apps/Crunchyroll/install.sh | bash
 ```
 
 ## Uninstall
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/FANCOINBOY/csc/main/Streaming-Apps/Crunchyroll/uninstall.sh | bash
+curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/csc-main/Streaming-Apps/Crunchyroll/uninstall.sh | bash
 ```
