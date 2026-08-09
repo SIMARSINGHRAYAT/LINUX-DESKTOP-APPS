@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Kaggle Desktop
+Comment=Unofficial Kaggle desktop wrapper for Linux
+Exec=kaggle-desktop
+Icon=io.github.example.KaggleDesktop
+Terminal=false
+Type=Application
+Categories=Development;Education;Network;
+StartupNotify=true
+StartupWMClass=Kaggle Desktop
+Keywords=Kaggle;data science;machine learning;
+X-Flatpak=io.github.example.KaggleDesktop

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Roboflow Desktop
+Comment=Unofficial Roboflow desktop wrapper for Linux
+Exec=roboflow-desktop
+Icon=io.github.example.RoboflowDesktop
+Terminal=false
+Type=Application
+Categories=Development;Graphics;
+StartupNotify=true
+StartupWMClass=Roboflow Desktop
+X-Flatpak=io.github.example.RoboflowDesktop

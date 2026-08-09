@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=MX Player
+Comment=MX Player Linux desktop application
+Exec=mx-player-desktop
+Icon=io.github.example.MXPlayerDesktop
+Terminal=false
+Type=Application
+Categories=AudioVideo;Video;
+StartupNotify=true
+StartupWMClass=MX Player
+X-Flatpak=io.github.example.MXPlayerDesktop

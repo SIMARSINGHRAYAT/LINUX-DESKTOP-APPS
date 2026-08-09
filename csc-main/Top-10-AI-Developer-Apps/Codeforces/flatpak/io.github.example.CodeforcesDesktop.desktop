@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Codeforces Desktop
+Comment=Unofficial Codeforces desktop wrapper for Linux
+Exec=codeforces-desktop
+Icon=io.github.example.CodeforcesDesktop
+Terminal=false
+Type=Application
+Categories=Development;Education;
+StartupNotify=true
+StartupWMClass=Codeforces Desktop
+X-Flatpak=io.github.example.CodeforcesDesktop

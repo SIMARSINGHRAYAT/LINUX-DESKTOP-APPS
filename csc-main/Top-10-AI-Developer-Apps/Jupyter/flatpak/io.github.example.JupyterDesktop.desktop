@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Jupyter Desktop
+Comment=Unofficial Jupyter desktop wrapper for Linux
+Exec=jupyter-desktop
+Icon=io.github.example.JupyterDesktop
+Terminal=false
+Type=Application
+Categories=Development;Education;
+StartupNotify=true
+StartupWMClass=Jupyter Desktop
+X-Flatpak=io.github.example.JupyterDesktop

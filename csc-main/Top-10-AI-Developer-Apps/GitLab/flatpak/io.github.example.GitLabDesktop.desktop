@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=GitLab Desktop
+Comment=Unofficial GitLab desktop wrapper for Linux
+Exec=gitlab-desktop
+Icon=io.github.example.GitLabDesktop
+Terminal=false
+Type=Application
+Categories=Development;Network;
+StartupNotify=true
+StartupWMClass=GitLab Desktop
+Keywords=GitLab;development;repositories;
+X-Flatpak=io.github.example.GitLabDesktop

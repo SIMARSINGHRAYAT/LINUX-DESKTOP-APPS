@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=LeetCode Desktop
+Comment=Unofficial LeetCode desktop wrapper for Linux
+Exec=leetcode-desktop
+Icon=io.github.example.LeetCodeDesktop
+Terminal=false
+Type=Application
+Categories=Development;Education;
+StartupNotify=true
+StartupWMClass=LeetCode Desktop
+X-Flatpak=io.github.example.LeetCodeDesktop

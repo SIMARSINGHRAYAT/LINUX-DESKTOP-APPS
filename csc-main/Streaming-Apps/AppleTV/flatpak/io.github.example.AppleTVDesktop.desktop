@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Apple TV
+Comment=Apple TV Linux desktop application
+Exec=apple-tv-desktop
+Icon=io.github.example.AppleTVDesktop
+Terminal=false
+Type=Application
+Categories=AudioVideo;Video;
+StartupNotify=true
+StartupWMClass=Apple TV
+X-Flatpak=io.github.example.AppleTVDesktop

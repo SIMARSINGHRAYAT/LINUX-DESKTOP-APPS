@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Hugging Face Desktop
+Comment=Unofficial Hugging Face desktop wrapper for Linux
+Exec=huggingface-desktop
+Icon=io.github.example.HuggingFaceDesktop
+Terminal=false
+Type=Application
+Categories=Development;Science;
+StartupNotify=true
+StartupWMClass=Hugging Face Desktop
+X-Flatpak=io.github.example.HuggingFaceDesktop

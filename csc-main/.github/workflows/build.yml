@@ -1,0 +1,88 @@
+name: Build Linux Desktop Apps
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  flatpak:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: github
+            path: Top-10-AI-Developer-Apps/GitHub
+            app-id: io.github.example.GitHubDesktop
+          - name: gitlab
+            path: Top-10-AI-Developer-Apps/GitLab
+            app-id: io.github.example.GitLabDesktop
+          - name: kaggle
+            path: Top-10-AI-Developer-Apps/Kaggle
+            app-id: io.github.example.KaggleDesktop
+          - name: jupyter
+            path: Top-10-AI-Developer-Apps/Jupyter
+            app-id: io.github.example.JupyterDesktop
+          - name: leetcode
+            path: Top-10-AI-Developer-Apps/LeetCode
+            app-id: io.github.example.LeetCodeDesktop
+          - name: huggingface
+            path: Top-10-AI-Developer-Apps/HuggingFace
+            app-id: io.github.example.HuggingFaceDesktop
+          - name: google-colab
+            path: Top-10-AI-Developer-Apps/GoogleColab
+            app-id: io.github.example.GoogleColabDesktop
+          - name: roboflow
+            path: Top-10-AI-Developer-Apps/Roboflow
+            app-id: io.github.example.RoboflowDesktop
+          - name: codeforces
+            path: Top-10-AI-Developer-Apps/Codeforces
+            app-id: io.github.example.CodeforcesDesktop
+          - name: netflix
+            path: Streaming-Apps/Netflix
+            app-id: io.github.example.NetflixDesktop
+          - name: prime-video
+            path: Streaming-Apps/PrimeVideo
+            app-id: io.github.example.PrimeVideoDesktop
+          - name: jio-hotstar
+            path: Streaming-Apps/JioHotstar
+            app-id: io.github.example.JioHotstarDesktop
+          - name: apple-tv
+            path: Streaming-Apps/AppleTV
+            app-id: io.github.example.AppleTVDesktop
+          - name: crunchyroll
+            path: Streaming-Apps/Crunchyroll
+            app-id: io.github.example.CrunchyrollDesktop
+          - name: mx-player
+            path: Streaming-Apps/MXPlayer
+            app-id: io.github.example.MXPlayerDesktop
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Flatpak tooling
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y flatpak flatpak-builder appstreamcli desktop-file-utils
+          flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+          flatpak install --user -y flathub org.freedesktop.Sdk//25.08 org.freedesktop.Platform//25.08
+      - name: Validate metadata
+        working-directory: ${{ matrix.path }}
+        run: |
+          desktop-file-validate flatpak/*.desktop
+          appstreamcli validate --no-net flatpak/*.metainfo.xml
+      - name: Validate JavaScript
+        working-directory: ${{ matrix.path }}
+        run: npm install --ignore-scripts && npm run validate
+      - name: Validate Linux desktop app entry points
+        run: ./scripts/validate-linux-apps.sh
+      - name: Build Flatpak
+        working-directory: ${{ matrix.path }}
+        run: flatpak-builder --user --force-clean --disable-rofiles-fuse build manifest.yaml
+      - name: Create bundle
+        working-directory: ${{ matrix.path }}
+        run: |
+          flatpak build-export repo build
+          flatpak build-bundle repo ${{ matrix.name }}-desktop-linux.flatpak ${{ matrix.app-id }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.name }}-desktop-linux-flatpak
+          path: ${{ matrix.path }}/${{ matrix.name }}-desktop-linux.flatpak

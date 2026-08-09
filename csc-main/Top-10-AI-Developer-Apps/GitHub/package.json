@@ -1,0 +1,19 @@
+{
+  "name": "github-desktop-linux",
+  "version": "1.0.0",
+  "description": "An unofficial Electron desktop wrapper for GitHub.com on Linux.",
+  "main": "src/main.js",
+  "author": "GitHub Desktop for Linux contributors",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "package": "electron-packager . github-desktop --platform=linux --arch=x64 --out=dist --overwrite",
+    "validate": "node --check src/main.js && node --check src/preload.js"
+  },
+  "devDependencies": {
+    "electron": "43.3.0",
+    "@electron/packager": "19.0.2"
+  },
+  "engines": { "node": ">=22.12.0" }
+}

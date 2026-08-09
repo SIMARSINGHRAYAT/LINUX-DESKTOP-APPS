@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Crunchyroll
+Comment=Crunchyroll Linux desktop application
+Exec=crunchyroll-desktop
+Icon=io.github.example.CrunchyrollDesktop
+Terminal=false
+Type=Application
+Categories=AudioVideo;Video;
+StartupNotify=true
+StartupWMClass=Crunchyroll
+X-Flatpak=io.github.example.CrunchyrollDesktop

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Prime Video
+Comment=Prime Video Linux desktop application
+Exec=prime-video-desktop
+Icon=io.github.example.PrimeVideoDesktop
+Terminal=false
+Type=Application
+Categories=AudioVideo;Video;
+StartupNotify=true
+StartupWMClass=Prime Video
+X-Flatpak=io.github.example.PrimeVideoDesktop

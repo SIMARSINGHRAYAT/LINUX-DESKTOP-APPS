@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Google Colab
+Comment=Unofficial Google Colab desktop wrapper for Linux
+Exec=google-colab-desktop
+Icon=io.github.example.GoogleColabDesktop
+Terminal=false
+Type=Application
+Categories=Development;Education;
+StartupNotify=true
+StartupWMClass=Google Colab
+X-Flatpak=io.github.example.GoogleColabDesktop

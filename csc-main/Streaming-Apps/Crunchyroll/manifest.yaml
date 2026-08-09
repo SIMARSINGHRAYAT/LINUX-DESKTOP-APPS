@@ -1,0 +1,38 @@
+app-id: io.github.example.CrunchyrollDesktop
+runtime: org.freedesktop.Platform
+runtime-version: '25.08'
+sdk: org.freedesktop.Sdk
+command: crunchyroll-desktop
+finish-args:
+  - --share=ipc
+  - --share=network
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=dri
+  - --filesystem=xdg-download
+modules:
+  - name: crunchyroll-desktop
+    buildsystem: simple
+    build-commands:
+      - install -d /app/lib/crunchyroll-desktop /app/bin /app/share/applications /app/share/metainfo /app/share/icons/hicolor/scalable/apps
+      - cp -r src package.json resources /app/lib/crunchyroll-desktop/
+      - unzip -q electron-linux-x64.zip -d /app/lib/crunchyroll-desktop/electron
+      - printf '#!/bin/sh\nexec /app/lib/crunchyroll-desktop/electron/electron --no-sandbox /app/lib/crunchyroll-desktop "$@"\n' > /app/bin/crunchyroll-desktop
+      - chmod 755 /app/bin/crunchyroll-desktop
+      - install -Dm644 flatpak/io.github.example.CrunchyrollDesktop.desktop /app/share/applications/io.github.example.CrunchyrollDesktop.desktop
+      - install -Dm644 flatpak/io.github.example.CrunchyrollDesktop.metainfo.xml /app/share/metainfo/io.github.example.CrunchyrollDesktop.metainfo.xml
+      - install -Dm644 resources/crunchyroll.png /app/share/icons/hicolor/scalable/apps/io.github.example.CrunchyrollDesktop.png
+      - install -Dm644 icon/16x16/io.github.example.CrunchyrollDesktop.png /app/share/icons/hicolor/16x16/apps/io.github.example.CrunchyrollDesktop.png
+      - install -Dm644 icon/32x32/io.github.example.CrunchyrollDesktop.png /app/share/icons/hicolor/32x32/apps/io.github.example.CrunchyrollDesktop.png
+      - install -Dm644 icon/48x48/io.github.example.CrunchyrollDesktop.png /app/share/icons/hicolor/48x48/apps/io.github.example.CrunchyrollDesktop.png
+      - install -Dm644 icon/64x64/io.github.example.CrunchyrollDesktop.png /app/share/icons/hicolor/64x64/apps/io.github.example.CrunchyrollDesktop.png
+      - install -Dm644 icon/128x128/io.github.example.CrunchyrollDesktop.png /app/share/icons/hicolor/128x128/apps/io.github.example.CrunchyrollDesktop.png
+      - install -Dm644 icon/256x256/io.github.example.CrunchyrollDesktop.png /app/share/icons/hicolor/256x256/apps/io.github.example.CrunchyrollDesktop.png
+      - install -Dm644 icon/512x512/io.github.example.CrunchyrollDesktop.png /app/share/icons/hicolor/512x512/apps/io.github.example.CrunchyrollDesktop.png
+    sources:
+      - type: dir
+        path: .
+      - type: file
+        url: https://github.com/electron/electron/releases/download/v43.3.0/electron-v43.3.0-linux-x64.zip
+        sha256: f4987e9f045e46b117f0805d6ba4dc524e2abb2c2e33660f175bb39564bd3dae
+        dest-filename: electron-linux-x64.zip

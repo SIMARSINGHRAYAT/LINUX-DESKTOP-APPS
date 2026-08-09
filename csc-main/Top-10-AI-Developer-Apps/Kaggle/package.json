@@ -1,0 +1,11 @@
+{
+  "name": "kaggle-desktop-linux",
+  "version": "1.0.0",
+  "description": "An unofficial Electron desktop wrapper for Kaggle.com.",
+  "main": "src/main.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {"start": "electron .", "validate": "node --check src/main.js && node --check src/preload.js"},
+  "devDependencies": {"electron": "43.3.0"},
+  "engines": {"node": ">=22.12.0"}
+}

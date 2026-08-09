@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Netflix
+Comment=Netflix Linux desktop application
+Exec=netflix-desktop
+Icon=io.github.example.NetflixDesktop
+Terminal=false
+Type=Application
+Categories=AudioVideo;Video;
+StartupNotify=true
+StartupWMClass=Netflix
+X-Flatpak=io.github.example.NetflixDesktop

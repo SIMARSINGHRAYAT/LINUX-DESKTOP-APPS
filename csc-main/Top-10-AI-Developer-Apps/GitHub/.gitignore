@@ -1,0 +1,8 @@
+node_modules/
+build/
+dist/
+.flatpak-builder/
+*.log
+*.tmp
+.DS_Store
+Thumbs.db

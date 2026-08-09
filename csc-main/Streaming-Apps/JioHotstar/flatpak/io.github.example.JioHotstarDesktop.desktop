@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=JioHotstar
+Comment=JioHotstar Linux desktop application
+Exec=jio-hotstar-desktop
+Icon=io.github.example.JioHotstarDesktop
+Terminal=false
+Type=Application
+Categories=AudioVideo;Video;
+StartupNotify=true
+StartupWMClass=JioHotstar
+X-Flatpak=io.github.example.JioHotstarDesktop
