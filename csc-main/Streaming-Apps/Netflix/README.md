@@ -1,6 +1,6 @@
 # Netflix Linux Desktop App
 
-Independent Linux desktop access to Netflix with persistent login data, an isolated Flatpak profile, native window controls, and the repository Netflix logo.
+Independent Linux desktop access to Netflix with persistent login data and native app-mode window controls. When Google Chrome is installed, the launcher uses Chrome's supported Widevine DRM stack so protected Netflix playback works.
 
 ## Install
 
