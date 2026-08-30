@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=GitHub
 Comment=Unofficial GitHub wrapper for Linux
-Exec=flatpak run --no-documents-portal io.github.example.GitHubDesktop
+Exec=/home/$USER/.local/bin/github-desktop %U
 Icon=io.github.example.GitHubDesktop
 Terminal=false
 Type=Application

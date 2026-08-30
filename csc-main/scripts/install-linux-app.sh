@@ -115,6 +115,28 @@ exec "\$ELECTRON_BIN" --no-sandbox --disable-gpu --disable-software-rasterizer -
 EOF
 
 chmod 755 "$LAUNCHER_SCRIPT"
+
+DESKTOP_DIR="$HOME/.local/share/applications"
+mkdir -p "$DESKTOP_DIR"
+DESKTOP_FILE="$DESKTOP_DIR/io.github.example.GitHubDesktop.desktop"
+cat > "$DESKTOP_FILE" <<EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=GitHub
+Comment=Unofficial GitHub wrapper for Linux
+Exec=$LAUNCHER_SCRIPT %U
+Icon=io.github.example.GitHubDesktop
+Terminal=false
+Categories=Development;Network;
+StartupNotify=true
+StartupWMClass=GitHub
+X-Flatpak=io.github.example.GitHubDesktop
+EOF
+chmod 644 "$DESKTOP_FILE"
+update-desktop-database "$DESKTOP_DIR" 2>/dev/null || true
+
 printf '%s\n' "✓ GitHub launcher installed to $LAUNCHER_SCRIPT"
+printf '%s\n' "✓ Desktop entry installed to $DESKTOP_FILE"
 
 exec "$LAUNCHER_SCRIPT"
