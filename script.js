@@ -39,15 +39,6 @@ const categories = [
       { name: 'Crunchyroll', slug: 'crunchyroll', icon: './csc-main/logo/Crunchyroll.png', readme: './csc-main/Streaming-Apps/Crunchyroll/README.md', installCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Streaming-Apps/Crunchyroll/install.sh | bash', uninstallCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Streaming-Apps/Crunchyroll/uninstall.sh | bash' },
       { name: 'MX Player', slug: 'mxplayer', icon: './csc-main/logo/mx-player.png', readme: './csc-main/Streaming-Apps/MXPlayer/README.md', installCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Streaming-Apps/MXPlayer/install.sh | bash', uninstallCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Streaming-Apps/MXPlayer/uninstall.sh | bash' }
     ]
-  },
-  {
-    id: 'cloud-apps',
-    name: 'Cloud Code Apps',
-    description: 'Cloud and developer platform tooling for coding and software delivery.',
-    apps: [
-      { name: 'GitHub', slug: 'github-cloud', icon: './csc-main/logo/github.png', readme: './csc-main/Top-10-AI-Developer-Apps/GitHub/README.md', installCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Top-10-AI-Developer-Apps/GitHub/install.sh | bash', uninstallCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Top-10-AI-Developer-Apps/GitHub/uninstall.sh | bash' },
-      { name: 'GitLab', slug: 'gitlab-cloud', icon: './csc-main/logo/gitlab.png', readme: './csc-main/Top-10-AI-Developer-Apps/GitLab/README.md', installCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Top-10-AI-Developer-Apps/GitLab/install.sh | bash', uninstallCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Top-10-AI-Developer-Apps/GitLab/uninstall.sh | bash' }
-    ]
   }
 ];
 
@@ -88,7 +79,7 @@ function buildFloatingLogos() {
   const container = document.getElementById('floating-logos');
   if (!container) return;
 
-  for (let i = 0; i < 24; i++) {
+  for (let i = 0; i < 28; i++) {
     const item = floatingIcons[Math.floor(Math.random() * floatingIcons.length)];
     const logo = document.createElement('div');
     const img = document.createElement('img');
@@ -96,8 +87,9 @@ function buildFloatingLogos() {
     img.src = `./csc-main/logo/${item}`;
     img.alt = 'App logo';
     logo.style.left = `${Math.random() * 100}%`;
-    logo.style.animationDuration = `${12 + Math.random() * 14}s`;
-    logo.style.animationDelay = `${Math.random() * 7}s`;
+    logo.style.animationDuration = `${7 + Math.random() * 9}s`;
+    logo.style.animationDelay = `${Math.random() * 5}s`;
+    logo.style.opacity = String(0.35 + Math.random() * 0.6);
     logo.appendChild(img);
     container.appendChild(logo);
   }
@@ -187,12 +179,6 @@ function buildReadmeBlocks(app, markdown) {
   return `
     ${renderBlock('Installation', installCommand, 'installation-block')}
     ${renderBlock('Uninstallation', uninstallCommand, 'uninstallation-block')}
-    <div class="code-block">
-      <header>
-        <h3>Readme</h3>
-      </header>
-      <pre>${escapeHtml(markdown.slice(0, 4000))}</pre>
-    </div>
   `;
 }
 
@@ -233,6 +219,11 @@ async function renderAppDetail() {
         <a class="back-btn" href="./apps.html?category=${encodeURIComponent(category.id)}">Back to apps</a>
       </div>
 
+      <div class="detail-intro">
+        <p class="eyebrow">Installation commands</p>
+        <h2>${app.name} installation commands</h2>
+      </div>
+
       <div class="copy-group">
         ${markdown ? buildReadmeBlocks(app, markdown) : '<p>README content is unavailable for this app.</p>'}
       </div>
@@ -252,7 +243,70 @@ async function renderAppDetail() {
   });
 }
 
+const supportConfig = {
+  repo: 'https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/tree/main',
+  profile: 'https://github.com/SIMARSINGHRAYAT'
+};
+
+function initSupportModal() {
+  const trigger = document.querySelector('[data-support-trigger]');
+  const modal = document.getElementById('support-modal');
+  if (!trigger || !modal) return;
+
+  const closeButtons = modal.querySelectorAll('[data-close-support]');
+  const repoButton = modal.querySelector('[data-support-action="repo"]');
+  const profileButton = modal.querySelector('[data-support-action="profile"]');
+  const continueButton = modal.querySelector('.support-continue');
+
+  const state = { repo: false, profile: false };
+
+  const updateContinue = () => {
+    const ready = state.repo && state.profile;
+    continueButton.disabled = !ready;
+    continueButton.classList.toggle('enabled', ready);
+  };
+
+  const handleComplete = (type) => {
+    state[type] = true;
+    const button = type === 'repo' ? repoButton : profileButton;
+    button.classList.add('done');
+    button.textContent = type === 'repo' ? 'Repository Started' : 'Profile Followed';
+    updateContinue();
+  };
+
+  trigger.addEventListener('click', (event) => {
+    event.preventDefault();
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+  });
+
+  closeButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+    });
+  });
+
+  repoButton.addEventListener('click', () => {
+    window.open(supportConfig.repo, '_blank', 'noopener,noreferrer');
+    handleComplete('repo');
+  });
+
+  profileButton.addEventListener('click', () => {
+    window.open(supportConfig.profile, '_blank', 'noopener,noreferrer');
+    handleComplete('profile');
+  });
+
+  continueButton.addEventListener('click', () => {
+    if (!state.repo || !state.profile) return;
+    window.location.href = './categories.html';
+  });
+
+  updateContinue();
+}
+
 window.addEventListener('DOMContentLoaded', () => {
+  initSupportModal();
   buildFloatingLogos();
   renderCategories();
   renderApps();
