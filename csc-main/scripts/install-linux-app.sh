@@ -75,7 +75,8 @@ flatpak install --user -y flathub org.freedesktop.Sdk//25.08 org.freedesktop.Pla
 cd "$INSTALL_DIR"
 flatpak-builder --user --install --force-clean --disable-rofiles-fuse build manifest.yaml
 
-# Create a system-level launcher script with a virtual X11 display
+# Create a system-level launcher that runs the Electron binary directly
+# and starts a real Xvfb server when no graphical session is available.
 LAUNCHER_DIR="$HOME/.local/bin"
 mkdir -p "$LAUNCHER_DIR"
 LAUNCHER_SCRIPT="$LAUNCHER_DIR/github-desktop"
@@ -100,13 +101,14 @@ if [ -z "\${DISPLAY:-}" ]; then
 
   export DISPLAY=":\${DISPLAY_NUM}"
   export XAUTHORITY="\$(mktemp /tmp/github-xauth.XXXXXX)"
+  xauth add "\$DISPLAY" . "\$(xxd -l 16 -p /dev/urandom)" >/dev/null 2>&1 || true
 
+  # Start a real virtual X server if one is not already running.
   if ! pgrep -x Xvfb >/dev/null 2>&1; then
     Xvfb "\$DISPLAY" -screen 0 1280x720x24 >/tmp/github-desktop-xvfb.log 2>&1 &
   fi
 
   sleep 1
-  xauth add "\$DISPLAY" . "\$(xxd -l 16 -p /dev/urandom)" >/dev/null 2>&1 || true
 fi
 
 exec "\$ELECTRON_BIN" --no-sandbox --disable-gpu --disable-software-rasterizer --ozone-platform=x11 "\$APP_DIR" "\$@"
