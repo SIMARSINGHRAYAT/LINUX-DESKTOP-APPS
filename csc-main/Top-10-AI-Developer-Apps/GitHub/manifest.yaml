@@ -7,6 +7,7 @@ finish-args:
   - --share=ipc
   - --share=network
   - --socket=wayland
+  - --socket=x11
   - --socket=fallback-x11
   - --device=dri
   - --filesystem=xdg-download
@@ -17,7 +18,7 @@ modules:
       - install -d /app/lib/github-desktop /app/bin /app/share/applications /app/share/metainfo /app/share/icons/hicolor/scalable/apps
       - cp -r src package.json resources /app/lib/github-desktop/
       - unzip -q electron-linux-x64.zip -d /app/lib/github-desktop/electron
-      - printf '#!/bin/sh\nexec /app/lib/github-desktop/electron/electron --no-sandbox /app/lib/github-desktop "$@"\n' > /app/bin/github-desktop
+      - printf '#!/bin/sh\nexport GDK_BACKEND=x11\nexport GTK_A11Y=none\nexec /app/lib/github-desktop/electron/electron --no-sandbox --disable-gpu --disable-software-rasterizer --ozone-platform=x11 /app/lib/github-desktop "$@"\n' > /app/bin/github-desktop
       - chmod 755 /app/bin/github-desktop
       - install -Dm644 flatpak/io.github.example.GitHubDesktop.desktop /app/share/applications/io.github.example.GitHubDesktop.desktop
       - install -Dm644 flatpak/io.github.example.GitHubDesktop.metainfo.xml /app/share/metainfo/io.github.example.GitHubDesktop.metainfo.xml
