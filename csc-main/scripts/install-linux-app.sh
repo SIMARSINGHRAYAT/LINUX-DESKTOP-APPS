@@ -24,7 +24,7 @@ if ! command -v apt-get >/dev/null 2>&1; then
 fi
 
 needs_prerequisites=0
-for tool in flatpak flatpak-builder git unzip xvfb-run; do
+for tool in flatpak flatpak-builder git unzip xvfb-run xauth Xvfb; do
   if ! command -v "$tool" >/dev/null 2>&1; then
     needs_prerequisites=1
     break
@@ -42,7 +42,7 @@ if [ "$needs_prerequisites" -eq 1 ]; then
   fi
   printf '%s\n' "Installing prerequisites for $DISPLAY_NAME..."
   $SUDO apt-get update
-  $SUDO apt-get install -y flatpak flatpak-builder git ca-certificates unzip xvfb
+  $SUDO apt-get install -y flatpak flatpak-builder git ca-certificates unzip xvfb xauth
 fi
 
 if [ -d "$REPOSITORY_DIR/.git" ]; then
@@ -75,28 +75,41 @@ flatpak install --user -y flathub org.freedesktop.Sdk//25.08 org.freedesktop.Pla
 cd "$INSTALL_DIR"
 flatpak-builder --user --install --force-clean --disable-rofiles-fuse build manifest.yaml
 
-# Create a system-level launcher script with xvfb-run support
+# Create a system-level launcher script with a virtual X11 display
 LAUNCHER_DIR="$HOME/.local/bin"
 mkdir -p "$LAUNCHER_DIR"
 LAUNCHER_SCRIPT="$LAUNCHER_DIR/github-desktop"
 
-# Create the launcher with unquoted EOF to allow variable substitution
 cat > "$LAUNCHER_SCRIPT" << EOF
 #!/bin/sh
-# GitHub Desktop launcher with xvfb-run support
-DISPLAY_ENV="\${DISPLAY:-}"
-WAYLAND_ENV="\${WAYLAND_DISPLAY:-}"
+set -eu
 
-if [ -n "\$DISPLAY_ENV" ] || [ -n "\$WAYLAND_ENV" ]; then
-  exec flatpak run io.github.example.GitHubDesktop "\$@"
+APP_DIR="${INSTALL_DIR}"
+ELECTRON_BIN="\$APP_DIR/build/files/lib/github-desktop/electron/electron"
+
+if [ ! -x "\$ELECTRON_BIN" ]; then
+  echo "Electron app bundle not found at \$ELECTRON_BIN" >&2
+  exit 1
 fi
 
-if command -v xvfb-run >/dev/null 2>&1; then
-  # xvfb-run sets DISPLAY in the environment
-  exec xvfb-run -a -s "-screen 0 1920x1080x24" bash -c 'flatpak run --env=DISPLAY=\$DISPLAY io.github.example.GitHubDesktop "\$@"' -- "\$@"
+if [ -z "\${DISPLAY:-}" ]; then
+  DISPLAY_NUM=99
+  while [ -f "/tmp/.X\${DISPLAY_NUM}-lock" ]; do
+    DISPLAY_NUM=\$((DISPLAY_NUM + 1))
+  done
+
+  export DISPLAY=":\${DISPLAY_NUM}"
+  export XAUTHORITY="\$(mktemp /tmp/github-xauth.XXXXXX)"
+
+  if ! pgrep -x Xvfb >/dev/null 2>&1; then
+    Xvfb "\$DISPLAY" -screen 0 1280x720x24 >/tmp/github-desktop-xvfb.log 2>&1 &
+  fi
+
+  sleep 1
+  xauth add "\$DISPLAY" . "\$(xxd -l 16 -p /dev/urandom)" >/dev/null 2>&1 || true
 fi
 
-exec flatpak run io.github.example.GitHubDesktop "\$@"
+exec "\$ELECTRON_BIN" --no-sandbox --disable-gpu --disable-software-rasterizer --ozone-platform=x11 "\$APP_DIR" "\$@"
 EOF
 
 chmod 755 "$LAUNCHER_SCRIPT"
