@@ -1,13 +1,11 @@
 'use strict';
 
-const { app, BrowserWindow, Menu, session, shell } = require('electron');
-const { configureSession } = require('./permission-policy');
+const { app, BrowserWindow, Menu, shell } = require('electron');
 const fs = require('node:fs');
 const path = require('node:path');
 
+const APP_NAME = 'GitHub';
 const APP_URL = 'https://github.com/';
-const GITHUB_HOSTS = new Set(['github.com', 'www.github.com', 'gist.github.com', 'api.github.com', 'githubusercontent.com', 'raw.githubusercontent.com', 'objects.githubusercontent.com', 'githubassets.com', 'github.io']);
-const AUTH_PROVIDER_HOSTS = new Set(['accounts.google.com', 'appleid.apple.com', 'login.microsoftonline.com', 'auth0.com', 'okta.com']);
 let mainWindow;
 let statePath;
 
@@ -19,129 +17,100 @@ function hasGraphicalSession() {
   return sessionType === 'x11' || sessionType === 'wayland';
 }
 
-function isAllowedHost(hostname) {
-  const host = hostname.toLowerCase();
-  return [...GITHUB_HOSTS].some((allowed) => host === allowed || host.endsWith(`.${allowed}`));
-}
-
-function isGithubUrl(value) {
-  try {
-    const url = new URL(value);
-    return url.protocol === 'https:' && isAllowedHost(url.hostname);
-  } catch { return false; }
-}
-
-function isTrustedAuthUrl(value) {
-  if (isGithubUrl(value)) return true;
-  try {
-    const url = new URL(value);
-    return url.protocol === 'https:' && [...AUTH_PROVIDER_HOSTS].some((allowed) => url.hostname === allowed || url.hostname.endsWith(`.${allowed}`));
-  } catch { return false; }
-}
-
-function openExternal(value) {
-  if (value.startsWith('mailto:') || value.startsWith('tel:')) { void shell.openExternal(value); return; }
-  try {
-    const url = new URL(value);
-    if (url.protocol === 'http:' || url.protocol === 'https:') void shell.openExternal(url.toString());
-  } catch { /* Ignore malformed navigation requests. */ }
-}
-
-function readWindowState() {
-  const fallback = { width: 1400, height: 900 };
-  try {
-    const saved = JSON.parse(fs.readFileSync(statePath, 'utf8'));
-    if (Number.isInteger(saved.width) && Number.isInteger(saved.height)) return { ...fallback, ...saved };
-  } catch { /* A first launch has no state file. */ }
-  return fallback;
-}
-
-function saveWindowState() {
-  if (!mainWindow || mainWindow.isDestroyed()) return;
-  const bounds = mainWindow.getNormalBounds();
-  fs.mkdirSync(path.dirname(statePath), { recursive: true });
-  fs.writeFileSync(statePath, JSON.stringify(bounds, null, 2));
+function openExternalUrl(url) {
+  if (!url) return;
+  void shell.openExternal(url);
 }
 
 function createMenu() {
   const template = [
     { label: 'File', submenu: [{ role: 'close' }, { role: 'quit' }] },
     { role: 'editMenu' },
-    { label: 'View', submenu: [{ role: 'reload' }, { role: 'forceReload' }, { type: 'separator' }, { role: 'resetZoom' }, { role: 'zoomIn' }, { role: 'zoomOut' }, { type: 'separator' }, { role: 'togglefullscreen' }, { role: 'toggleDevTools', accelerator: 'CommandOrControl+Shift+I' }] },
-    { role: 'windowMenu' },
-    { role: 'help', submenu: [{ label: 'GitHub.com', click: () => mainWindow?.loadURL(APP_URL) }] }
+    { label: 'View', submenu: [{ role: 'reload' }, { role: 'forceReload' }, { type: 'separator' }, { role: 'togglefullscreen' }] },
+    { label: 'GitHub', submenu: [{ label: 'Open GitHub', click: () => mainWindow?.loadURL(APP_URL) }] }
   ];
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
 
-function configureWindowPolicies(window) {
-  const contents = window.webContents;
-  contents.setWindowOpenHandler(({ url }) => {
-    if (!isTrustedAuthUrl(url)) {
-      openExternal(url);
-      return { action: 'deny' };
+function readState() {
+  const fallback = { width: 1400, height: 900 };
+  try {
+    const saved = JSON.parse(fs.readFileSync(statePath, 'utf8'));
+    if (Number.isInteger(saved.width) && Number.isInteger(saved.height)) {
+      return { ...fallback, ...saved };
     }
-    return {
-      action: 'allow',
-      overrideBrowserWindowOptions: {
-        width: 1100,
-        height: 800,
-        title: 'GitHub',
-        icon: path.join(__dirname, '..', 'resources', 'github-desktop.png'),
-        webPreferences: {
-          preload: path.join(__dirname, 'preload.js'),
-          contextIsolation: true,
-          nodeIntegration: false,
-          sandbox: true,
-          webSecurity: true,
-          partition: 'persist:github'
-        }
-      }
-    };
-  });
-  contents.on('did-create-window', (childWindow) => configureWindowPolicies(childWindow));
-  contents.on('will-navigate', (event, url) => {
-    if (!isTrustedAuthUrl(url)) { event.preventDefault(); openExternal(url); }
-  });
-  contents.on('will-redirect', (event, url) => {
-    if (!isTrustedAuthUrl(url)) { event.preventDefault(); openExternal(url); }
-  });
-  contents.on('did-redirect-navigation', () => { if (window === mainWindow) mainWindow.focus(); });
-  contents.on('did-navigate', () => { if (window === mainWindow) mainWindow.focus(); });
-  contents.on('will-download', (_event, item) => item.setSavePath(path.join(app.getPath('downloads'), item.getFilename())));
+  } catch {
+    // Fresh state on first launch.
+  }
+  return fallback;
+}
+
+function writeState() {
+  if (!mainWindow || mainWindow.isDestroyed()) return;
+  const bounds = mainWindow.getNormalBounds();
+  fs.mkdirSync(path.dirname(statePath), { recursive: true });
+  fs.writeFileSync(statePath, JSON.stringify(bounds, null, 2));
 }
 
 async function createWindow() {
   statePath = path.join(app.getPath('userData'), 'window-state.json');
-  const state = readWindowState();
-  mainWindow = new BrowserWindow({ ...state, minWidth: 640, minHeight: 480, title: 'GitHub', icon: path.join(__dirname, '..', 'resources', 'github-desktop.png'), webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false, sandbox: true, webSecurity: true, partition: 'persist:github' } });
-  configureWindowPolicies(mainWindow);
-  mainWindow.on('resize', saveWindowState);
-  mainWindow.on('move', saveWindowState);
-  mainWindow.on('closed', () => { mainWindow = null; });
+  const state = readState();
+
+  mainWindow = new BrowserWindow({
+    ...state,
+    minWidth: 720,
+    minHeight: 500,
+    title: APP_NAME,
+    webPreferences: {
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true,
+      webSecurity: true,
+      partition: 'persist:github'
+    }
+  });
+
+  mainWindow.on('resize', writeState);
+  mainWindow.on('move', writeState);
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
+
   await mainWindow.loadURL(APP_URL);
 }
 
 if (process.platform === 'linux' && !hasGraphicalSession()) {
-  console.warn('No graphical session detected. Opening GitHub in default browser.');
+  console.warn('No graphical session available; opening GitHub in the default browser instead.');
   app.whenReady().then(() => {
-    void shell.openExternal(APP_URL);
+    openExternalUrl(APP_URL);
     app.quit();
   });
 } else {
   const gotLock = app.requestSingleInstanceLock();
-  if (!gotLock) app.quit();
-  else {
-    app.on('second-instance', () => { if (!mainWindow) return; if (mainWindow.isMinimized()) mainWindow.restore(); mainWindow.focus(); });
-    app.whenReady().then(async () => {
-      const githubSession = session.fromPartition('persist:github');
-      githubSession.setUserAgent(app.userAgentFallback.replace(/\sElectron\/[^\s]+/, ''));
-      configureSession(githubSession, GITHUB_HOSTS, AUTH_PROVIDER_HOSTS);
-      createMenu();
-      await createWindow();
-      app.on('activate', () => { if (BrowserWindow.getAllWindows().length === 0) void createWindow(); });
-    });
-    app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
-    app.on('before-quit', saveWindowState);
+  if (!gotLock) {
+    app.quit();
+    return;
   }
+
+  app.on('second-instance', () => {
+    if (!mainWindow) return;
+    if (mainWindow.isMinimized()) mainWindow.restore();
+    mainWindow.focus();
+  });
+
+  app.whenReady().then(async () => {
+    createMenu();
+    await createWindow();
+    app.on('activate', () => {
+      if (BrowserWindow.getAllWindows().length === 0) {
+        void createWindow();
+      }
+    });
+  });
+
+  app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') app.quit();
+  });
+
+  app.on('before-quit', writeState);
 }
