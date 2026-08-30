@@ -1,0 +1,17 @@
+#!/bin/sh
+# GitHub.com wrapper launcher with virtual display support
+
+# If we have a display, use it directly with X11 optimizations
+if [ -n "$DISPLAY" ] || [ -n "$WAYLAND_DISPLAY" ]; then
+  export GDK_BACKEND=x11
+  export GTK_A11Y=none
+  exec /app/lib/github-web/electron/electron --no-sandbox --disable-gpu --disable-software-rasterizer --ozone-platform=x11 /app/lib/github-web "$@"
+fi
+
+# No display available - try Electron with fallback rendering
+# Don't force X11, let it try Wayland or use software rendering
+echo "No display detected. Attempting to start GitHub.com wrapper..."
+exec /app/lib/github-web/electron/electron --no-sandbox --disable-gpu --disable-software-rasterizer --ozone-platform-hint=auto /app/lib/github-web "$@"
+
+
+

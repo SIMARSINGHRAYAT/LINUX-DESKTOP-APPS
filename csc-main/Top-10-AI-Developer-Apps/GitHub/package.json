@@ -1,15 +1,15 @@
 {
-  "name": "GitHub",
+  "name": "github-web-linux",
   "version": "1.0.0",
-  "description": "GitHub desktop wrapper for Linux",
+  "description": "Unofficial GitHub.com wrapper for Linux",
   "main": "src/main.js",
-  "author": "GitHub Desktop for Linux contributors",
+  "author": "GitHub.com wrapper contributors",
   "license": "MIT",
   "private": true,
   "scripts": {
     "start": "electron .",
     "validate": "node --check src/main.js && node --check src/preload.js",
-    "package": "electron-packager . GitHub --platform=linux --arch=x64 --out=dist --overwrite"
+    "package": "electron-packager . github-web --platform=linux --arch=x64 --out=dist --overwrite"
   },
   "devDependencies": {
     "electron": "43.3.0",

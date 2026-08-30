@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=GitHub
+Comment=Unofficial GitHub.com wrapper for Linux
+Exec=github-web %U
+Icon=io.github.simarsinghrayat.GitHubWeb
+Terminal=false
+Type=Application
+Categories=Development;Network;
+StartupNotify=true
+StartupWMClass=GitHubWeb
+Keywords=GitHub;development;repositories;
+X-Flatpak=io.github.simarsinghrayat.GitHubWeb

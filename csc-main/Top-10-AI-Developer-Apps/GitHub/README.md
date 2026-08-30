@@ -1,6 +1,8 @@
 # GitHub
 
-Unofficial GitHub wrapper for Linux.
+Unofficial GitHub.com wrapper for Linux.
+
+This project packages GitHub.com as a standalone Electron application. It is independent from GitHub Desktop.
 
 ## Ubuntu Installation
 

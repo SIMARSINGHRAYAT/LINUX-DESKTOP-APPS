@@ -6,6 +6,6 @@ LOCAL_SCRIPT="$SCRIPT_DIR/../../../scripts/install-linux-app.sh"
 REMOTE_SCRIPT='https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/scripts/install-linux-app.sh'
 
 if [ -f "$LOCAL_SCRIPT" ]; then
-  exec "$LOCAL_SCRIPT" Top-10-AI-Developer-Apps/GitHub io.github.example.GitHubDesktop 'GitHub'
+  exec "$LOCAL_SCRIPT" Top-10-AI-Developer-Apps/GitHub io.github.simarsinghrayat.GitHubWeb 'GitHub' github-web github-web
 fi
-curl -fsSL "$REMOTE_SCRIPT" | sh -s -- Top-10-AI-Developer-Apps/GitHub io.github.example.GitHubDesktop 'GitHub'
+curl -fsSL "$REMOTE_SCRIPT" | sh -s -- Top-10-AI-Developer-Apps/GitHub io.github.simarsinghrayat.GitHubWeb 'GitHub' github-web github-web

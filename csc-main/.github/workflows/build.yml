@@ -11,9 +11,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: github
+          - name: github-web
             path: Top-10-AI-Developer-Apps/GitHub
-            app-id: io.github.example.GitHubDesktop
+            app-id: io.github.simarsinghrayat.GitHubWeb
           - name: gitlab
             path: Top-10-AI-Developer-Apps/GitLab
             app-id: io.github.example.GitLabDesktop

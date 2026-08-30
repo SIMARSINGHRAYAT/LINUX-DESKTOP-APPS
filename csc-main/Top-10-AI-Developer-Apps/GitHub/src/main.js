@@ -66,7 +66,7 @@ async function createWindow() {
       nodeIntegration: false,
       sandbox: true,
       webSecurity: true,
-      partition: 'persist:github'
+    icon: path.join(__dirname, '..', 'resources', 'github-web.png'),
     }
   });
 

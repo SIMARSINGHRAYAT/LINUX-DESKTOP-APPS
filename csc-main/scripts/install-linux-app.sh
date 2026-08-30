@@ -1,14 +1,17 @@
 #!/bin/sh
 set -eu
 
-if [ "$#" -ne 3 ]; then
-  printf '%s\n' "Usage: $0 APP_DIRECTORY APP_ID DISPLAY_NAME" >&2
+if [ "$#" -lt 3 ] || [ "$#" -gt 5 ]; then
+  printf '%s\n' "Usage: $0 APP_DIRECTORY APP_ID DISPLAY_NAME [EXECUTABLE_NAME] [BUNDLE_DIRECTORY]" >&2
   exit 2
 fi
 
 APP_DIRECTORY=$1
 APP_ID=$2
 DISPLAY_NAME=$3
+APP_NAME=$(basename "$APP_DIRECTORY" | tr '[:upper:]' '[:lower:]')
+EXECUTABLE_NAME=${4:-$APP_NAME}
+BUNDLE_DIRECTORY=${5:-$APP_NAME}
 REPOSITORY_URL=${ELECTRON_APPS_REPOSITORY_URL:-https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS.git}
 REPOSITORY_DIR=${ELECTRON_APPS_REPOSITORY_DIR:-$HOME/electron-apps/linux-desktop-apps}
 INSTALL_DIR=$REPOSITORY_DIR/csc-main/$APP_DIRECTORY
@@ -79,14 +82,14 @@ flatpak-builder --user --install --force-clean --disable-rofiles-fuse build mani
 # and starts a real Xvfb server when no graphical session is available.
 LAUNCHER_DIR="$HOME/.local/bin"
 mkdir -p "$LAUNCHER_DIR"
-LAUNCHER_SCRIPT="$LAUNCHER_DIR/github-desktop"
+LAUNCHER_SCRIPT="$LAUNCHER_DIR/$EXECUTABLE_NAME"
 
 cat > "$LAUNCHER_SCRIPT" << EOF
 #!/bin/sh
 set -eu
 
 APP_DIR="${INSTALL_DIR}"
-ELECTRON_BIN="\$APP_DIR/build/files/lib/github-desktop/electron/electron"
+ELECTRON_BIN="\$APP_DIR/build/files/lib/$BUNDLE_DIRECTORY/electron/electron"
 
 if [ ! -x "\$ELECTRON_BIN" ]; then
   echo "Electron app bundle not found at \$ELECTRON_BIN" >&2
@@ -105,7 +108,7 @@ if [ -z "\${DISPLAY:-}" ]; then
 
   # Start a real virtual X server if one is not already running.
   if ! pgrep -x Xvfb >/dev/null 2>&1; then
-    Xvfb "\$DISPLAY" -screen 0 1280x720x24 >/tmp/github-desktop-xvfb.log 2>&1 &
+    Xvfb "\$DISPLAY" -screen 0 1280x720x24 >/tmp/${EXECUTABLE_NAME}-xvfb.log 2>&1 &
   fi
 
   sleep 1
@@ -118,7 +121,7 @@ chmod 755 "$LAUNCHER_SCRIPT"
 
 DESKTOP_DIR="$HOME/.local/share/applications"
 mkdir -p "$DESKTOP_DIR"
-DESKTOP_FILE="$DESKTOP_DIR/io.github.example.GitHubDesktop.desktop"
+DESKTOP_FILE="$DESKTOP_DIR/$APP_ID.desktop"
 cat > "$DESKTOP_FILE" <<EOF
 [Desktop Entry]
 Version=1.0
@@ -126,12 +129,12 @@ Type=Application
 Name=GitHub
 Comment=Unofficial GitHub wrapper for Linux
 Exec=$LAUNCHER_SCRIPT %U
-Icon=io.github.example.GitHubDesktop
+Icon=$APP_ID
 Terminal=false
 Categories=Development;Network;
 StartupNotify=true
-StartupWMClass=GitHub
-X-Flatpak=io.github.example.GitHubDesktop
+StartupWMClass=$EXECUTABLE_NAME
+X-Flatpak=$APP_ID
 EOF
 chmod 644 "$DESKTOP_FILE"
 update-desktop-database "$DESKTOP_DIR" 2>/dev/null || true
