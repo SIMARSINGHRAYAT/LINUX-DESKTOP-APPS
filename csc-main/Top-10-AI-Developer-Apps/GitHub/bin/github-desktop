@@ -1,0 +1,26 @@
+#!/bin/sh
+# GitHub Desktop launcher with headless fallback
+
+export GDK_BACKEND=x11
+export GTK_A11Y=none
+
+# Run Electron and capture output
+OUTPUT=$(/app/lib/github-desktop/electron/electron --no-sandbox --disable-gpu --disable-software-rasterizer --ozone-platform=x11 /app/lib/github-desktop "$@" 2>&1)
+EXIT_CODE=$?
+
+# If Electron failed with display errors, fall back to browser
+if echo "$OUTPUT" | grep -q "Missing X server\|platform failed to initialize"; then
+  echo "No graphical display available. Opening https://github.com in browser."
+  xdg-open "https://github.com" 2>/dev/null || echo "Please open https://github.com manually"
+  exit 0
+fi
+
+# If there was any output, show it
+if [ -n "$OUTPUT" ]; then
+  echo "$OUTPUT"
+fi
+
+exit $EXIT_CODE
+
+
+

@@ -11,6 +11,14 @@ const AUTH_PROVIDER_HOSTS = new Set(['accounts.google.com', 'appleid.apple.com',
 let mainWindow;
 let statePath;
 
+function hasGraphicalSession() {
+  if (process.platform !== 'linux') return true;
+  const display = process.env.DISPLAY || process.env.WAYLAND_DISPLAY;
+  if (display) return true;
+  const sessionType = (process.env.XDG_SESSION_TYPE || '').toLowerCase();
+  return sessionType === 'x11' || sessionType === 'wayland';
+}
+
 function isAllowedHost(hostname) {
   const host = hostname.toLowerCase();
   return [...GITHUB_HOSTS].some((allowed) => host === allowed || host.endsWith(`.${allowed}`));
@@ -114,18 +122,26 @@ async function createWindow() {
   await mainWindow.loadURL(APP_URL);
 }
 
-const gotLock = app.requestSingleInstanceLock();
-if (!gotLock) app.quit();
-else {
-  app.on('second-instance', () => { if (!mainWindow) return; if (mainWindow.isMinimized()) mainWindow.restore(); mainWindow.focus(); });
-  app.whenReady().then(async () => {
-    const githubSession = session.fromPartition('persist:github');
-    githubSession.setUserAgent(app.userAgentFallback.replace(/\sElectron\/[^\s]+/, ''));
-    configureSession(githubSession, GITHUB_HOSTS, AUTH_PROVIDER_HOSTS);
-    createMenu();
-    await createWindow();
-    app.on('activate', () => { if (BrowserWindow.getAllWindows().length === 0) void createWindow(); });
+if (process.platform === 'linux' && !hasGraphicalSession()) {
+  console.warn('No graphical session detected. Opening GitHub in default browser.');
+  app.whenReady().then(() => {
+    void shell.openExternal(APP_URL);
+    app.quit();
   });
-  app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
-  app.on('before-quit', saveWindowState);
+} else {
+  const gotLock = app.requestSingleInstanceLock();
+  if (!gotLock) app.quit();
+  else {
+    app.on('second-instance', () => { if (!mainWindow) return; if (mainWindow.isMinimized()) mainWindow.restore(); mainWindow.focus(); });
+    app.whenReady().then(async () => {
+      const githubSession = session.fromPartition('persist:github');
+      githubSession.setUserAgent(app.userAgentFallback.replace(/\sElectron\/[^\s]+/, ''));
+      configureSession(githubSession, GITHUB_HOSTS, AUTH_PROVIDER_HOSTS);
+      createMenu();
+      await createWindow();
+      app.on('activate', () => { if (BrowserWindow.getAllWindows().length === 0) void createWindow(); });
+    });
+    app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
+    app.on('before-quit', saveWindowState);
+  }
 }
