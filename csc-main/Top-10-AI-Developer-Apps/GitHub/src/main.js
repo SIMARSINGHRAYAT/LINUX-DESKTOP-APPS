@@ -78,7 +78,7 @@ function configureWindowPolicies(window) {
       overrideBrowserWindowOptions: {
         width: 1100,
         height: 800,
-        title: 'GitHub Desktop',
+        title: 'GitHub',
         icon: path.join(__dirname, '..', 'resources', 'github-desktop.png'),
         webPreferences: {
           preload: path.join(__dirname, 'preload.js'),
@@ -106,7 +106,7 @@ function configureWindowPolicies(window) {
 async function createWindow() {
   statePath = path.join(app.getPath('userData'), 'window-state.json');
   const state = readWindowState();
-  mainWindow = new BrowserWindow({ ...state, minWidth: 640, minHeight: 480, title: 'GitHub Desktop', icon: path.join(__dirname, '..', 'resources', 'github-desktop.png'), webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false, sandbox: true, webSecurity: true, partition: 'persist:github' } });
+  mainWindow = new BrowserWindow({ ...state, minWidth: 640, minHeight: 480, title: 'GitHub', icon: path.join(__dirname, '..', 'resources', 'github-desktop.png'), webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false, sandbox: true, webSecurity: true, partition: 'persist:github' } });
   configureWindowPolicies(mainWindow);
   mainWindow.on('resize', saveWindowState);
   mainWindow.on('move', saveWindowState);
@@ -121,7 +121,7 @@ else {
   app.whenReady().then(async () => {
     const githubSession = session.fromPartition('persist:github');
     githubSession.setUserAgent(app.userAgentFallback.replace(/\sElectron\/[^\s]+/, ''));
-    configureSession(githubSession, APP_HOSTS, AUTH_HOSTS);
+    configureSession(githubSession, GITHUB_HOSTS, AUTH_PROVIDER_HOSTS);
     createMenu();
     await createWindow();
     app.on('activate', () => { if (BrowserWindow.getAllWindows().length === 0) void createWindow(); });

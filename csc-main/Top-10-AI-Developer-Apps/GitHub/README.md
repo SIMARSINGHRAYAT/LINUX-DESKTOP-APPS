@@ -1,6 +1,6 @@
-# GitHub Desktop
+# GitHub
 
-Unofficial GitHub desktop wrapper for Linux.
+Unofficial GitHub wrapper for Linux.
 
 ## Ubuntu Installation
 

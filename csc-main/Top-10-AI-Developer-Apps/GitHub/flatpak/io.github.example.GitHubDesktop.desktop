@@ -1,12 +1,12 @@
 [Desktop Entry]
-Name=GitHub Desktop
-Comment=Unofficial GitHub desktop wrapper for Linux
-Exec=github-desktop
+Name=GitHub
+Comment=Unofficial GitHub wrapper for Linux
+Exec=flatpak run --no-documents-portal io.github.example.GitHubDesktop
 Icon=io.github.example.GitHubDesktop
 Terminal=false
 Type=Application
 Categories=Development;Network;
 StartupNotify=true
-StartupWMClass=GitHub Desktop
+StartupWMClass=GitHub
 Keywords=GitHub;development;repositories;
 X-Flatpak=io.github.example.GitHubDesktop
