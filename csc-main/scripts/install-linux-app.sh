@@ -126,8 +126,8 @@ cat > "$DESKTOP_FILE" <<EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=GitHub
-Comment=Unofficial GitHub wrapper for Linux
+Name=$DISPLAY_NAME
+Comment=Unofficial $DISPLAY_NAME for Linux
 Exec=$LAUNCHER_SCRIPT %U
 Icon=$APP_ID
 Terminal=false
@@ -139,7 +139,7 @@ EOF
 chmod 644 "$DESKTOP_FILE"
 update-desktop-database "$DESKTOP_DIR" 2>/dev/null || true
 
-printf '%s\n' "✓ GitHub launcher installed to $LAUNCHER_SCRIPT"
+printf '%s\n' "✓ ${DISPLAY_NAME} launcher installed to $LAUNCHER_SCRIPT"
 printf '%s\n' "✓ Desktop entry installed to $DESKTOP_FILE"
 
 exec "$LAUNCHER_SCRIPT"
