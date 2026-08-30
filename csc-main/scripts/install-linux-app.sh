@@ -24,7 +24,7 @@ if ! command -v apt-get >/dev/null 2>&1; then
 fi
 
 needs_prerequisites=0
-for tool in flatpak flatpak-builder git unzip; do
+for tool in flatpak flatpak-builder git unzip xvfb-run; do
   if ! command -v "$tool" >/dev/null 2>&1; then
     needs_prerequisites=1
     break
@@ -42,7 +42,7 @@ if [ "$needs_prerequisites" -eq 1 ]; then
   fi
   printf '%s\n' "Installing prerequisites for $DISPLAY_NAME..."
   $SUDO apt-get update
-  $SUDO apt-get install -y flatpak flatpak-builder git ca-certificates unzip
+  $SUDO apt-get install -y flatpak flatpak-builder git ca-certificates unzip xvfb
 fi
 
 if [ -d "$REPOSITORY_DIR/.git" ]; then
@@ -74,4 +74,32 @@ flatpak install --user -y flathub org.freedesktop.Sdk//25.08 org.freedesktop.Pla
 
 cd "$INSTALL_DIR"
 flatpak-builder --user --install --force-clean --disable-rofiles-fuse build manifest.yaml
-exec flatpak run "$APP_ID"
+
+# Create a system-level launcher script with xvfb-run support
+LAUNCHER_DIR="$HOME/.local/bin"
+mkdir -p "$LAUNCHER_DIR"
+LAUNCHER_SCRIPT="$LAUNCHER_DIR/github-desktop"
+
+# Create the launcher with unquoted EOF to allow variable substitution
+cat > "$LAUNCHER_SCRIPT" << EOF
+#!/bin/sh
+# GitHub Desktop launcher with xvfb-run support
+DISPLAY_ENV="\${DISPLAY:-}"
+WAYLAND_ENV="\${WAYLAND_DISPLAY:-}"
+
+if [ -n "\$DISPLAY_ENV" ] || [ -n "\$WAYLAND_ENV" ]; then
+  exec flatpak run io.github.example.GitHubDesktop "\$@"
+fi
+
+if command -v xvfb-run >/dev/null 2>&1; then
+  # xvfb-run sets DISPLAY in the environment
+  exec xvfb-run -a -s "-screen 0 1920x1080x24" bash -c 'flatpak run --env=DISPLAY=\$DISPLAY io.github.example.GitHubDesktop "\$@"' -- "\$@"
+fi
+
+exec flatpak run io.github.example.GitHubDesktop "\$@"
+EOF
+
+chmod 755 "$LAUNCHER_SCRIPT"
+printf '%s\n' "✓ GitHub launcher installed to $LAUNCHER_SCRIPT"
+
+exec "$LAUNCHER_SCRIPT"
