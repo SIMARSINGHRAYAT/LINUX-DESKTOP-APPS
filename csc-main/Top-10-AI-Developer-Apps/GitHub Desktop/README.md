@@ -1,5 +1,9 @@
 # GitHub Desktop
 
+Download package form:
+
+https://github.com/shiftkey/desktop/releases
+
 Open Terminal and run:
 
 ```bash
