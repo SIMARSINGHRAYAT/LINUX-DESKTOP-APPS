@@ -9,7 +9,6 @@
   "private": true,
   "scripts": { "start": "electron .", "dev": "electron . --enable-logging", "validate": "node --check main.js && node --check preload.js", "build": "electron-builder --linux", "build:linux": "electron-builder --linux AppImage deb", "package": "npm run build:linux" },
   "devDependencies": { "electron": "43.3.0", "electron-builder": "26.0.12" },
-  "overrides": { "@electron/rebuild": "4.2.0" },
   "build": { "appId": "com.microsoft.desktop.whiteboard", "productName": "Microsoft Whiteboard", "asar": true, "directories": { "output": "dist" }, "files": ["main.js", "preload.js", "offline.html", "assets/**/*", "package.json"], "linux": { "target": ["AppImage", "deb"], "category": "Office;Graphics;Education;", "icon": "assets/icons", "synopsis": "Microsoft Whiteboard desktop wrapper", "artifactName": "Microsoft-Whiteboard-${version}-${arch}.${ext}" } },
   "engines": { "node": ">=22.12.0" }
 }

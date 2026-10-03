@@ -82,7 +82,12 @@ if command -v convert >/dev/null 2>&1; then
 fi
 
 cd "$LOCAL_SOURCE_DIR"
-npm install --no-audit --no-fund
+npm_major=$(npm --version | cut -d. -f1)
+npm_install_args='--no-audit --no-fund'
+if [ "$npm_major" -ge 11 ]; then
+  npm_install_args="$npm_install_args --allow-git=all"
+fi
+npm install $npm_install_args
 npm run build:linux
 DEB_PATH=$(find dist -maxdepth 1 -type f -name '*.deb' -print | sort | head -n 1)
 if [ -z "$DEB_PATH" ]; then

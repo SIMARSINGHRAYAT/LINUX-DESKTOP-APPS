@@ -19,9 +19,6 @@
     "electron": "43.3.0",
     "electron-builder": "26.0.12"
   },
-  "overrides": {
-    "@electron/rebuild": "4.2.0"
-  },
   "build": {
     "appId": "com.microsoft.desktop.teams",
     "productName": "Microsoft Teams",
