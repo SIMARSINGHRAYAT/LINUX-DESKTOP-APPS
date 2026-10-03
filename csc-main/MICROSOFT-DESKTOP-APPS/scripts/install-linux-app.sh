@@ -113,7 +113,11 @@ if [ "$INSTALL_DISTRO" = kali ]; then
 #!/bin/sh
 set -eu
 APPIMAGE="$APPIMAGE_INSTALL"
-exec "\$APPIMAGE" --appimage-extract-and-run --no-sandbox --disable-gpu "\$@"
+LOG_DIR="\${XDG_CACHE_HOME:-\$HOME/.cache}/linux-desktop-apps"
+mkdir -p "\$LOG_DIR"
+exec >>"\$LOG_DIR/$DEB_PACKAGE.log" 2>&1
+printf '%s\\n' "Starting $DISPLAY_NAME..."
+exec "\$APPIMAGE" --appimage-extract-and-run --no-sandbox --disable-gpu --disable-gpu-compositing --disable-dev-shm-usage "\$@"
 EOF
   chmod 755 "$LAUNCHER"
   DESKTOP_FILE=${XDG_DATA_HOME:-$HOME/.local/share}/applications/$DEB_PACKAGE.desktop
@@ -130,6 +134,12 @@ Categories=Office;Network;
 StartupNotify=true
 EOF
   chmod 644 "$DESKTOP_FILE"
+  if command -v gio >/dev/null 2>&1; then
+    gio set "$DESKTOP_FILE" metadata::trusted true 2>/dev/null || true
+  fi
+  if command -v update-desktop-database >/dev/null 2>&1; then
+    update-desktop-database "${XDG_DATA_HOME:-$HOME/.local/share}/applications" 2>/dev/null || true
+  fi
   printf '%s\n' "$DISPLAY_NAME installed as an AppImage. Search for it in the application menu."
   exit 0
 fi
