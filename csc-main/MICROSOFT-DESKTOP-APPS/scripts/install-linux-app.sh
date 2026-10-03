@@ -88,6 +88,42 @@ if [ "$npm_major" -ge 11 ]; then
   npm_install_args="$npm_install_args --allow-git=all"
 fi
 npm install $npm_install_args
+
+if [ -r /etc/os-release ]; then
+  . /etc/os-release
+fi
+
+if [ "${ID:-}" = kali ]; then
+  npx electron-builder --linux AppImage
+  APPIMAGE_PATH=$(find dist -maxdepth 1 -type f -name '*.AppImage' -print | sort | head -n 1)
+  if [ -z "$APPIMAGE_PATH" ]; then
+    printf '%s\n' "No AppImage was created for $DISPLAY_NAME." >&2
+    exit 1
+  fi
+
+  APPIMAGE_DIR=${XDG_DATA_HOME:-$HOME/.local/share}/linux-desktop-apps/$DEB_PACKAGE
+  APPIMAGE_INSTALL=$APPIMAGE_DIR/$DEB_PACKAGE.AppImage
+  mkdir -p "$APPIMAGE_DIR" "${XDG_DATA_HOME:-$HOME/.local/share}/applications"
+  cp "$APPIMAGE_PATH" "$APPIMAGE_INSTALL"
+  chmod 755 "$APPIMAGE_INSTALL"
+  DESKTOP_FILE=${XDG_DATA_HOME:-$HOME/.local/share}/applications/$DEB_PACKAGE.desktop
+  cat > "$DESKTOP_FILE" <<EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=$DISPLAY_NAME
+Comment=Unofficial $DISPLAY_NAME for Linux
+Exec=$APPIMAGE_INSTALL %U
+Icon=$ICON_DIR/512.png
+Terminal=false
+Categories=Office;Network;
+StartupNotify=true
+EOF
+  chmod 644 "$DESKTOP_FILE"
+  printf '%s\n' "$DISPLAY_NAME installed as an AppImage. Search for it in the application menu."
+  exit 0
+fi
+
 npm run build:linux
 DEB_PATH=$(find dist -maxdepth 1 -type f -name '*.deb' -print | sort | head -n 1)
 if [ -z "$DEB_PATH" ]; then

@@ -12,6 +12,17 @@ if ! command -v apt-get >/dev/null 2>&1; then
   printf '%s\n' 'An apt-based Debian-family system is required (Ubuntu, Debian, or Kali).' >&2
   exit 1
 fi
+
+if [ -r /etc/os-release ]; then
+  . /etc/os-release
+fi
+if [ "${ID:-}" = kali ]; then
+  rm -f "${XDG_DATA_HOME:-$HOME/.local/share}/applications/$DEB_PACKAGE.desktop"
+  rm -rf "${XDG_DATA_HOME:-$HOME/.local/share}/linux-desktop-apps/$DEB_PACKAGE"
+  printf '%s\n' "$DISPLAY_NAME uninstalled."
+  exit 0
+fi
+
 if [ "$(id -u)" -eq 0 ]; then SUDO=; elif command -v sudo >/dev/null 2>&1; then SUDO=sudo; else
   printf '%s\n' 'Run as root or install sudo to uninstall the desktop package.' >&2
   exit 1
