@@ -104,9 +104,18 @@ if [ "$INSTALL_DISTRO" = kali ]; then
 
   APPIMAGE_DIR=${XDG_DATA_HOME:-$HOME/.local/share}/linux-desktop-apps/$DEB_PACKAGE
   APPIMAGE_INSTALL=$APPIMAGE_DIR/$DEB_PACKAGE.AppImage
-  mkdir -p "$APPIMAGE_DIR" "${XDG_DATA_HOME:-$HOME/.local/share}/applications"
+  LAUNCHER_DIR=${XDG_BIN_HOME:-$HOME/.local/bin}
+  LAUNCHER=$LAUNCHER_DIR/$DEB_PACKAGE
+  mkdir -p "$APPIMAGE_DIR" "$LAUNCHER_DIR" "${XDG_DATA_HOME:-$HOME/.local/share}/applications"
   cp "$APPIMAGE_PATH" "$APPIMAGE_INSTALL"
   chmod 755 "$APPIMAGE_INSTALL"
+  cat > "$LAUNCHER" <<EOF
+#!/bin/sh
+set -eu
+APPIMAGE="$APPIMAGE_INSTALL"
+exec "\$APPIMAGE" --appimage-extract-and-run --no-sandbox --disable-gpu "\$@"
+EOF
+  chmod 755 "$LAUNCHER"
   DESKTOP_FILE=${XDG_DATA_HOME:-$HOME/.local/share}/applications/$DEB_PACKAGE.desktop
   cat > "$DESKTOP_FILE" <<EOF
 [Desktop Entry]
@@ -114,7 +123,7 @@ Version=1.0
 Type=Application
 Name=$DISPLAY_NAME
 Comment=Unofficial $DISPLAY_NAME for Linux
-Exec=$APPIMAGE_INSTALL %U
+Exec=$LAUNCHER %U
 Icon=$ICON_DIR/512.png
 Terminal=false
 Categories=Office;Network;

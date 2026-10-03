@@ -18,6 +18,7 @@ if [ -r /etc/os-release ]; then
 fi
 if [ "${ID:-}" = kali ]; then
   rm -f "${XDG_DATA_HOME:-$HOME/.local/share}/applications/$DEB_PACKAGE.desktop"
+  rm -f "${XDG_BIN_HOME:-$HOME/.local/bin}/$DEB_PACKAGE"
   rm -rf "${XDG_DATA_HOME:-$HOME/.local/share}/linux-desktop-apps/$DEB_PACKAGE"
   printf '%s\n' "$DISPLAY_NAME uninstalled."
   exit 0
