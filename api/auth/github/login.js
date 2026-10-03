@@ -14,5 +14,6 @@ module.exports = (request, response) => {
     state
   });
   response.setHeader('Set-Cookie', `github_oauth_state=${state}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=600`);
-  response.redirect(`https://github.com/login/oauth/authorize?${query}`);
+  response.writeHead(302, { Location: `https://github.com/login/oauth/authorize?${query}` });
+  response.end();
 };

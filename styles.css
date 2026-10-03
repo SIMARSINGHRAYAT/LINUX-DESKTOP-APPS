@@ -1,9 +1,9 @@
 :root {
   --bg: #000000;
   --bg-2: #05070a;
-  --surface: rgba(15, 17, 21, 0.82);
-  --surface-strong: rgba(18, 20, 24, 0.98);
-  --panel: rgba(12, 15, 18, 0.96);
+  --surface: rgba(0, 0, 0, 0.58);
+  --surface-strong: rgba(0, 0, 0, 0.78);
+  --panel: rgba(0, 0, 0, 0.68);
   --border: rgba(255, 255, 255, 0.08);
   --text: #f3f7ff;
   --muted: #d1d9e6;
@@ -221,7 +221,7 @@ a { text-decoration: none; }
 .category-card,
 .app-card,
 .app-detail-card {
-  background: linear-gradient(180deg, rgba(18, 21, 27, 0.96), rgba(9, 12, 16, 0.92));
+  background: rgba(0, 0, 0, 0.58);
   border: 1px solid var(--border);
   border-radius: 22px;
   box-shadow: var(--shadow);
@@ -497,7 +497,7 @@ a { text-decoration: none; }
   width: min(100%, 650px);
   padding: 42px;
   text-align: center;
-  background: rgba(18, 21, 27, 0.58);
+  background: rgba(0, 0, 0, 0.58);
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 24px;
   backdrop-filter: blur(18px);
@@ -556,6 +556,7 @@ a { text-decoration: none; }
 .support-action.done { border-color: rgba(120,240,198,0.7); color: var(--accent-2); }
 .support-action.loading { opacity: 0.65; }
 .support-panel .support-continue { margin-top: 22px; width: 100%; }
+.signin-error { color: #ff9b9b !important; }
 
 .distro-tabs {
   display: flex;

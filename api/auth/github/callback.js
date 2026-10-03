@@ -4,7 +4,8 @@ module.exports = async (request, response) => {
   const { code, state, error } = request.query;
   const savedState = cookieValue(request, 'github_oauth_state');
   if (error || !code || !state || state !== savedState) {
-    response.redirect('/?auth_error=github');
+    response.writeHead(302, { Location: '/signin.html?auth_error=github' });
+    response.end();
     return;
   }
 
@@ -22,8 +23,10 @@ module.exports = async (request, response) => {
     const token = await tokenResponse.json();
     if (!token.access_token) throw new Error('GitHub did not return an access token');
     setSession(response, token.access_token);
-    response.redirect('/support.html');
+    response.writeHead(302, { Location: '/support.html' });
+    response.end();
   } catch {
-    response.redirect('/?auth_error=github');
+    response.writeHead(302, { Location: '/signin.html?auth_error=github' });
+    response.end();
   }
 };

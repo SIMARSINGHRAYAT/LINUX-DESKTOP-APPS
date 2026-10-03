@@ -17,6 +17,7 @@
         <p class="eyebrow">Linux App Center</p>
         <h1 id="signin-title">Sign in to continue</h1>
         <p>Use your GitHub account to unlock the app dashboard.</p>
+        <p id="signin-error" class="signin-error" hidden>GitHub sign-in did not complete. Please try again.</p>
         <a class="github-signin-btn" href="./api/auth/github/login">
           <span aria-hidden="true">◉</span>
           Continue with GitHub
@@ -24,5 +25,10 @@
       </section>
     </main>
     <script src="./script.js"></script>
+    <script>
+      if (new URLSearchParams(window.location.search).has('auth_error')) {
+        document.getElementById('signin-error').hidden = false;
+      }
+    </script>
   </body>
 </html>

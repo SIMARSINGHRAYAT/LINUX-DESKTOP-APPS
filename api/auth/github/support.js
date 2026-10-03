@@ -7,6 +7,15 @@ module.exports = async (request, response) => {
     return;
   }
   const action = request.body && request.body.action;
+  const currentUser = await github('/user', {}, token);
+  if (!currentUser.response.ok) {
+    json(response, 401, { error: 'GitHub session expired.' });
+    return;
+  }
+  if (currentUser.data.login.toLowerCase() === 'simarsinghrayat') {
+    json(response, 200, { complete: true, owner: true });
+    return;
+  }
   const target = action === 'repo' ? '/user/starred/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS' : action === 'profile' ? '/user/following/SIMARSINGHRAYAT' : null;
   if (!target) {
     json(response, 400, { error: 'Unknown support action.' });

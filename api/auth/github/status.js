@@ -15,10 +15,12 @@ module.exports = async (request, response) => {
     github('/user/starred/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS', { method: 'GET' }, token),
     github('/user/following/SIMARSINGHRAYAT', { method: 'GET' }, token)
   ]);
+  const isOwner = user.data.login.toLowerCase() === 'simarsinghrayat';
   json(response, 200, {
     authenticated: true,
     user: { login: user.data.login, avatar: user.data.avatar_url },
-    repoStarred: star.response.status === 204,
-    profileFollowed: follow.response.status === 204
+    repoStarred: isOwner || star.response.status === 204,
+    profileFollowed: isOwner || follow.response.status === 204,
+    isOwner
   });
 };
