@@ -92,8 +92,9 @@ npm install $npm_install_args
 if [ -r /etc/os-release ]; then
   . /etc/os-release
 fi
+INSTALL_DISTRO=${LINUX_DESKTOP_DISTRO:-${ID:-}}
 
-if [ "${ID:-}" = kali ]; then
+if [ "$INSTALL_DISTRO" = kali ]; then
   npx electron-builder --linux AppImage
   APPIMAGE_PATH=$(find dist -maxdepth 1 -type f -name '*.AppImage' -print | sort | head -n 1)
   if [ -z "$APPIMAGE_PATH" ]; then
@@ -122,6 +123,11 @@ EOF
   chmod 644 "$DESKTOP_FILE"
   printf '%s\n' "$DISPLAY_NAME installed as an AppImage. Search for it in the application menu."
   exit 0
+fi
+
+if [ "$INSTALL_DISTRO" != ubuntu ] && [ "$INSTALL_DISTRO" != debian ] && [ "$INSTALL_DISTRO" != kali ]; then
+  printf '%s\n' 'Set LINUX_DESKTOP_DISTRO to ubuntu, debian, or kali before installing.' >&2
+  exit 1
 fi
 
 npm run build:linux
