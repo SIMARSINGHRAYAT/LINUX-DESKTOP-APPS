@@ -62,6 +62,10 @@ python3 -m http.server 8000
 
 Then open: http://localhost:8000
 
+## Vercel deployment
+
+This repository is a static site and is ready for Vercel. Import the GitHub repository into Vercel, keep the project root at the repository root, and use the default build settings. Vercel runs `npm run build` and serves the root `index.html` with clean URLs enabled.
+
 ## Ubuntu installation
 
 ```bash
