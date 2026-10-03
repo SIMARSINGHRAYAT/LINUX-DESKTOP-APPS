@@ -485,6 +485,98 @@ a { text-decoration: none; }
   cursor: pointer;
 }
 
+.signin-shell,
+.support-shell {
+  min-height: 78vh;
+  display: grid;
+  place-items: center;
+}
+
+.signin-panel,
+.support-panel {
+  width: min(100%, 650px);
+  padding: 42px;
+  text-align: center;
+  background: rgba(18, 21, 27, 0.58);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 24px;
+  backdrop-filter: blur(18px);
+  box-shadow: var(--shadow);
+}
+
+.signin-panel h1,
+.support-panel h1 {
+  margin: 20px 0 12px;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  letter-spacing: -0.05em;
+}
+
+.signin-panel p:not(.eyebrow),
+.support-panel p:not(.eyebrow) { color: var(--muted); line-height: 1.7; }
+
+.github-signin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
+  padding: 15px 22px;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 14px;
+  color: #071018;
+  background: var(--accent-2);
+  font-weight: 800;
+}
+
+.support-status {
+  margin: 22px 0;
+  color: var(--accent-2);
+  min-height: 24px;
+}
+
+.support-panel .support-actions {
+  display: grid;
+  gap: 12px;
+  text-align: left;
+}
+
+.support-panel .support-action {
+  display: grid;
+  grid-template-columns: 34px 1fr 24px;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 16px;
+}
+
+.support-action-icon { font-size: 1.4rem; color: var(--accent-2); }
+.support-action strong,
+.support-action small { display: block; }
+.support-action small { margin-top: 4px; color: var(--muted); font-weight: 400; }
+.support-action .task-state { text-align: right; font-size: 1.3rem; }
+.support-action.done { border-color: rgba(120,240,198,0.7); color: var(--accent-2); }
+.support-action.loading { opacity: 0.65; }
+.support-panel .support-continue { margin-top: 22px; width: 100%; }
+
+.distro-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 22px 0 14px;
+}
+
+.distro-tab {
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 11px 16px;
+  color: var(--muted);
+  background: rgba(255,255,255,0.04);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.distro-tab.active { color: #071018; background: var(--accent-2); }
+.distro-panel { display: none; }
+.distro-panel.active { display: block; }
+
 @media (max-width: 640px) {
   .site-header { justify-content: center; }
   .top-nav { gap: 12px; }

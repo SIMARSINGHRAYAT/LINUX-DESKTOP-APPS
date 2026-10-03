@@ -66,6 +66,25 @@ Then open: http://localhost:8000
 
 This repository is a static site and is ready for Vercel. Import the GitHub repository into Vercel, keep the project root at the repository root, and use the default build settings. Vercel runs `npm run build` and serves the root `index.html` with clean URLs enabled.
 
+### GitHub OAuth setup
+
+Create a GitHub OAuth App with these values:
+
+- Application name: `Linux App Center`
+- Homepage URL: `https://linuxdesktopapps11.vercel.app`
+- Authorization callback URL: `https://linuxdesktopapps11.vercel.app/api/auth/github/callback`
+
+Add these Vercel environment variables for Production, Preview, and Development as needed:
+
+```text
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+AUTH_SECRET=use_a_long_random_value
+GITHUB_OAUTH_REDIRECT_URI=https://linuxdesktopapps11.vercel.app/api/auth/github/callback
+```
+
+The OAuth app requests `public_repo` and `follow` so the signed-in user can star the repository and follow the profile through GitHub. Never expose the client secret or `AUTH_SECRET` in frontend code.
+
 ## Ubuntu installation
 
 ```bash

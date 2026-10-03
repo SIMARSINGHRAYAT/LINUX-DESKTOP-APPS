@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Support the Project | Linux App Center</title>
+    <meta name="description" content="Sign in with GitHub and support the Linux App Center project." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="support-page">
+    <div id="floating-logos" aria-hidden="true"></div>
+    <main class="page-shell support-shell">
+      <section class="support-panel" aria-labelledby="support-title">
+        <p class="eyebrow">Support the Project</p>
+        <h1 id="support-title">Help grow the Linux community</h1>
+        <p class="support-text">You are signed in with GitHub. Complete both actions to unlock the app dashboard.</p>
+        <div id="support-status" class="support-status" role="status">Checking your GitHub account...</div>
+        <div class="support-actions">
+          <button class="support-action" type="button" data-support-action="repo" disabled>
+            <span class="support-action-icon">★</span>
+            <span><strong>Star the repository</strong><small>Support the Linux App Center on GitHub</small></span>
+            <span class="task-state" aria-hidden="true">○</span>
+          </button>
+          <button class="support-action secondary" type="button" data-support-action="profile" disabled>
+            <span class="support-action-icon">◎</span>
+            <span><strong>Follow the profile</strong><small>Follow SIMARSINGHRAYAT on GitHub</small></span>
+            <span class="task-state" aria-hidden="true">○</span>
+          </button>
+        </div>
+        <button class="primary-btn support-continue" type="button" disabled>Continue to Dashboard</button>
+      </section>
+    </main>
+    <script src="./script.js"></script>
+  </body>
+</html>

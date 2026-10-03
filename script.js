@@ -22,7 +22,7 @@ const categories = [
     description: 'Official productivity apps for Linux desktop workflows.',
     apps: [
       { name: 'Microsoft Teams', slug: 'teams', icon: './csc-main/logo/Microsoft_Office_Teams_Logo_512px.png', readme: './csc-main/MICROSOFT-DESKTOP-APPS/Teams/README.md', installCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Teams/install.sh | bash', uninstallCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Teams/uninstall.sh | bash' },
-      { name: 'Power BI', slug: 'powerbi', icon: './csc-main/logo/Microsoft-Power-Bi--Streamline-Svg-Logos.png', readme: './csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/README.md', installCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | bash', uninstallCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | bash' },
+      { name: 'Power BI', slug: 'powerbi', icon: './csc-main/logo/Microsoft-Power-Bi--Streamline-Svg-Logos.png', readme: './csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/README.md', commands: { ubuntuInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | LINUX_DESKTOP_DISTRO=ubuntu bash', ubuntuUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | LINUX_DESKTOP_DISTRO=ubuntu bash', kaliInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | LINUX_DESKTOP_DISTRO=kali bash', kaliUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | LINUX_DESKTOP_DISTRO=kali bash' } },
       { name: 'Whiteboard', slug: 'whiteboard', icon: './csc-main/logo/Microsoft-whiteboard-94.png', readme: './csc-main/MICROSOFT-DESKTOP-APPS/Whiteboard/README.md', installCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Whiteboard/install.sh | bash', uninstallCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Whiteboard/uninstall.sh | bash' },
       { name: 'Outlook', slug: 'outlook', icon: './csc-main/logo/Microsoft_Office_Outlook_Logo_512px.png', readme: './csc-main/MICROSOFT-DESKTOP-APPS/Outlook/README.md', installCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Outlook/install.sh | bash', uninstallCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Outlook/uninstall.sh | bash' }
     ]
@@ -176,6 +176,24 @@ function buildReadmeBlocks(app, markdown) {
     </div>
   `;
 
+  if (app.slug === 'powerbi') {
+    const commands = app.commands;
+    return `
+      <div class="distro-tabs" role="tablist" aria-label="Choose your Linux distribution">
+        <button class="distro-tab active" type="button" data-distro-tab="ubuntu">Ubuntu</button>
+        <button class="distro-tab" type="button" data-distro-tab="kali">Kali Linux</button>
+      </div>
+      <div class="distro-panel active" data-distro-panel="ubuntu">
+        ${renderBlock('Ubuntu installation', commands.ubuntuInstall, 'ubuntu-installation-block')}
+        ${renderBlock('Ubuntu uninstallation', commands.ubuntuUninstall, 'ubuntu-uninstallation-block')}
+      </div>
+      <div class="distro-panel" data-distro-panel="kali">
+        ${renderBlock('Kali Linux installation', commands.kaliInstall, 'kali-installation-block')}
+        ${renderBlock('Kali Linux uninstallation', commands.kaliUninstall, 'kali-uninstallation-block')}
+      </div>
+    `;
+  }
+
   return `
     ${renderBlock('Installation', installCommand, 'installation-block')}
     ${renderBlock('Uninstallation', uninstallCommand, 'uninstallation-block')}
@@ -241,72 +259,78 @@ async function renderAppDetail() {
       setTimeout(() => { button.textContent = original; }, 1200);
     });
   });
+
+  document.querySelectorAll('[data-distro-tab]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const distro = button.dataset.distroTab;
+      document.querySelectorAll('[data-distro-tab]').forEach((tab) => tab.classList.toggle('active', tab === button));
+      document.querySelectorAll('[data-distro-panel]').forEach((panel) => panel.classList.toggle('active', panel.dataset.distroPanel === distro));
+    });
+  });
 }
 
-const supportConfig = {
-  repo: 'https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/tree/main',
-  profile: 'https://github.com/SIMARSINGHRAYAT'
-};
-
-function initSupportModal() {
-  const trigger = document.querySelector('[data-support-trigger]');
-  const modal = document.getElementById('support-modal');
-  if (!trigger || !modal) return;
-
-  const closeButtons = modal.querySelectorAll('[data-close-support]');
-  const repoButton = modal.querySelector('[data-support-action="repo"]');
-  const profileButton = modal.querySelector('[data-support-action="profile"]');
-  const continueButton = modal.querySelector('.support-continue');
+async function initSupportPage() {
+  const status = document.getElementById('support-status');
+  const buttons = [...document.querySelectorAll('[data-support-action]')];
+  const continueButton = document.querySelector('.support-continue');
+  if (!status || !buttons.length || !continueButton) return;
 
   const state = { repo: false, profile: false };
-
-  const updateContinue = () => {
+  const update = () => {
+    buttons.forEach((button) => {
+      const done = state[button.dataset.supportAction];
+      button.classList.toggle('done', done);
+      button.disabled = done;
+      const taskState = button.querySelector('.task-state');
+      if (taskState) taskState.textContent = done ? '✓' : '○';
+    });
     const ready = state.repo && state.profile;
     continueButton.disabled = !ready;
     continueButton.classList.toggle('enabled', ready);
   };
 
-  const handleComplete = (type) => {
-    state[type] = true;
-    const button = type === 'repo' ? repoButton : profileButton;
-    button.classList.add('done');
-    button.textContent = type === 'repo' ? 'Repository Started' : 'Profile Followed';
-    updateContinue();
-  };
+  try {
+    const response = await fetch('./api/auth/github/status', { credentials: 'same-origin' });
+    if (!response.ok) throw new Error('not authenticated');
+    const account = await response.json();
+    state.repo = account.repoStarred;
+    state.profile = account.profileFollowed;
+    status.textContent = `Signed in as @${account.user.login}.`;
+    update();
+  } catch {
+    status.textContent = 'Your GitHub session is not available. Please start again.';
+    return;
+  }
 
-  trigger.addEventListener('click', (event) => {
-    event.preventDefault();
-    modal.classList.add('active');
-    modal.setAttribute('aria-hidden', 'false');
-  });
-
-  closeButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      modal.classList.remove('active');
-      modal.setAttribute('aria-hidden', 'true');
-    });
-  });
-
-  repoButton.addEventListener('click', () => {
-    window.open(supportConfig.repo, '_blank', 'noopener,noreferrer');
-    handleComplete('repo');
-  });
-
-  profileButton.addEventListener('click', () => {
-    window.open(supportConfig.profile, '_blank', 'noopener,noreferrer');
-    handleComplete('profile');
-  });
+  buttons.forEach((button) => button.addEventListener('click', async () => {
+    const action = button.dataset.supportAction;
+    button.disabled = true;
+    button.classList.add('loading');
+    try {
+      const response = await fetch('./api/auth/github/support', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ action })
+      });
+      if (!response.ok) throw new Error('support action failed');
+      state[action] = true;
+      status.textContent = action === 'repo' ? 'Repository starred.' : 'Profile followed.';
+    } catch {
+      status.textContent = 'GitHub could not complete that action. Try again.';
+    } finally {
+      button.classList.remove('loading');
+      update();
+    }
+  }));
 
   continueButton.addEventListener('click', () => {
-    if (!state.repo || !state.profile) return;
-    window.location.href = './categories.html';
+    if (state.repo && state.profile) window.location.href = './categories.html';
   });
-
-  updateContinue();
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  initSupportModal();
+  initSupportPage();
   buildFloatingLogos();
   renderCategories();
   renderApps();
