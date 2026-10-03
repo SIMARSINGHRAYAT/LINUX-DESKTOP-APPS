@@ -19,6 +19,12 @@ for browser in google-chrome google-chrome-stable chromium chromium-browser; do
 done
 
 if ! command -v "$browser" >/dev/null 2>&1; then
+  printf '%s\n' 'Install Google Chrome or Chromium before installing this streaming app.' >&2
+  exit 127
+fi
+
+if ! command -v curl >/dev/null 2>&1; then
+  printf '%s\n' 'curl is required to download the application icon.' >&2
   exit 127
 fi
 

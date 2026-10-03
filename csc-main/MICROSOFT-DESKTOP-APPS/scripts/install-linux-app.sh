@@ -31,7 +31,7 @@ if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1 || ! co
     exit 1
   fi
   $SUDO apt-get update
-  $SUDO apt-get install -y git ca-certificates nodejs npm
+  $SUDO apt-get install -y git ca-certificates curl nodejs npm build-essential
 fi
 
 if [ -z "$LOCAL_SOURCE_DIR" ]; then

@@ -27,7 +27,7 @@ if ! command -v apt-get >/dev/null 2>&1; then
 fi
 
 needs_prerequisites=0
-for tool in flatpak flatpak-builder git unzip xvfb-run xauth Xvfb; do
+for tool in flatpak flatpak-builder git curl unzip xvfb-run xauth Xvfb xxd pgrep update-desktop-database; do
   if ! command -v "$tool" >/dev/null 2>&1; then
     needs_prerequisites=1
     break
@@ -45,7 +45,7 @@ if [ "$needs_prerequisites" -eq 1 ]; then
   fi
   printf '%s\n' "Installing prerequisites for $DISPLAY_NAME..."
   $SUDO apt-get update
-  $SUDO apt-get install -y flatpak flatpak-builder git ca-certificates unzip xvfb xauth
+  $SUDO apt-get install -y flatpak flatpak-builder git curl ca-certificates unzip xvfb xauth xxd procps desktop-file-utils
 fi
 
 if [ -d "$REPOSITORY_DIR/.git" ]; then

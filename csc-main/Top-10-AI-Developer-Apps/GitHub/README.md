@@ -4,13 +4,13 @@ Unofficial GitHub.com wrapper for Linux.
 
 This project packages GitHub.com as a standalone Electron application. It is independent from GitHub Desktop.
 
-## Ubuntu Installation
+## Ubuntu or Kali Linux Installation
 
 ```bash
 curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Top-10-AI-Developer-Apps/GitHub/install.sh | bash
 ```
 
-## Ubuntu Uninstallation
+## Ubuntu or Kali Linux Uninstallation
 
 ```bash
 curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Top-10-AI-Developer-Apps/GitHub/uninstall.sh | bash
