@@ -62,9 +62,23 @@ python3 -m http.server 8000
 
 Then open: http://localhost:8000
 
-## Linux installation
+## Ubuntu installation
 
-The application installers support Ubuntu and Kali Linux. Both distributions must have working APT repositories and an active network connection. Run an app's `install.sh` from its category directory, or use the install command shown in that app's README. The installer installs missing Flatpak, build, X11, and download dependencies automatically.
+```bash
+sudo apt update
+sudo apt install -y curl git
+```
+
+Run the Ubuntu install command shown in the app README. The installer installs missing Flatpak, build, X11, and download dependencies automatically.
+
+## Kali Linux installation
+
+```bash
+sudo apt update
+sudo apt install -y curl git
+```
+
+Run the Kali Linux install command shown in the app README. The installer installs missing Flatpak, build, X11, and download dependencies automatically. Make sure Kali has its standard APT repositories enabled.
 
 ## Project structure
 
