@@ -49,7 +49,10 @@ if [ "$node_major" -lt 22 ]; then
 fi
 
 cd "$QWEN_SOURCE"
-npm install --no-audit --no-fund
+npm_install_args='--no-audit --no-fund'
+npm_major=$(npm --version | cut -d. -f1)
+if [ "$npm_major" -ge 11 ]; then npm_install_args="$npm_install_args --allow-git=all"; fi
+npm install $npm_install_args
 
 if [ -r /etc/os-release ]; then . /etc/os-release; fi
 INSTALL_DISTRO=${LINUX_DESKTOP_DISTRO:-${ID:-}}
