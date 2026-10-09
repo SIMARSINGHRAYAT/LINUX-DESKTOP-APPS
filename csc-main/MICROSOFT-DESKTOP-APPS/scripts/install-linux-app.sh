@@ -49,7 +49,11 @@ if [ -z "$LOCAL_SOURCE_DIR" ]; then
     mkdir -p "$(dirname "$REPOSITORY_DIR")"
     git clone "$REPOSITORY_URL" "$REPOSITORY_DIR"
   fi
-  LOCAL_SOURCE_DIR=$REPOSITORY_DIR/csc-main/MICROSOFT-DESKTOP-APPS/$APP_DIRECTORY
+  if [ "$APP_DIRECTORY" = Qwen ] && [ -d "$REPOSITORY_DIR/ai/Qwen" ]; then
+    LOCAL_SOURCE_DIR=$REPOSITORY_DIR/ai/Qwen
+  else
+    LOCAL_SOURCE_DIR=$REPOSITORY_DIR/csc-main/MICROSOFT-DESKTOP-APPS/$APP_DIRECTORY
+  fi
   if [ ! -d "$LOCAL_SOURCE_DIR" ]; then
     LOCAL_SOURCE_DIR=$(find "$REPOSITORY_DIR" -type d -name "$APP_DIRECTORY" -not -path '*/node_modules/*' -print -quit)
   fi
