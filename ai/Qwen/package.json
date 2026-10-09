@@ -24,10 +24,11 @@
     "productName": "Qwen",
     "asar": true,
     "directories": { "output": "dist" },
-    "files": ["main.js", "preload.js", "offline.html", "package.json"],
+    "files": ["main.js", "preload.js", "offline.html", "icon.svg", "icon.png", "package.json"],
     "linux": {
       "target": ["AppImage", "deb"],
       "category": "Network;Chat;",
+      "icon": "icon.png",
       "synopsis": "Qwen AI chat desktop app",
       "artifactName": "Qwen-${version}-${arch}.${ext}"
     }

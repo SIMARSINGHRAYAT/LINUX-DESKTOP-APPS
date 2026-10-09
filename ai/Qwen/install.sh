@@ -74,6 +74,7 @@ Type=Application
 Name=Qwen
 Comment=Qwen AI chat desktop app
 Exec=$LAUNCHER_DIR/qwen-desktop %U
+Icon=$QWEN_SOURCE/icon.png
 Terminal=false
 Categories=Network;Chat;
 StartupNotify=true
