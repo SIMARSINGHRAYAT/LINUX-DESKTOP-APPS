@@ -6,5 +6,5 @@ if [ -f "$LOCAL_SCRIPT" ]; then
   exec "$LOCAL_SCRIPT" Qwen qwen-desktop Qwen '' "$(CDPATH= cd -- "$(dirname "$0")" && pwd)"
 fi
 
-curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/csc-main/MICROSOFT-DESKTOP-APPS/scripts/install-linux-app.sh \
+curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/4c6bd60598621ce462fd59bb52d8620d59245480/csc-main/MICROSOFT-DESKTOP-APPS/scripts/install-linux-app.sh \
   | sh -s -- Qwen qwen-desktop Qwen ''
