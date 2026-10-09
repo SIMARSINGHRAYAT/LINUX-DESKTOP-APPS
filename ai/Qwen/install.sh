@@ -59,9 +59,11 @@ if [ "$INSTALL_DISTRO" = kali ]; then
   if [ -z "$APPIMAGE_PATH" ]; then printf '%s\n' 'No Qwen AppImage was created.' >&2; exit 1; fi
   APPIMAGE_DIR=${XDG_DATA_HOME:-$HOME/.local/share}/linux-desktop-apps/qwen-desktop
   APPIMAGE_INSTALL=$APPIMAGE_DIR/qwen-desktop.AppImage
+  ICON_INSTALL=$APPIMAGE_DIR/icon.png
   LAUNCHER_DIR=${XDG_BIN_HOME:-$HOME/.local/bin}
   mkdir -p "$APPIMAGE_DIR" "$LAUNCHER_DIR" "${XDG_DATA_HOME:-$HOME/.local/share}/applications"
   cp "$APPIMAGE_PATH" "$APPIMAGE_INSTALL"
+  cp "$QWEN_SOURCE/icon.png" "$ICON_INSTALL"
   chmod 755 "$APPIMAGE_INSTALL"
   cat > "$LAUNCHER_DIR/qwen-desktop" <<EOF
 #!/bin/sh
@@ -74,7 +76,7 @@ Type=Application
 Name=Qwen
 Comment=Qwen AI chat desktop app
 Exec=$LAUNCHER_DIR/qwen-desktop %U
-Icon=$QWEN_SOURCE/icon.png
+Icon=$ICON_INSTALL
 Terminal=false
 Categories=Network;Chat;
 StartupNotify=true
