@@ -63,22 +63,23 @@ if [ "$node_major" -lt 22 ]; then
   exit 1
 fi
 
-LOGO_SOURCE=$REPOSITORY_DIR/csc-main/logo/$LOGO_FILE
-if [ -n "$LOCAL_SOURCE_DIR_OVERRIDE" ]; then
-  LOGO_SOURCE=$(CDPATH= cd -- "$LOCAL_SOURCE_DIR/../../.." && pwd)/csc-main/logo/$LOGO_FILE
-fi
-if [ ! -f "$LOGO_SOURCE" ]; then
-  printf '%s\n' "Provided logo not found: $LOGO_SOURCE" >&2
-  exit 1
-fi
-
 ICON_DIR=$LOCAL_SOURCE_DIR/assets/icons
 mkdir -p "$ICON_DIR"
-cp "$LOGO_SOURCE" "$ICON_DIR/512.png"
-if command -v convert >/dev/null 2>&1; then
-  for size in 16 32 48 64 128 256; do
-    convert "$LOGO_SOURCE" -resize "${size}x${size}" "$ICON_DIR/$size.png"
-  done
+if [ -n "$LOGO_FILE" ]; then
+  LOGO_SOURCE=$REPOSITORY_DIR/csc-main/logo/$LOGO_FILE
+  if [ -n "$LOCAL_SOURCE_DIR_OVERRIDE" ]; then
+    LOGO_SOURCE=$(CDPATH= cd -- "$LOCAL_SOURCE_DIR/../../.." && pwd)/csc-main/logo/$LOGO_FILE
+  fi
+  if [ ! -f "$LOGO_SOURCE" ]; then
+    printf '%s\n' "Provided logo not found: $LOGO_SOURCE" >&2
+    exit 1
+  fi
+  cp "$LOGO_SOURCE" "$ICON_DIR/512.png"
+  if command -v convert >/dev/null 2>&1; then
+    for size in 16 32 48 64 128 256; do
+      convert "$LOGO_SOURCE" -resize "${size}x${size}" "$ICON_DIR/$size.png"
+    done
+  fi
 fi
 
 cd "$LOCAL_SOURCE_DIR"
@@ -121,6 +122,8 @@ exec "\$APPIMAGE" --appimage-extract-and-run --no-sandbox --disable-gpu --disabl
 EOF
   chmod 755 "$LAUNCHER"
   DESKTOP_FILE=${XDG_DATA_HOME:-$HOME/.local/share}/applications/$DEB_PACKAGE.desktop
+  ICON_ENTRY=
+  if [ -n "$LOGO_FILE" ]; then ICON_ENTRY="Icon=$ICON_DIR/512.png"; fi
   cat > "$DESKTOP_FILE" <<EOF
 [Desktop Entry]
 Version=1.0
@@ -128,7 +131,7 @@ Type=Application
 Name=$DISPLAY_NAME
 Comment=Unofficial $DISPLAY_NAME for Linux
 Exec=$LAUNCHER %U
-Icon=$ICON_DIR/512.png
+$ICON_ENTRY
 Terminal=false
 Categories=Office;Network;
 StartupNotify=true

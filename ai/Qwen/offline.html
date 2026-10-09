@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Qwen - Offline</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; }
+    body { display: grid; place-items: center; min-height: 100vh; margin: 0; background: #f7f8fa; color: #1f2937; }
+    main { max-width: 28rem; padding: 2rem; text-align: center; }
+    h1 { margin: 0 0 .75rem; font-size: 2rem; }
+    p { color: #667085; line-height: 1.6; }
+    button { margin-top: 1rem; padding: .7rem 1.2rem; border: 0; border-radius: .45rem; background: #1677ff; color: white; font: inherit; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Qwen is offline</h1>
+    <p>Check your internet connection, then try loading Qwen again.</p>
+    <button id="retry" type="button">Retry</button>
+  </main>
+  <script>document.querySelector('#retry').addEventListener('click', () => window.desktopApp.retry());</script>
+</body>
+</html>

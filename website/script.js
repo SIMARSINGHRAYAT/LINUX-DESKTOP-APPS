@@ -16,6 +16,14 @@ const categories = [
     ]
   },
   {
+    id: 'ai-apps',
+    name: 'AI Apps',
+    description: 'Desktop AI assistants and chat applications for Linux.',
+    apps: [
+      { name: 'Qwen', slug: 'qwen', icon: '../ai/Qwen/icon.svg', readme: '../ai/Qwen/README.md', commands: { ubuntuInstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Qwen/install.sh | LINUX_DESKTOP_DISTRO=ubuntu sh', ubuntuUninstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Qwen/uninstall.sh | sh', kaliInstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Qwen/install.sh | LINUX_DESKTOP_DISTRO=kali sh', kaliUninstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Qwen/uninstall.sh | LINUX_DESKTOP_DISTRO=kali sh' } }
+    ]
+  },
+  {
     id: 'microsoft-apps',
     name: 'Microsoft Apps',
     description: 'Productivity apps from Microsoft for Linux desktop users.',
@@ -69,7 +77,8 @@ function getLogoPath(name) {
     whiteboard: '../csc-main/logo/Microsoft-whiteboard-94.png',
     outlook: '../csc-main/logo/Microsoft_Office_Outlook_Logo_512px.png',
     roboflow: '../csc-main/logo/Roboflow.png',
-    codeforces: '../csc-main/logo/codeforces.png'
+    codeforces: '../csc-main/logo/codeforces.png',
+    qwen: '../ai/Qwen/icon.svg'
   };
 
   return lookup[normalized] || '../csc-main/logo/github.png';
@@ -163,6 +172,21 @@ function renderAppDetail() {
         .slice(0, 12)
         .join('\n\n');
 
+      const commandBlocks = app.commands ? `
+        <div class="distro-tabs" role="tablist" aria-label="Choose your Linux distribution">
+          <button class="distro-tab active" type="button" data-distro-tab="ubuntu">Ubuntu</button>
+          <button class="distro-tab" type="button" data-distro-tab="kali">Kali Linux</button>
+        </div>
+        <div class="distro-panel active" data-distro-panel="ubuntu">
+          <div class="code-block"><header><h3>Ubuntu installation</h3></header><pre>${escapeHtml(app.commands.ubuntuInstall)}</pre></div>
+          <div class="code-block"><header><h3>Ubuntu uninstallation</h3></header><pre>${escapeHtml(app.commands.ubuntuUninstall)}</pre></div>
+        </div>
+        <div class="distro-panel" data-distro-panel="kali">
+          <div class="code-block"><header><h3>Kali Linux installation</h3></header><pre>${escapeHtml(app.commands.kaliInstall)}</pre></div>
+          <div class="code-block"><header><h3>Kali Linux uninstallation</h3></header><pre>${escapeHtml(app.commands.kaliUninstall)}</pre></div>
+        </div>
+      ` : `<div class="code-block"><header><h3>README</h3></header><pre id="app-readme">${escapeHtml(cleaned)}</pre></div>`;
+
       detail.innerHTML = `
         <article class="app-detail-card">
           <div class="app-detail-header">
@@ -180,14 +204,15 @@ function renderAppDetail() {
             <button class="copy-btn" type="button" data-copy-target="app-readme">Copy README</button>
           </div>
 
-          <div class="code-block">
-            <header>
-              <h3>README</h3>
-            </header>
-            <pre id="app-readme">${escapeHtml(cleaned)}</pre>
-          </div>
+          ${commandBlocks}
         </article>
       `;
+
+      document.querySelectorAll('[data-distro-tab]').forEach((button) => button.addEventListener('click', () => {
+        const distro = button.dataset.distroTab;
+        document.querySelectorAll('[data-distro-tab]').forEach((tab) => tab.classList.toggle('active', tab === button));
+        document.querySelectorAll('[data-distro-panel]').forEach((panel) => panel.classList.toggle('active', panel.dataset.distroPanel === distro));
+      }));
 
       const copyBtn = document.querySelector('[data-copy-target="app-readme"]');
       if (copyBtn) {

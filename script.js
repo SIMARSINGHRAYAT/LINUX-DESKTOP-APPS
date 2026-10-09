@@ -17,6 +17,14 @@ const categories = [
     ]
   },
   {
+    id: 'ai-apps',
+    name: 'AI Apps',
+    description: 'Desktop AI assistants and chat applications for Linux.',
+    apps: [
+      { name: 'Qwen', slug: 'qwen', icon: './ai/Qwen/icon.svg', readme: './ai/Qwen/README.md', commands: { ubuntuInstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Qwen/install.sh | LINUX_DESKTOP_DISTRO=ubuntu sh', ubuntuUninstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Qwen/uninstall.sh | sh', kaliInstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Qwen/install.sh | LINUX_DESKTOP_DISTRO=kali sh', kaliUninstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Qwen/uninstall.sh | LINUX_DESKTOP_DISTRO=kali sh' } }
+    ]
+  },
+  {
     id: 'microsoft-apps',
     name: 'Microsoft Apps',
     description: 'Official productivity apps for Linux desktop workflows.',
@@ -70,7 +78,8 @@ function getIconSrc(name) {
     whiteboard: './csc-main/logo/Microsoft-whiteboard-94.png',
     outlook: './csc-main/logo/Microsoft_Office_Outlook_Logo_512px.png',
     roboflow: './csc-main/logo/Roboflow.png',
-    codeforces: './csc-main/logo/codeforces.png'
+    codeforces: './csc-main/logo/codeforces.png',
+    qwen: './ai/Qwen/icon.svg'
   };
   return lookup[String(name).toLowerCase()] || './csc-main/logo/github.png';
 }
@@ -176,7 +185,7 @@ function buildReadmeBlocks(app, markdown) {
     </div>
   `;
 
-  if (app.slug === 'powerbi') {
+  if (app.commands) {
     const commands = app.commands;
     return `
       <div class="distro-tabs" role="tablist" aria-label="Choose your Linux distribution">
