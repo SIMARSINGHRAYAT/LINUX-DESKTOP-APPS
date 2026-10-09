@@ -6,7 +6,7 @@ REPOSITORY_DIR=${ELECTRON_APPS_REPOSITORY_DIR:-$HOME/electron-apps/linux-desktop
 SCRIPT_SOURCE_DIR=$(CDPATH= cd -- "$(dirname "$0")" 2>/dev/null && pwd || true)
 QWEN_SOURCE=$SCRIPT_SOURCE_DIR
 
-if [ ! -f "$QWEN_SOURCE/package.json" ]; then
+if [ ! -f "$QWEN_SOURCE/package.json" ] || ! grep -q '"name": "qwen-desktop"' "$QWEN_SOURCE/package.json"; then
   if ! command -v git >/dev/null 2>&1; then
     printf '%s\n' 'Git is required to install Qwen.' >&2
     exit 1
