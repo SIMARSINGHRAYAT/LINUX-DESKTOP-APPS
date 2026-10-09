@@ -50,6 +50,9 @@ if [ -z "$LOCAL_SOURCE_DIR" ]; then
     git clone "$REPOSITORY_URL" "$REPOSITORY_DIR"
   fi
   LOCAL_SOURCE_DIR=$REPOSITORY_DIR/csc-main/MICROSOFT-DESKTOP-APPS/$APP_DIRECTORY
+  if [ ! -d "$LOCAL_SOURCE_DIR" ]; then
+    LOCAL_SOURCE_DIR=$(find "$REPOSITORY_DIR" -type d -name "$APP_DIRECTORY" -not -path '*/node_modules/*' -print -quit)
+  fi
 fi
 
 if [ ! -d "$LOCAL_SOURCE_DIR" ]; then
