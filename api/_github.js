@@ -17,7 +17,9 @@ function cookieValue(request, name) {
 
 function sessionKey() {
   if (!process.env.AUTH_SECRET) throw new Error('AUTH_SECRET is not configured');
-  return crypto.createHash('sha256').update(process.env.AUTH_SECRET).digest();
+  // Derive the AES key with scrypt (a proper, memory-hard KDF) instead of a
+  // single fast SHA-256 hash, which is not suitable for key derivation.
+  return crypto.scryptSync(process.env.AUTH_SECRET, 'github-session-key-v1', 32);
 }
 
 function encrypt(value) {
