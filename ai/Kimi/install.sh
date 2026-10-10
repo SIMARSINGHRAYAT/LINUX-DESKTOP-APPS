@@ -9,6 +9,9 @@ KIMI_SOURCE=$SCRIPT_SOURCE_DIR
 if [ ! -f "$KIMI_SOURCE/package.json" ] || ! grep -q '"name": "kimi-desktop"' "$KIMI_SOURCE/package.json"; then
   if ! command -v git >/dev/null 2>&1; then printf '%s\n' 'Git is required to install Kimi.' >&2; exit 1; fi
   if [ -d "$REPOSITORY_DIR/.git" ]; then
+    if [ -n "$(git -C "$REPOSITORY_DIR" status --porcelain)" ]; then
+      git -C "$REPOSITORY_DIR" stash push --include-untracked -m 'Kimi installer local changes' >/dev/null
+    fi
     git -C "$REPOSITORY_DIR" pull --ff-only
   elif [ -e "$REPOSITORY_DIR" ]; then
     printf '%s\n' "$REPOSITORY_DIR exists but is not a Git checkout." >&2; exit 1
