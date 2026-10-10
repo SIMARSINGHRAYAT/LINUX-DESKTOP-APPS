@@ -1,6 +1,6 @@
 {
   "name": "kimi-desktop",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Unofficial Electron desktop wrapper for Kimi AI.",
   "main": "main.js",
   "homepage": "https://www.kimi.ai/en",

@@ -67,7 +67,7 @@ function applyNavigationPolicy(window) {
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    ...readWindowState(), minWidth: 900, minHeight: 640, title: 'Kimi', backgroundColor: '#f7f8fa',
+    ...readWindowState(), minWidth: 900, minHeight: 640, title: 'Kimi', icon: path.join(__dirname, 'logo.png'), backgroundColor: '#f7f8fa',
     webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false, sandbox: true, webSecurity: true, partition: PARTITION }
   });
   applyNavigationPolicy(mainWindow);
