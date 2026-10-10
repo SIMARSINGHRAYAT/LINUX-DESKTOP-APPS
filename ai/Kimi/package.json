@@ -24,11 +24,11 @@
     "productName": "Kimi",
     "asar": true,
     "directories": { "output": "dist" },
-    "files": ["main.js", "preload.js", "offline.html", "icon.svg", "icon.png", "package.json"],
+    "files": ["main.js", "preload.js", "offline.html", "logo.svg", "logo.png", "package.json"],
     "linux": {
       "target": ["AppImage", "deb"],
       "category": "Network;Chat;",
-      "icon": "icon.png",
+      "icon": "logo.png",
       "synopsis": "Kimi AI desktop app",
       "artifactName": "Kimi-${version}-${arch}.${ext}"
     }
