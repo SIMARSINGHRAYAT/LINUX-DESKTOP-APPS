@@ -20,7 +20,8 @@ const categories = [
     name: 'AI Apps',
     description: 'Desktop AI assistants and chat applications for Linux.',
     apps: [
-      { name: 'Qwen', slug: 'qwen', icon: '../ai/Qwen/icon.svg', readme: '../ai/Qwen/README.md', commands: { ubuntuInstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Qwen/install.sh | LINUX_DESKTOP_DISTRO=ubuntu sh', ubuntuUninstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Qwen/uninstall.sh | sh', kaliInstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Qwen/install.sh | LINUX_DESKTOP_DISTRO=kali sh', kaliUninstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Qwen/uninstall.sh | LINUX_DESKTOP_DISTRO=kali sh' } }
+      { name: 'Qwen', slug: 'qwen', icon: '../ai/Qwen/icon.svg', readme: '../ai/Qwen/README.md', commands: { ubuntuInstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Qwen/install.sh | LINUX_DESKTOP_DISTRO=ubuntu sh', ubuntuUninstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Qwen/uninstall.sh | sh', kaliInstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Qwen/install.sh | LINUX_DESKTOP_DISTRO=kali sh', kaliUninstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Qwen/uninstall.sh | sh' } },
+      { name: 'Kimi', slug: 'kimi', icon: '../ai/Kimi/icon.svg', readme: '../ai/Kimi/README.md', commands: { ubuntuInstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Kimi/install.sh | LINUX_DESKTOP_DISTRO=ubuntu sh', ubuntuUninstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Kimi/uninstall.sh | sh', kaliInstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Kimi/install.sh | LINUX_DESKTOP_DISTRO=kali sh', kaliUninstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Kimi/uninstall.sh | sh' } }
     ]
   },
   {
@@ -78,7 +79,8 @@ function getLogoPath(name) {
     outlook: '../csc-main/logo/Microsoft_Office_Outlook_Logo_512px.png',
     roboflow: '../csc-main/logo/Roboflow.png',
     codeforces: '../csc-main/logo/codeforces.png',
-    qwen: '../ai/Qwen/icon.svg'
+    qwen: '../ai/Qwen/icon.svg',
+    kimi: '../ai/Kimi/icon.svg'
   };
 
   return lookup[normalized] || '../csc-main/logo/github.png';

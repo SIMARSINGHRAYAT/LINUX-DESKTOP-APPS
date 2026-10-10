@@ -1,0 +1,37 @@
+{
+  "name": "kimi-desktop",
+  "version": "1.0.0",
+  "description": "Unofficial Electron desktop wrapper for Kimi AI.",
+  "main": "main.js",
+  "homepage": "https://www.kimi.ai/en",
+  "author": { "name": "Linux Desktop Apps contributors", "email": "maintainers@example.com" },
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --enable-logging",
+    "validate": "node --check main.js && node --check preload.js",
+    "build": "electron-builder --linux",
+    "build:linux": "electron-builder --linux AppImage deb",
+    "package": "npm run build:linux"
+  },
+  "devDependencies": {
+    "electron": "43.3.0",
+    "electron-builder": "26.0.12"
+  },
+  "build": {
+    "appId": "ai.kimi.desktop",
+    "productName": "Kimi",
+    "asar": true,
+    "directories": { "output": "dist" },
+    "files": ["main.js", "preload.js", "offline.html", "icon.svg", "icon.png", "package.json"],
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "category": "Network;Chat;",
+      "icon": "icon.png",
+      "synopsis": "Kimi AI desktop app",
+      "artifactName": "Kimi-${version}-${arch}.${ext}"
+    }
+  },
+  "engines": { "node": ">=22.12.0" }
+}
