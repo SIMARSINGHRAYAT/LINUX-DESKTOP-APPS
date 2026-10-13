@@ -33,7 +33,8 @@ const categories = [
       { name: 'Microsoft Teams', slug: 'teams', icon: './csc-main/logo/Microsoft_Office_Teams_Logo_512px.png', readme: './csc-main/MICROSOFT-DESKTOP-APPS/Teams/README.md', installCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Teams/install.sh | bash', uninstallCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Teams/uninstall.sh | bash' },
       { name: 'Power BI', slug: 'powerbi', icon: './csc-main/logo/Microsoft-Power-Bi--Streamline-Svg-Logos.png', readme: './csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/README.md', commands: { ubuntuInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | LINUX_DESKTOP_DISTRO=ubuntu bash', ubuntuUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | LINUX_DESKTOP_DISTRO=ubuntu bash', kaliInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | LINUX_DESKTOP_DISTRO=kali bash', kaliUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | LINUX_DESKTOP_DISTRO=kali bash' } },
       { name: 'Whiteboard', slug: 'whiteboard', icon: './csc-main/logo/Microsoft-whiteboard-94.png', readme: './csc-main/MICROSOFT-DESKTOP-APPS/Whiteboard/README.md', installCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Whiteboard/install.sh | bash', uninstallCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Whiteboard/uninstall.sh | bash' },
-      { name: 'Outlook', slug: 'outlook', icon: './csc-main/logo/Microsoft_Office_Outlook_Logo_512px.png', readme: './csc-main/MICROSOFT-DESKTOP-APPS/Outlook/README.md', installCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Outlook/install.sh | bash', uninstallCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Outlook/uninstall.sh | bash' }
+      { name: 'Outlook', slug: 'outlook', icon: './csc-main/logo/Microsoft_Office_Outlook_Logo_512px.png', readme: './csc-main/MICROSOFT-DESKTOP-APPS/Outlook/README.md', installCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Outlook/install.sh | bash', uninstallCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Outlook/uninstall.sh | bash' },
+      { name: 'Microsoft Azure', slug: 'azure', icon: './csc-main/logo/microsoft-azure.svg', readme: './csc-main/MICROSOFT-DESKTOP-APPS/Azure/README.md', url: 'https://portal.azure.com' }
     ]
   },
   {
@@ -246,6 +247,7 @@ async function renderAppDetail() {
 
       <div class="detail-actions">
         <a class="back-btn" href="./apps.html?category=${encodeURIComponent(category.id)}">Back to apps</a>
+        ${app.url ? `<a class="back-btn" href="${escapeHtml(app.url)}" target="_blank" rel="noopener noreferrer">Open Microsoft Azure</a>` : ''}
       </div>
 
       <div class="detail-intro">

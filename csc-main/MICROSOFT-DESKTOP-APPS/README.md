@@ -4,3 +4,4 @@
 - [Microsoft Power BI](PowerBI/README.md)
 - [Microsoft Whiteboard](Whiteboard/README.md)
 - [Microsoft Outlook](Outlook/README.md)
+- [Microsoft Azure](Azure/README.md)

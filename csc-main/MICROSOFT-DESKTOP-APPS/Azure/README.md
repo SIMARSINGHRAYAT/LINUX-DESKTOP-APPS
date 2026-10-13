@@ -1,0 +1,29 @@
+# Microsoft Azure
+
+Access Microsoft Azure through the official portal:
+
+[Open Microsoft Azure](https://portal.azure.com)
+
+## Ubuntu Installation
+
+```bash
+curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Azure/install.sh | LINUX_DESKTOP_DISTRO=ubuntu bash
+```
+
+## Kali Linux Installation
+
+```bash
+curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Azure/install.sh | LINUX_DESKTOP_DISTRO=kali bash
+```
+
+## Ubuntu Uninstallation
+
+```bash
+curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Azure/uninstall.sh | LINUX_DESKTOP_DISTRO=ubuntu bash
+```
+
+## Kali Linux Uninstallation
+
+```bash
+curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Azure/uninstall.sh | LINUX_DESKTOP_DISTRO=kali bash
+```

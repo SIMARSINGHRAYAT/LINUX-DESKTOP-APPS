@@ -32,7 +32,8 @@ const categories = [
       { name: 'Microsoft Teams', slug: 'teams', icon: '../csc-main/logo/Microsoft_Office_Teams_Logo_512px.png', readme: '../csc-main/MICROSOFT-DESKTOP-APPS/Teams/README.md' },
       { name: 'Power BI', slug: 'powerbi', icon: '../csc-main/logo/Microsoft-Power-Bi--Streamline-Svg-Logos.png', readme: '../csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/README.md' },
       { name: 'Whiteboard', slug: 'whiteboard', icon: '../csc-main/logo/Microsoft-whiteboard-94.png', readme: '../csc-main/MICROSOFT-DESKTOP-APPS/Whiteboard/README.md' },
-      { name: 'Outlook', slug: 'outlook', icon: '../csc-main/logo/Microsoft_Office_Outlook_Logo_512px.png', readme: '../csc-main/MICROSOFT-DESKTOP-APPS/Outlook/README.md' }
+      { name: 'Outlook', slug: 'outlook', icon: '../csc-main/logo/Microsoft_Office_Outlook_Logo_512px.png', readme: '../csc-main/MICROSOFT-DESKTOP-APPS/Outlook/README.md' },
+      { name: 'Microsoft Azure', slug: 'azure', icon: '../csc-main/logo/microsoft-azure.svg', readme: '../csc-main/MICROSOFT-DESKTOP-APPS/Azure/README.md', url: 'https://portal.azure.com' }
     ]
   },
   {
@@ -203,6 +204,7 @@ function renderAppDetail() {
 
           <div class="detail-actions">
             <a class="back-btn" href="apps.html?category=${encodeURIComponent(selectedCategory.id)}">Back to apps</a>
+            ${app.url ? `<a class="back-btn" href="${escapeHtml(app.url)}" target="_blank" rel="noopener noreferrer">Open Microsoft Azure</a>` : ''}
             <button class="copy-btn" type="button" data-copy-target="app-readme">Copy README</button>
           </div>
 
