@@ -6,6 +6,7 @@ const path = require('node:path');
 
 const APP_URL = 'https://portal.azure.com/';
 const PARTITION = 'persist:microsoft-azure';
+const BROWSER_USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36';
 const APP_HOSTS = new Set(['portal.azure.com', 'azure.microsoft.com', 'portal.azure.us', 'portal.azure.cn']);
 const AUTH_HOSTS = new Set([
   'microsoft.com', 'microsoftonline.com', 'office.com', 'office365.com', 'live.com',
@@ -59,6 +60,7 @@ function configureSession(appSession) {
 
 function applyPolicy(window) {
   const contents = window.webContents;
+  contents.setUserAgent(BROWSER_USER_AGENT);
   contents.setWindowOpenHandler(({ url }) => {
     if (!trusted(url)) {
       external(url);
@@ -93,8 +95,15 @@ function applyPolicy(window) {
   contents.on('will-download', (_event, item) => {
     item.setSavePath(path.join(app.getPath('downloads'), item.getFilename()));
   });
-  contents.on('did-fail-load', (_event, errorCode) => {
-    if (errorCode !== -3) void window.loadFile(path.join(__dirname, 'offline.html'));
+  contents.on('did-fail-load', (_event, errorCode, errorDescription, validatedURL, isMainFrame) => {
+    if (isMainFrame && errorCode !== -3) {
+      void window.loadFile(path.join(__dirname, 'offline.html'));
+      window.webContents.once('did-finish-load', () => {
+        void window.webContents.executeJavaScript(
+          `document.querySelector('p').textContent = ${JSON.stringify(`${errorDescription} (${errorCode}) while loading ${validatedURL}`)};`
+        );
+      });
+    }
   });
   contents.on('render-process-gone', () => {
     if (!window.isDestroyed()) void window.loadURL(APP_URL);
