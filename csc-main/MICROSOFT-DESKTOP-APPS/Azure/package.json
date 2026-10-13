@@ -4,6 +4,7 @@
   "description": "Unofficial Electron wrapper around Microsoft's official Azure portal.",
   "main": "main.js",
   "homepage": "https://portal.azure.com/",
+  "author": { "name": "Microsoft Desktop Apps contributors", "email": "maintainers@example.com" },
   "license": "MIT",
   "private": true,
   "scripts": {
