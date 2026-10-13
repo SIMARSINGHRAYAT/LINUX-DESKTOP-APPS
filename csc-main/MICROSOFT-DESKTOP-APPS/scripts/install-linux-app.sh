@@ -41,7 +41,24 @@ if [ -z "$LOCAL_SOURCE_DIR" ]; then
       printf '%s\n' "Repository at $REPOSITORY_DIR points to $current_remote; choose another directory with ELECTRON_APPS_REPOSITORY_DIR." >&2
       exit 1
     fi
-    git -C "$REPOSITORY_DIR" pull --ff-only
+    STASHED_LOCAL_CHANGES=0
+    if ! git -C "$REPOSITORY_DIR" diff --quiet || \
+      ! git -C "$REPOSITORY_DIR" diff --cached --quiet || \
+      [ -n "$(git -C "$REPOSITORY_DIR" ls-files --others --exclude-standard)" ]; then
+      git -C "$REPOSITORY_DIR" stash push --include-untracked -m 'linux-desktop-apps installer update' >/dev/null
+      STASHED_LOCAL_CHANGES=1
+    fi
+    if ! git -C "$REPOSITORY_DIR" pull --ff-only; then
+      if [ "$STASHED_LOCAL_CHANGES" -eq 1 ]; then
+        git -C "$REPOSITORY_DIR" stash pop >/dev/null || true
+      fi
+      printf '%s\n' "Could not update repository at $REPOSITORY_DIR." >&2
+      exit 1
+    fi
+    if [ "$STASHED_LOCAL_CHANGES" -eq 1 ] && ! git -C "$REPOSITORY_DIR" stash pop; then
+      printf '%s\n' "Repository updated, but local changes could not be restored at $REPOSITORY_DIR." >&2
+      exit 1
+    fi
   elif [ -e "$REPOSITORY_DIR" ]; then
     printf '%s\n' "$REPOSITORY_DIR exists but is not a Git checkout." >&2
     exit 1
