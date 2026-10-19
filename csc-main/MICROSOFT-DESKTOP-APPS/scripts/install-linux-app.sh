@@ -77,14 +77,16 @@ else
   exit 1
 fi
 
-if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1 || ! command -v git >/dev/null 2>&1; then
+install_prerequisites() {
   case "$PKG_TYPE" in
     deb)
       $SUDO apt-get update
       $SUDO apt-get install -y git ca-certificates curl nodejs npm build-essential
       ;;
     rpm)
-      $SUDO dnf install -y git ca-certificates curl nodejs npm make gcc-c++ rpm-build
+      if ! $SUDO dnf --setopt=fastestmirror=0 --setopt=max_parallel_downloads=1 install -y git ca-certificates curl nodejs npm make gcc-c++ rpm-build; then
+        printf '%s\n' 'Fedora package metadata lookup failed while installing prerequisites. Continuing only if the required tools are already present.' >&2
+      fi
       ;;
     pacman)
       $SUDO pacman -Sy --noconfirm git ca-certificates curl nodejs npm base-devel
@@ -94,12 +96,23 @@ if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1 || ! co
         $SUDO apt-get update
         $SUDO apt-get install -y git ca-certificates curl nodejs npm build-essential
       elif command -v dnf >/dev/null 2>&1; then
-        $SUDO dnf install -y git ca-certificates curl nodejs npm make gcc-c++
+        if ! $SUDO dnf --setopt=fastestmirror=0 --setopt=max_parallel_downloads=1 install -y git ca-certificates curl nodejs npm make gcc-c++; then
+          printf '%s\n' 'Fedora package metadata lookup failed while installing prerequisites. Continuing only if the required tools are already present.' >&2
+        fi
       elif command -v pacman >/dev/null 2>&1; then
         $SUDO pacman -Sy --noconfirm git ca-certificates curl nodejs npm base-devel
       fi
       ;;
   esac
+}
+
+if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1 || ! command -v git >/dev/null 2>&1; then
+  install_prerequisites
+fi
+
+if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1 || ! command -v git >/dev/null 2>&1; then
+  printf '%s\n' 'Required build tools are still missing after the package manager attempt. Install git, nodejs, and npm manually, then retry.' >&2
+  exit 1
 fi
 
 if [ -z "$LOCAL_SOURCE_DIR" ]; then

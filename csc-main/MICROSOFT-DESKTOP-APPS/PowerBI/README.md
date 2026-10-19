@@ -26,6 +26,8 @@ curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/
 curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | LINUX_DESKTOP_DISTRO=fedora bash
 ```
 
+If Fedora mirror metadata is temporarily unavailable, the installer will keep going as long as the required build tools are already installed, and it will fall back to an AppImage build instead of aborting on a transient `dnf` repo issue.
+
 ## Arch Linux Installation
 
 ```bash
