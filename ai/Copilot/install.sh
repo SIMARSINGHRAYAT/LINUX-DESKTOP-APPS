@@ -57,7 +57,7 @@ if [ "$INSTALL_DISTRO" = kali ]; then
   LAUNCHER_DIR=${XDG_BIN_HOME:-$HOME/.local/bin}
   mkdir -p "$APPIMAGE_DIR" "$LAUNCHER_DIR" "${XDG_DATA_HOME:-$HOME/.local/share}/applications"
   cp "$APPIMAGE_PATH" "$APPIMAGE_INSTALL"
-  cp "$COPILOT_SOURCE/Microsoft_Copilot_logo_PNG_(1).png" "$ICON_INSTALL"
+  cp "$COPILOT_SOURCE/icon.png" "$ICON_INSTALL"
   chmod 755 "$APPIMAGE_INSTALL"
   cat > "$LAUNCHER_DIR/copilot-desktop" <<EOF
 #!/bin/sh

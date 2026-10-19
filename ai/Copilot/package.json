@@ -1,6 +1,6 @@
 {
   "name": "copilot-desktop",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Unofficial Electron desktop wrapper for Microsoft Copilot.",
   "main": "main.js",
   "homepage": "https://copilot.com",
@@ -24,10 +24,10 @@
     "productName": "Copilot",
     "asar": true,
     "directories": { "output": "dist" },
-    "files": ["main.js", "preload.js", "offline.html", "Microsoft_Copilot_logo_PNG_(1).png", "package.json"],
+    "files": ["main.js", "preload.js", "offline.html", "icon.png", "logo.svg", "logo.png", "package.json"],
     "linux": {
       "target": ["AppImage", "deb"],
-      "icon": "Microsoft_Copilot_logo_PNG_(1).png",
+      "icon": "icon.png",
       "category": "Network;Chat;",
       "synopsis": "Microsoft Copilot AI desktop app",
       "artifactName": "Copilot-${version}-${arch}.${ext}"

@@ -6,7 +6,7 @@ const path = require('node:path');
 
 const APP_URL = 'https://copilot.com';
 const PARTITION = 'persist:copilot-desktop';
-const ICON_PATH = path.join(__dirname, 'Microsoft_Copilot_logo_PNG_(1).png');
+const ICON_PATH = path.join(__dirname, 'icon.png');
 const TRUSTED_HOSTS = new Set([
   'copilot.com',
   'microsoft.com',
