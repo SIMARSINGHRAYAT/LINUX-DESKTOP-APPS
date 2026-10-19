@@ -37,6 +37,7 @@ if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1; then
 fi
 node_major=$(node -p "process.versions.node.split('.')[0]")
 if [ "$node_major" -lt 22 ]; then printf '%s\n' 'Node.js 22 or newer is required to build Copilot.' >&2; exit 1; fi
+PACKAGE_VERSION=$(node -p "require('./package.json').version")
 
 cd "$COPILOT_SOURCE"
 npm_install_args='--no-audit --no-fund'
@@ -48,7 +49,7 @@ if [ -r /etc/os-release ]; then . /etc/os-release; fi
 INSTALL_DISTRO=${LINUX_DESKTOP_DISTRO:-${ID:-}}
 if [ "$INSTALL_DISTRO" = kali ]; then
   npx electron-builder --linux AppImage
-  APPIMAGE_PATH=$(find dist -maxdepth 1 -type f -name '*.AppImage' -print | sort | head -n 1)
+  APPIMAGE_PATH=$(find dist -maxdepth 1 -type f -name "Copilot-$PACKAGE_VERSION-*.AppImage" -print | sort | head -n 1)
   if [ -z "$APPIMAGE_PATH" ]; then printf '%s\n' 'No Copilot AppImage was created.' >&2; exit 1; fi
   APPIMAGE_DIR=${XDG_DATA_HOME:-$HOME/.local/share}/linux-desktop-apps/copilot-desktop
   APPIMAGE_INSTALL=$APPIMAGE_DIR/copilot-desktop.AppImage
@@ -79,7 +80,7 @@ EOF
 fi
 if [ "$INSTALL_DISTRO" != ubuntu ] && [ "$INSTALL_DISTRO" != debian ]; then printf '%s\n' 'Set LINUX_DESKTOP_DISTRO to ubuntu, debian, or kali before installing.' >&2; exit 1; fi
 npm run build:linux
-DEB_PATH=$(find dist -maxdepth 1 -type f -name '*.deb' -print | sort | head -n 1)
+DEB_PATH=$(find dist -maxdepth 1 -type f -name "Copilot-$PACKAGE_VERSION-*.deb" -print | sort | head -n 1)
 if [ -z "$DEB_PATH" ]; then printf '%s\n' 'No Copilot Debian package was created.' >&2; exit 1; fi
 if [ "$(id -u)" -eq 0 ]; then SUDO=; elif command -v sudo >/dev/null 2>&1; then SUDO=sudo; else printf '%s\n' 'Run as root or install sudo to install the Debian package.' >&2; exit 1; fi
 $SUDO apt-get install -y "$COPILOT_SOURCE/$DEB_PATH"
