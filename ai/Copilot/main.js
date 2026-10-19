@@ -30,6 +30,10 @@ function isTrustedUrl(value) {
   }
 }
 
+function isAllowedNavigation(value) {
+  return value === 'about:blank' || isTrustedUrl(value);
+}
+
 function openExternal(value) {
   try {
     const url = new URL(value);
@@ -58,7 +62,7 @@ function saveWindowState() {
 function applyNavigationPolicy(window) {
   const contents = window.webContents;
   contents.setWindowOpenHandler(({ url }) => {
-    if (isTrustedUrl(url)) {
+    if (isAllowedNavigation(url)) {
       return {
         action: 'allow',
         overrideBrowserWindowOptions: {
@@ -83,7 +87,7 @@ function applyNavigationPolicy(window) {
   contents.on('did-create-window', applyNavigationPolicy);
   for (const eventName of ['will-navigate', 'will-redirect']) {
     contents.on(eventName, (event, url) => {
-      if (!isTrustedUrl(url)) {
+      if (!isAllowedNavigation(url)) {
         event.preventDefault();
         openExternal(url);
       }
