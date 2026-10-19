@@ -37,9 +37,9 @@ if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1; then
 fi
 node_major=$(node -p "process.versions.node.split('.')[0]")
 if [ "$node_major" -lt 22 ]; then printf '%s\n' 'Node.js 22 or newer is required to build Copilot.' >&2; exit 1; fi
-PACKAGE_VERSION=$(node -p "require('./package.json').version")
 
 cd "$COPILOT_SOURCE"
+PACKAGE_VERSION=$(node -p "require('./package.json').version")
 npm_install_args='--no-audit --no-fund'
 npm_major=$(npm --version | cut -d. -f1)
 if [ "$npm_major" -ge 11 ]; then npm_install_args="$npm_install_args --allow-git=all"; fi
