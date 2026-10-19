@@ -43,11 +43,11 @@ if [ "$INSTALL_DISTRO" = kali ]; then
   if [ -z "$APPIMAGE_PATH" ]; then printf '%s\n' 'No Copilot AppImage was created.' >&2; exit 1; fi
   APPIMAGE_DIR=${XDG_DATA_HOME:-$HOME/.local/share}/linux-desktop-apps/copilot-desktop
   APPIMAGE_INSTALL=$APPIMAGE_DIR/copilot-desktop.AppImage
-  ICON_INSTALL=$APPIMAGE_DIR/icon.svg
+  ICON_INSTALL=$APPIMAGE_DIR/copilot.png
   LAUNCHER_DIR=${XDG_BIN_HOME:-$HOME/.local/bin}
   mkdir -p "$APPIMAGE_DIR" "$LAUNCHER_DIR" "${XDG_DATA_HOME:-$HOME/.local/share}/applications"
   cp "$APPIMAGE_PATH" "$APPIMAGE_INSTALL"
-  cp "$COPILOT_SOURCE/icon.svg" "$ICON_INSTALL"
+  cp "$COPILOT_SOURCE/Microsoft_Copilot_logo_PNG_(1).png" "$ICON_INSTALL"
   chmod 755 "$APPIMAGE_INSTALL"
   cat > "$LAUNCHER_DIR/copilot-desktop" <<EOF
 #!/bin/sh

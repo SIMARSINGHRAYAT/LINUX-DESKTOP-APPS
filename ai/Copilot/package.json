@@ -24,9 +24,10 @@
     "productName": "Copilot",
     "asar": true,
     "directories": { "output": "dist" },
-    "files": ["main.js", "preload.js", "offline.html", "icon.svg", "package.json"],
+    "files": ["main.js", "preload.js", "offline.html", "Microsoft_Copilot_logo_PNG_(1).png", "package.json"],
     "linux": {
       "target": ["AppImage", "deb"],
+      "icon": "Microsoft_Copilot_logo_PNG_(1).png",
       "category": "Network;Chat;",
       "synopsis": "Microsoft Copilot AI desktop app",
       "artifactName": "Copilot-${version}-${arch}.${ext}"

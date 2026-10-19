@@ -6,6 +6,7 @@ const path = require('node:path');
 
 const APP_URL = 'https://copilot.com';
 const PARTITION = 'persist:copilot-desktop';
+const ICON_PATH = path.join(__dirname, 'Microsoft_Copilot_logo_PNG_(1).png');
 const TRUSTED_HOSTS = new Set([
   'copilot.com',
   'microsoft.com',
@@ -64,6 +65,7 @@ function applyNavigationPolicy(window) {
           width: 1100,
           height: 800,
           title: 'Copilot',
+          icon: ICON_PATH,
           webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
@@ -104,6 +106,7 @@ function createWindow() {
     minWidth: 900,
     minHeight: 640,
     title: 'Copilot',
+    icon: ICON_PATH,
     backgroundColor: '#f7f8fa',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
