@@ -1,6 +1,6 @@
 {
   "name": "copilot-desktop",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Unofficial Electron desktop wrapper for Microsoft Copilot.",
   "main": "main.js",
   "homepage": "https://copilot.com",

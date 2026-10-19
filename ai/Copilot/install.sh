@@ -83,4 +83,10 @@ DEB_PATH=$(find dist -maxdepth 1 -type f -name '*.deb' -print | sort | head -n 1
 if [ -z "$DEB_PATH" ]; then printf '%s\n' 'No Copilot Debian package was created.' >&2; exit 1; fi
 if [ "$(id -u)" -eq 0 ]; then SUDO=; elif command -v sudo >/dev/null 2>&1; then SUDO=sudo; else printf '%s\n' 'Run as root or install sudo to install the Debian package.' >&2; exit 1; fi
 $SUDO apt-get install -y "$COPILOT_SOURCE/$DEB_PATH"
+if command -v update-desktop-database >/dev/null 2>&1; then
+  $SUDO update-desktop-database
+fi
+if command -v gtk-update-icon-cache >/dev/null 2>&1 && [ -d /usr/share/icons/hicolor ]; then
+  $SUDO gtk-update-icon-cache -f -t /usr/share/icons/hicolor >/dev/null 2>&1 || true
+fi
 printf '%s\n' 'Copilot installed. Search for it in the application menu.'
