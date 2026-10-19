@@ -12,6 +12,9 @@ const TRUSTED_HOSTS = new Set([
   'microsoft.com',
   'microsoftonline.com',
   'live.com',
+  'account.microsoft.com',
+  'msauth.net',
+  'msftauth.net',
   'office.com',
   'office.net',
   'google.com'
@@ -19,6 +22,8 @@ const TRUSTED_HOSTS = new Set([
 const ALLOWED_PERMISSIONS = new Set(['notifications', 'clipboard-read', 'clipboard-sanitized-write']);
 let mainWindow;
 let windowStatePath;
+
+app.userAgentFallback = app.userAgentFallback.replace(/\sElectron\/\S+/, '');
 
 function isTrustedUrl(value) {
   try {
@@ -74,6 +79,7 @@ function applyNavigationPolicy(window) {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
             nodeIntegration: false,
+            nativeWindowOpen: true,
             sandbox: true,
             partition: PARTITION
           }
@@ -116,6 +122,7 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
+      nativeWindowOpen: true,
       sandbox: true,
       webSecurity: true,
       partition: PARTITION
