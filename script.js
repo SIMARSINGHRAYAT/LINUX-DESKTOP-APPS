@@ -31,7 +31,26 @@ const categories = [
     description: 'Official productivity apps for Linux desktop workflows.',
     apps: [
       { name: 'Microsoft Teams', slug: 'teams', icon: './csc-main/logo/Microsoft_Office_Teams_Logo_512px.png', readme: './csc-main/MICROSOFT-DESKTOP-APPS/Teams/README.md', installCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Teams/install.sh | bash', uninstallCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Teams/uninstall.sh | bash' },
-      { name: 'Power BI', slug: 'powerbi', icon: './csc-main/logo/Microsoft-Power-Bi--Streamline-Svg-Logos.png', readme: './csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/README.md', commands: { ubuntuInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | LINUX_DESKTOP_DISTRO=ubuntu bash', ubuntuUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | LINUX_DESKTOP_DISTRO=ubuntu bash', kaliInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | LINUX_DESKTOP_DISTRO=kali bash', kaliUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | LINUX_DESKTOP_DISTRO=kali bash' } },
+      {
+        name: 'Power BI',
+        slug: 'powerbi',
+        icon: './csc-main/logo/Microsoft-Power-Bi--Streamline-Svg-Logos.png',
+        readme: './csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/README.md',
+        commands: {
+          ubuntuInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | LINUX_DESKTOP_DISTRO=ubuntu bash',
+          ubuntuUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | LINUX_DESKTOP_DISTRO=ubuntu bash',
+          debianInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | LINUX_DESKTOP_DISTRO=debian bash',
+          debianUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | LINUX_DESKTOP_DISTRO=debian bash',
+          mintInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | LINUX_DESKTOP_DISTRO=mint bash',
+          mintUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | LINUX_DESKTOP_DISTRO=mint bash',
+          fedoraInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | LINUX_DESKTOP_DISTRO=fedora bash',
+          fedoraUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | LINUX_DESKTOP_DISTRO=fedora bash',
+          archInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | LINUX_DESKTOP_DISTRO=arch bash',
+          archUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | LINUX_DESKTOP_DISTRO=arch bash',
+          kaliInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | LINUX_DESKTOP_DISTRO=kali bash',
+          kaliUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | LINUX_DESKTOP_DISTRO=kali bash'
+        }
+      },
       { name: 'Whiteboard', slug: 'whiteboard', icon: './csc-main/logo/Microsoft-whiteboard-94.png', readme: './csc-main/MICROSOFT-DESKTOP-APPS/Whiteboard/README.md', installCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Whiteboard/install.sh | bash', uninstallCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Whiteboard/uninstall.sh | bash' },
       { name: 'Outlook', slug: 'outlook', icon: './csc-main/logo/Microsoft_Office_Outlook_Logo_512px.png', readme: './csc-main/MICROSOFT-DESKTOP-APPS/Outlook/README.md', installCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Outlook/install.sh | bash', uninstallCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Outlook/uninstall.sh | bash' },
       { name: 'Microsoft Azure', slug: 'azure', icon: './csc-main/logo/microsoft-azure.svg', readme: './csc-main/MICROSOFT-DESKTOP-APPS/Azure/README.md', url: 'https://portal.azure.com', commands: { ubuntuInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Azure/install.sh | LINUX_DESKTOP_DISTRO=ubuntu bash', ubuntuUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Azure/uninstall.sh | LINUX_DESKTOP_DISTRO=ubuntu bash', kaliInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Azure/install.sh | LINUX_DESKTOP_DISTRO=kali bash', kaliUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Azure/uninstall.sh | LINUX_DESKTOP_DISTRO=kali bash' } }
@@ -172,6 +191,15 @@ function copyText(text) {
   return navigator.clipboard.writeText(text);
 }
 
+const distroDefinitions = [
+  { key: 'ubuntu', name: 'Ubuntu', installKey: 'ubuntuInstall', uninstallKey: 'ubuntuUninstall' },
+  { key: 'debian', name: 'Debian Linux', installKey: 'debianInstall', uninstallKey: 'debianUninstall' },
+  { key: 'mint', name: 'Linux Mint', installKey: 'mintInstall', uninstallKey: 'mintUninstall' },
+  { key: 'fedora', name: 'Fedora Linux', installKey: 'fedoraInstall', uninstallKey: 'fedoraUninstall' },
+  { key: 'arch', name: 'Arch Linux', installKey: 'archInstall', uninstallKey: 'archUninstall' },
+  { key: 'kali', name: 'Kali Linux', installKey: 'kaliInstall', uninstallKey: 'kaliUninstall' }
+];
+
 function buildReadmeBlocks(app, markdown) {
   if (!markdown) return '<p>README content is unavailable for this app.</p>';
 
@@ -190,20 +218,29 @@ function buildReadmeBlocks(app, markdown) {
 
   if (app.commands) {
     const commands = app.commands;
-    return `
-      <div class="distro-tabs" role="tablist" aria-label="Choose your Linux distribution">
-        <button class="distro-tab active" type="button" data-distro-tab="ubuntu">Ubuntu</button>
-        <button class="distro-tab" type="button" data-distro-tab="kali">Kali Linux</button>
-      </div>
-      <div class="distro-panel active" data-distro-panel="ubuntu">
-        ${renderBlock('Ubuntu installation', commands.ubuntuInstall, 'ubuntu-installation-block')}
-        ${renderBlock('Ubuntu uninstallation', commands.ubuntuUninstall, 'ubuntu-uninstallation-block')}
-      </div>
-      <div class="distro-panel" data-distro-panel="kali">
-        ${renderBlock('Kali Linux installation', commands.kaliInstall, 'kali-installation-block')}
-        ${renderBlock('Kali Linux uninstallation', commands.kaliUninstall, 'kali-uninstallation-block')}
-      </div>
-    `;
+    const availableDistros = distroDefinitions.filter(
+      (d) => commands[d.installKey] || commands[d.uninstallKey]
+    );
+
+    if (availableDistros.length > 0) {
+      const tabsHtml = availableDistros.map((d, index) => `
+        <button class="distro-tab ${index === 0 ? 'active' : ''}" type="button" data-distro-tab="${d.key}">${d.name}</button>
+      `).join('');
+
+      const panelsHtml = availableDistros.map((d, index) => `
+        <div class="distro-panel ${index === 0 ? 'active' : ''}" data-distro-panel="${d.key}">
+          ${renderBlock(`${d.name} installation`, commands[d.installKey], `${d.key}-installation-block`)}
+          ${renderBlock(`${d.name} uninstallation`, commands[d.uninstallKey], `${d.key}-uninstallation-block`)}
+        </div>
+      `).join('');
+
+      return `
+        <div class="distro-tabs" role="tablist" aria-label="Choose your Linux distribution">
+          ${tabsHtml}
+        </div>
+        ${panelsHtml}
+      `;
+    }
   }
 
   return `

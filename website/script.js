@@ -30,7 +30,26 @@ const categories = [
     description: 'Productivity apps from Microsoft for Linux desktop users.',
     apps: [
       { name: 'Microsoft Teams', slug: 'teams', icon: '../csc-main/logo/Microsoft_Office_Teams_Logo_512px.png', readme: '../csc-main/MICROSOFT-DESKTOP-APPS/Teams/README.md' },
-      { name: 'Power BI', slug: 'powerbi', icon: '../csc-main/logo/Microsoft-Power-Bi--Streamline-Svg-Logos.png', readme: '../csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/README.md' },
+      {
+        name: 'Power BI',
+        slug: 'powerbi',
+        icon: '../csc-main/logo/Microsoft-Power-Bi--Streamline-Svg-Logos.png',
+        readme: '../csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/README.md',
+        commands: {
+          ubuntuInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | LINUX_DESKTOP_DISTRO=ubuntu bash',
+          ubuntuUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | LINUX_DESKTOP_DISTRO=ubuntu bash',
+          debianInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | LINUX_DESKTOP_DISTRO=debian bash',
+          debianUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | LINUX_DESKTOP_DISTRO=debian bash',
+          mintInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | LINUX_DESKTOP_DISTRO=mint bash',
+          mintUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | LINUX_DESKTOP_DISTRO=mint bash',
+          fedoraInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | LINUX_DESKTOP_DISTRO=fedora bash',
+          fedoraUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | LINUX_DESKTOP_DISTRO=fedora bash',
+          archInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | LINUX_DESKTOP_DISTRO=arch bash',
+          archUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | LINUX_DESKTOP_DISTRO=arch bash',
+          kaliInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | LINUX_DESKTOP_DISTRO=kali bash',
+          kaliUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/uninstall.sh | LINUX_DESKTOP_DISTRO=kali bash'
+        }
+      },
       { name: 'Whiteboard', slug: 'whiteboard', icon: '../csc-main/logo/Microsoft-whiteboard-94.png', readme: '../csc-main/MICROSOFT-DESKTOP-APPS/Whiteboard/README.md' },
       { name: 'Outlook', slug: 'outlook', icon: '../csc-main/logo/Microsoft_Office_Outlook_Logo_512px.png', readme: '../csc-main/MICROSOFT-DESKTOP-APPS/Outlook/README.md' },
       { name: 'Microsoft Azure', slug: 'azure', icon: '../csc-main/logo/microsoft-azure.svg', readme: '../csc-main/MICROSOFT-DESKTOP-APPS/Azure/README.md', url: 'https://portal.azure.com', commands: { ubuntuInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Azure/install.sh | LINUX_DESKTOP_DISTRO=ubuntu bash', ubuntuUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Azure/uninstall.sh | LINUX_DESKTOP_DISTRO=ubuntu bash', kaliInstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Azure/install.sh | LINUX_DESKTOP_DISTRO=kali bash', kaliUninstall: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/Azure/uninstall.sh | LINUX_DESKTOP_DISTRO=kali bash' } }
@@ -175,20 +194,54 @@ function renderAppDetail() {
         .slice(0, 12)
         .join('\n\n');
 
-      const commandBlocks = app.commands ? `
-        <div class="distro-tabs" role="tablist" aria-label="Choose your Linux distribution">
-          <button class="distro-tab active" type="button" data-distro-tab="ubuntu">Ubuntu</button>
-          <button class="distro-tab" type="button" data-distro-tab="kali">Kali Linux</button>
+      const distroDefinitions = [
+        { key: 'ubuntu', name: 'Ubuntu', installKey: 'ubuntuInstall', uninstallKey: 'ubuntuUninstall' },
+        { key: 'debian', name: 'Debian Linux', installKey: 'debianInstall', uninstallKey: 'debianUninstall' },
+        { key: 'mint', name: 'Linux Mint', installKey: 'mintInstall', uninstallKey: 'mintUninstall' },
+        { key: 'fedora', name: 'Fedora Linux', installKey: 'fedoraInstall', uninstallKey: 'fedoraUninstall' },
+        { key: 'arch', name: 'Arch Linux', installKey: 'archInstall', uninstallKey: 'archUninstall' },
+        { key: 'kali', name: 'Kali Linux', installKey: 'kaliInstall', uninstallKey: 'kaliUninstall' }
+      ];
+
+      const renderBlock = (label, content, id) => `
+        <div class="code-block">
+          <header>
+            <h3>${label}</h3>
+            <button class="copy-btn" type="button" data-copy="${id}">Copy</button>
+          </header>
+          <pre id="${id}">${escapeHtml(content || '')}</pre>
         </div>
-        <div class="distro-panel active" data-distro-panel="ubuntu">
-          <div class="code-block"><header><h3>Ubuntu installation</h3></header><pre>${escapeHtml(app.commands.ubuntuInstall)}</pre></div>
-          <div class="code-block"><header><h3>Ubuntu uninstallation</h3></header><pre>${escapeHtml(app.commands.ubuntuUninstall)}</pre></div>
-        </div>
-        <div class="distro-panel" data-distro-panel="kali">
-          <div class="code-block"><header><h3>Kali Linux installation</h3></header><pre>${escapeHtml(app.commands.kaliInstall)}</pre></div>
-          <div class="code-block"><header><h3>Kali Linux uninstallation</h3></header><pre>${escapeHtml(app.commands.kaliUninstall)}</pre></div>
-        </div>
-      ` : `<div class="code-block"><header><h3>README</h3></header><pre id="app-readme">${escapeHtml(cleaned)}</pre></div>`;
+      `;
+
+      let commandBlocks = '';
+      if (app.commands) {
+        const commands = app.commands;
+        const availableDistros = distroDefinitions.filter(
+          (d) => commands[d.installKey] || commands[d.uninstallKey]
+        );
+
+        if (availableDistros.length > 0) {
+          const tabsHtml = availableDistros.map((d, index) => `
+            <button class="distro-tab ${index === 0 ? 'active' : ''}" type="button" data-distro-tab="${d.key}">${d.name}</button>
+          `).join('');
+
+          const panelsHtml = availableDistros.map((d, index) => `
+            <div class="distro-panel ${index === 0 ? 'active' : ''}" data-distro-panel="${d.key}">
+              ${renderBlock(`${d.name} installation`, commands[d.installKey], `web-${d.key}-installation-block`)}
+              ${renderBlock(`${d.name} uninstallation`, commands[d.uninstallKey], `web-${d.key}-uninstallation-block`)}
+            </div>
+          `).join('');
+
+          commandBlocks = `
+            <div class="distro-tabs" role="tablist" aria-label="Choose your Linux distribution">
+              ${tabsHtml}
+            </div>
+            ${panelsHtml}
+          `;
+        }
+      } else {
+        commandBlocks = `<div class="code-block"><header><h3>README</h3><button class="copy-btn" type="button" data-copy="app-readme">Copy</button></header><pre id="app-readme">${escapeHtml(cleaned)}</pre></div>`;
+      }
 
       detail.innerHTML = `
         <article class="app-detail-card">
@@ -205,7 +258,6 @@ function renderAppDetail() {
           <div class="detail-actions">
             <a class="back-btn" href="apps.html?category=${encodeURIComponent(selectedCategory.id)}">Back to apps</a>
             ${app.url ? `<a class="back-btn" href="${escapeHtml(app.url)}" target="_blank" rel="noopener noreferrer">Open Microsoft Azure</a>` : ''}
-            <button class="copy-btn" type="button" data-copy-target="app-readme">Copy README</button>
           </div>
 
           ${commandBlocks}
@@ -218,15 +270,17 @@ function renderAppDetail() {
         document.querySelectorAll('[data-distro-panel]').forEach((panel) => panel.classList.toggle('active', panel.dataset.distroPanel === distro));
       }));
 
-      const copyBtn = document.querySelector('[data-copy-target="app-readme"]');
-      if (copyBtn) {
-        copyBtn.addEventListener('click', async () => {
-          const content = document.getElementById('app-readme')?.textContent || '';
-          await navigator.clipboard.writeText(content);
-          copyBtn.textContent = 'Copied';
-          setTimeout(() => { copyBtn.textContent = 'Copy README'; }, 1200);
+      document.querySelectorAll('[data-copy]').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const targetId = button.getAttribute('data-copy');
+          const source = document.getElementById(targetId);
+          if (!source) return;
+          await navigator.clipboard.writeText(source.textContent);
+          const orig = button.textContent;
+          button.textContent = 'Copied';
+          setTimeout(() => { button.textContent = orig; }, 1200);
         });
-      }
+      });
     })
     .catch(() => {
       detail.innerHTML = `

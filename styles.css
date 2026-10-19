@@ -568,21 +568,36 @@ a { text-decoration: none; }
 
 .distro-tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin: 22px 0 14px;
 }
 
 .distro-tab {
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
-  padding: 11px 16px;
+  padding: 10px 16px;
   color: var(--muted);
-  background: rgba(255,255,255,0.04);
+  background: rgba(255, 255, 255, 0.04);
   cursor: pointer;
   font-weight: 700;
+  font-size: 0.92rem;
+  transition: all 0.2s ease;
 }
 
-.distro-tab.active { color: var(--text); background: rgba(0, 0, 0, 0.72); border-color: #ffffff; }
+.distro-tab:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.distro-tab.active {
+  color: var(--text);
+  background: rgba(0, 0, 0, 0.72);
+  border-color: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
 .distro-panel { display: none; }
 .distro-panel.active { display: block; }
 
