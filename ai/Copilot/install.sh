@@ -9,14 +9,23 @@ COPILOT_SOURCE=$SCRIPT_SOURCE_DIR
 if [ ! -f "$COPILOT_SOURCE/package.json" ] || ! grep -q '"name": "copilot-desktop"' "$COPILOT_SOURCE/package.json"; then
   if ! command -v git >/dev/null 2>&1; then printf '%s\n' 'Git is required to install Copilot.' >&2; exit 1; fi
   if [ -d "$REPOSITORY_DIR/.git" ]; then
-    git -C "$REPOSITORY_DIR" pull --ff-only
+    if [ -n "$(git -C "$REPOSITORY_DIR" status --porcelain)" ]; then
+      INSTALL_TEMP_DIR=$(mktemp -d "${TMPDIR:-/tmp}/copilot-install.XXXXXX")
+      trap 'rm -rf "$INSTALL_TEMP_DIR"' EXIT HUP INT TERM
+      printf '%s\n' 'Existing repository has local changes; using a temporary clean checkout.' >&2
+      git clone --depth 1 "$REPOSITORY_URL" "$INSTALL_TEMP_DIR/repository"
+      COPILOT_SOURCE=$INSTALL_TEMP_DIR/repository/ai/Copilot
+    else
+      git -C "$REPOSITORY_DIR" pull --ff-only
+      COPILOT_SOURCE=$REPOSITORY_DIR/ai/Copilot
+    fi
   elif [ -e "$REPOSITORY_DIR" ]; then
     printf '%s\n' "$REPOSITORY_DIR exists but is not a Git checkout." >&2; exit 1
   else
     mkdir -p "$(dirname "$REPOSITORY_DIR")"
     git clone "$REPOSITORY_URL" "$REPOSITORY_DIR"
+    COPILOT_SOURCE=$REPOSITORY_DIR/ai/Copilot
   fi
-  COPILOT_SOURCE=$REPOSITORY_DIR/ai/Copilot
 fi
 
 if [ ! -d "$COPILOT_SOURCE" ] || [ ! -f "$COPILOT_SOURCE/package.json" ]; then printf '%s\n' "Copilot source is missing from $COPILOT_SOURCE." >&2; exit 1; fi
