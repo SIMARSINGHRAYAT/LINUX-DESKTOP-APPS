@@ -30,6 +30,17 @@ fi
 
 if [ ! -d "$COPILOT_SOURCE" ] || [ ! -f "$COPILOT_SOURCE/package.json" ]; then printf '%s\n' "Copilot source is missing from $COPILOT_SOURCE." >&2; exit 1; fi
 if [ "$(uname -s)" != Linux ] || ! command -v apt-get >/dev/null 2>&1; then printf '%s\n' 'An apt-based Linux system (Ubuntu, Debian, or Kali) is required.' >&2; exit 1; fi
+if [ -r /etc/os-release ]; then . /etc/os-release; fi
+SYSTEM_DISTRO=${ID:-}
+INSTALL_DISTRO=${LINUX_DESKTOP_DISTRO:-$SYSTEM_DISTRO}
+if [ -n "$SYSTEM_DISTRO" ] && [ -n "${LINUX_DESKTOP_DISTRO:-}" ] && [ "$INSTALL_DISTRO" != "$SYSTEM_DISTRO" ]; then
+  printf '%s\n' "Requested distro '$INSTALL_DISTRO' does not match detected distro '$SYSTEM_DISTRO'; use '$SYSTEM_DISTRO'." >&2
+  exit 1
+fi
+case "$INSTALL_DISTRO" in
+  ubuntu|debian|kali) ;;
+  *) printf '%s\n' 'Set LINUX_DESKTOP_DISTRO to ubuntu, debian, or kali before installing.' >&2; exit 1 ;;
+esac
 if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1; then
   if [ "$(id -u)" -eq 0 ]; then SUDO=; elif command -v sudo >/dev/null 2>&1; then SUDO=sudo; else printf '%s\n' 'Install Node.js 22+, npm, and sudo before continuing.' >&2; exit 1; fi
   $SUDO apt-get -o DPkg::Lock::Timeout=600 update
@@ -45,8 +56,6 @@ npm_major=$(npm --version | cut -d. -f1)
 if [ "$npm_major" -ge 11 ]; then npm_install_args="$npm_install_args --allow-git=all"; fi
 if [ -f package-lock.json ]; then npm ci $npm_install_args; else npm install $npm_install_args; fi
 
-if [ -r /etc/os-release ]; then . /etc/os-release; fi
-INSTALL_DISTRO=${LINUX_DESKTOP_DISTRO:-${ID:-}}
 if [ "$INSTALL_DISTRO" = kali ]; then
   npx electron-builder --linux AppImage
   APPIMAGE_PATH=$(find dist -maxdepth 1 -type f -name "Copilot-$PACKAGE_VERSION-*.AppImage" -print | sort | head -n 1)
@@ -78,7 +87,6 @@ EOF
   printf '%s\n' 'Copilot installed as an AppImage. Search for it in the application menu.'
   exit 0
 fi
-if [ "$INSTALL_DISTRO" != ubuntu ] && [ "$INSTALL_DISTRO" != debian ]; then printf '%s\n' 'Set LINUX_DESKTOP_DISTRO to ubuntu, debian, or kali before installing.' >&2; exit 1; fi
 npm run build:linux
 DEB_PATH=$(find dist -maxdepth 1 -type f -name "Copilot-$PACKAGE_VERSION-*.deb" -print | sort | head -n 1)
 if [ -z "$DEB_PATH" ]; then printf '%s\n' 'No Copilot Debian package was created.' >&2; exit 1; fi
