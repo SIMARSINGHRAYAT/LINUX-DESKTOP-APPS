@@ -13,7 +13,7 @@ module.exports = (request, response) => {
     scope: 'public_repo follow',
     state
   });
-  response.setHeader('Set-Cookie', `github_oauth_state=${state}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=600`);
+  response.setHeader('Set-Cookie', `github_oauth_state=${state}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=600`);
   response.writeHead(302, { Location: `https://github.com/login/oauth/authorize?${query}` });
   response.end();
 };
