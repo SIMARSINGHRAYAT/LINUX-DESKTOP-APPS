@@ -32,8 +32,8 @@ if [ ! -d "$COPILOT_SOURCE" ] || [ ! -f "$COPILOT_SOURCE/package.json" ]; then p
 if [ "$(uname -s)" != Linux ] || ! command -v apt-get >/dev/null 2>&1; then printf '%s\n' 'An apt-based Linux system (Ubuntu, Debian, or Kali) is required.' >&2; exit 1; fi
 if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1; then
   if [ "$(id -u)" -eq 0 ]; then SUDO=; elif command -v sudo >/dev/null 2>&1; then SUDO=sudo; else printf '%s\n' 'Install Node.js 22+, npm, and sudo before continuing.' >&2; exit 1; fi
-  $SUDO apt-get update
-  $SUDO apt-get install -y nodejs npm
+  $SUDO apt-get -o DPkg::Lock::Timeout=600 update
+  $SUDO apt-get -o DPkg::Lock::Timeout=600 install -y nodejs npm
 fi
 node_major=$(node -p "process.versions.node.split('.')[0]")
 if [ "$node_major" -lt 22 ]; then printf '%s\n' 'Node.js 22 or newer is required to build Copilot.' >&2; exit 1; fi
@@ -83,7 +83,7 @@ npm run build:linux
 DEB_PATH=$(find dist -maxdepth 1 -type f -name "Copilot-$PACKAGE_VERSION-*.deb" -print | sort | head -n 1)
 if [ -z "$DEB_PATH" ]; then printf '%s\n' 'No Copilot Debian package was created.' >&2; exit 1; fi
 if [ "$(id -u)" -eq 0 ]; then SUDO=; elif command -v sudo >/dev/null 2>&1; then SUDO=sudo; else printf '%s\n' 'Run as root or install sudo to install the Debian package.' >&2; exit 1; fi
-$SUDO apt-get install -y "$COPILOT_SOURCE/$DEB_PATH"
+$SUDO apt-get -o DPkg::Lock::Timeout=600 install -y "$COPILOT_SOURCE/$DEB_PATH"
 if command -v update-desktop-database >/dev/null 2>&1; then
   $SUDO update-desktop-database
 fi
