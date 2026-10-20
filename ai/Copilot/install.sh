@@ -43,6 +43,8 @@ case "$INSTALL_DISTRO" in
 esac
 if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1; then
   if [ "$(id -u)" -eq 0 ]; then SUDO=; elif command -v sudo >/dev/null 2>&1; then SUDO=sudo; else printf '%s\n' 'Install Node.js 22+, npm, and sudo before continuing.' >&2; exit 1; fi
+  printf '%s\n' 'Checking for interrupted package configuration.'
+  $SUDO dpkg --configure -a
   $SUDO apt-get -o DPkg::Lock::Timeout=600 update
   $SUDO apt-get -o DPkg::Lock::Timeout=600 install -y nodejs npm
 fi
