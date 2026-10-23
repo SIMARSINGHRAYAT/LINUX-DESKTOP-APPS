@@ -2,7 +2,7 @@
 set -eu
 
 APP_ID=gta-5
-APP_URL=https://v2.fiveplay.lol
+APP_URL=https://v2.fiveplay.lol/launcher.html
 DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 APP_DIR=$DATA_HOME/linux-desktop-apps/$APP_ID
@@ -67,7 +67,21 @@ cat > "$LAUNCHER_PATH" <<'EOF'
 set -eu
 
 APP_DIR=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
-exec "$APP_DIR/node_modules/.bin/electron" "$APP_DIR" "$@"
+LOG_DIR=${XDG_STATE_HOME:-$HOME/.local/state}/gta-5
+LOG_FILE=$LOG_DIR/launch.log
+mkdir -p "$LOG_DIR"
+
+if "$APP_DIR/node_modules/.bin/electron" "$APP_DIR" "$@" >"$LOG_FILE" 2>&1; then
+  exit 0
+else
+  status=$?
+  if command -v zenity >/dev/null 2>&1; then
+    zenity --error --title='GTA 5 could not start' \
+      --text="See $LOG_FILE for details." 2>/dev/null || true
+  fi
+  printf '%s\n' "GTA 5 failed to start (exit $status). See $LOG_FILE for details." >&2
+  exit "$status"
+fi
 EOF
 chmod 755 "$LAUNCHER_PATH"
 

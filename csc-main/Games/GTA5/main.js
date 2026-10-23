@@ -1,29 +1,14 @@
 'use strict';
 
-const { app, BrowserWindow, shell } = require('electron');
+const { app, BrowserWindow } = require('electron');
 const path = require('node:path');
 
-const GAME_URL = 'https://v2.fiveplay.lol';
+const GAME_URL = 'https://v2.fiveplay.lol/launcher.html';
 const GAME_ORIGIN = new URL(GAME_URL).origin;
 const WINDOW_TITLE = 'GTA 5';
 
 app.setName(WINDOW_TITLE);
 app.setPath('userData', path.join(app.getPath('appData'), 'gta-5'));
-
-function openExternalHttpsUrl(rawUrl) {
-  let target;
-  try {
-    target = new URL(rawUrl);
-  } catch {
-    return;
-  }
-
-  if (target.protocol === 'https:') {
-    void shell.openExternal(target.href).catch((error) => {
-      console.error('Could not open external link:', error);
-    });
-  }
-}
 
 function keepNavigationInGame(event, rawUrl) {
   let target;
@@ -33,10 +18,9 @@ function keepNavigationInGame(event, rawUrl) {
     event.preventDefault();
     return;
   }
-
   if (target.origin === GAME_ORIGIN) return;
   event.preventDefault();
-  openExternalHttpsUrl(target.href);
+  event.preventDefault();
 }
 
 function createWindow() {
@@ -54,6 +38,9 @@ function createWindow() {
     }
   });
 
+  window.webContents.setUserAgent(
+    window.webContents.getUserAgent().replace(/\sElectron\/\S+/, '')
+  );
   window.webContents.on('page-title-updated', (event) => {
     event.preventDefault();
     window.setTitle(WINDOW_TITLE);
@@ -82,10 +69,14 @@ function createWindow() {
       };
     }
 
-    openExternalHttpsUrl(target.href);
     return { action: 'deny' };
   });
 
+  window.webContents.on('did-fail-load', (_event, errorCode, errorDescription, validatedURL, isMainFrame) => {
+    if (isMainFrame) {
+      console.error(`Could not load ${validatedURL} (${errorCode}): ${errorDescription}`);
+    }
+  });
   window.loadURL(GAME_URL).catch((error) => {
     console.error(`Could not load ${GAME_URL}:`, error);
   });

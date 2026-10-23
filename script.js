@@ -80,7 +80,7 @@ const categories = [
         slug: 'gta-5',
         icon: './csc-main/logo/games.svg',
         description: 'Launch the GTA 5 web game in an Electron desktop app.',
-        url: 'https://v2.fiveplay.lol',
+        url: 'https://v2.fiveplay.lol/launcher.html',
         actionLabel: 'Play GTA 5',
         desktopLauncher: true,
         readme: './csc-main/Games/GTA5/README.md',
