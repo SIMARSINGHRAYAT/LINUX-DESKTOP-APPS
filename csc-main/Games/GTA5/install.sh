@@ -2,6 +2,7 @@
 set -eu
 
 APP_ID=gta-5
+APP_URL=https://v2.fiveplay.lol
 DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 APP_DIR=$DATA_HOME/linux-desktop-apps/$APP_ID
@@ -12,36 +13,61 @@ DESKTOP_FILE=$APPLICATION_DIR/$APP_ID.desktop
 LAUNCHER_PATH=$APP_DIR/launch.sh
 SCRIPT_SOURCE_DIR=$(CDPATH= cd -- "$(dirname "$0")" 2>/dev/null && pwd || true)
 ICON_SOURCE=$SCRIPT_SOURCE_DIR/../../logo/games.svg
+MAIN_SOURCE=$SCRIPT_SOURCE_DIR/main.js
+ICON_TEMP=
+MAIN_TEMP=
 
-mkdir -p "$APP_DIR" "$ICON_DIR" "$APPLICATION_DIR" "$CONFIG_HOME/$APP_ID"
+cleanup() {
+  [ -z "$ICON_TEMP" ] || rm -f "$ICON_TEMP"
+  [ -z "$MAIN_TEMP" ] || rm -f "$MAIN_TEMP"
+}
+trap cleanup 0 HUP INT TERM
 
-if [ -f "$ICON_SOURCE" ]; then
-  cp "$ICON_SOURCE" "$ICON_PATH"
-else
+if ! command -v npm >/dev/null 2>&1; then
+  printf '%s\n' 'Node.js and npm are required. Install them with: sudo apt install nodejs npm' >&2
+  exit 127
+fi
+
+if [ ! -f "$ICON_SOURCE" ]; then
+  ICON_TEMP=$(mktemp)
+  ICON_SOURCE=$ICON_TEMP
   curl -fsSL \
     https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/csc-main/logo/games.svg \
-    -o "$ICON_PATH"
+    -o "$ICON_SOURCE"
 fi
+
+if [ -f "$MAIN_SOURCE" ]; then
+  :
+else
+  MAIN_TEMP=$(mktemp)
+  MAIN_SOURCE=$MAIN_TEMP
+  curl -fsSL \
+    https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/csc-main/Games/GTA5/main.js \
+    -o "$MAIN_SOURCE"
+fi
+
+mkdir -p "$APP_DIR" "$ICON_DIR" "$APPLICATION_DIR" "$CONFIG_HOME/$APP_ID"
+cp "$ICON_SOURCE" "$ICON_PATH"
+cp "$MAIN_SOURCE" "$APP_DIR/main.js"
+
+cat > "$APP_DIR/package.json" <<'EOF'
+{
+  "name": "gta-5-web-app",
+  "productName": "GTA 5",
+  "version": "1.0.0",
+  "private": true,
+  "main": "main.js"
+}
+EOF
+
+npm install --prefix "$APP_DIR" --no-save --no-package-lock --no-audit --no-fund electron
 
 cat > "$LAUNCHER_PATH" <<'EOF'
 #!/bin/sh
 set -eu
 
-APP_URL=https://v2.fiveplay.lol
-PROFILE_DIR=${XDG_CONFIG_HOME:-$HOME/.config}/gta-5
-
-for browser in chromium chromium-browser google-chrome-stable google-chrome brave-browser; do
-  if command -v "$browser" >/dev/null 2>&1; then
-    exec "$browser" --app="$APP_URL" --user-data-dir="$PROFILE_DIR" --no-first-run
-  fi
-done
-
-if command -v xdg-open >/dev/null 2>&1; then
-  exec xdg-open "$APP_URL"
-fi
-
-printf '%s\n' 'Install Chromium or another browser, or install xdg-utils to launch GTA 5.' >&2
-exit 127
+APP_DIR=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+exec "$APP_DIR/node_modules/.bin/electron" "$APP_DIR" "$@"
 EOF
 chmod 755 "$LAUNCHER_PATH"
 
@@ -50,14 +76,14 @@ cat > "$DESKTOP_FILE" <<EOF
 [Desktop Entry]
 Type=Application
 Name=GTA 5
-Comment=Launch GTA 5 in a browser window
+Comment=Launch the GTA 5 web game in Electron
 Exec="$EXEC_PATH"
 Icon=$ICON_PATH
 Terminal=false
-Categories=Game;
+Categories=Game;Network;
 StartupNotify=true
 EOF
 chmod 644 "$ICON_PATH" "$DESKTOP_FILE"
 
-printf '%s\n' 'GTA 5 desktop launcher installed. Search for GTA 5 in your applications menu.'
-printf '%s\n' 'This launcher opens the browser game; it does not install Rockstar GTA V game files.'
+printf '%s\n' 'GTA 5 Electron app installed. Search for GTA 5 in your applications menu.'
+printf '%s\n' "This app opens $APP_URL in Electron; it does not install Rockstar GTA V game files."

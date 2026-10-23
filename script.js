@@ -73,13 +73,13 @@ const categories = [
   {
     id: 'games',
     name: 'Games',
-    description: 'Browser-based games you can play on Linux.',
+    description: 'Games you can launch from the Linux desktop.',
     apps: [
       {
         name: 'GTA 5',
         slug: 'gta-5',
         icon: './csc-main/logo/games.svg',
-        description: 'Play GTA 5 in a dedicated browser window on Ubuntu.',
+        description: 'Launch the GTA 5 web game in an Electron desktop app.',
         url: 'https://v2.fiveplay.lol',
         actionLabel: 'Play GTA 5',
         desktopLauncher: true,
@@ -188,7 +188,7 @@ function renderApps() {
         <div class="app-icon">
           <img src="${app.icon || getIconSrc(app.name)}" alt="${app.name}" />
         </div>
-        <span class="badge">${app.desktopLauncher ? 'Desktop launcher' : 'Linux'}</span>
+        <span class="badge">${app.desktopLauncher ? 'Electron app' : 'Linux'}</span>
       </div>
       <h3>${app.name}</h3>
       <p>${escapeHtml(app.description || `Desktop app wrapper for ${app.name}.`)}</p>
