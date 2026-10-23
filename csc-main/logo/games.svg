@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Games">
+  <defs>
+    <linearGradient id="controller" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a78bfa"/>
+      <stop offset="1" stop-color="#38bdf8"/>
+    </linearGradient>
+  </defs>
+  <rect x="15" y="34" width="98" height="61" rx="25" fill="url(#controller)"/>
+  <path d="M42 49v31M26.5 64.5h31" stroke="#101827" stroke-linecap="round" stroke-width="8"/>
+  <circle cx="83" cy="57" r="6" fill="#101827"/>
+  <circle cx="96" cy="72" r="6" fill="#101827"/>
+</svg>

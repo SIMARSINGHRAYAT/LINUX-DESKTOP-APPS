@@ -69,6 +69,27 @@ const categories = [
       { name: 'Crunchyroll', slug: 'crunchyroll', icon: './csc-main/logo/Crunchyroll.png', readme: './csc-main/Streaming-Apps/Crunchyroll/README.md', installCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Streaming-Apps/Crunchyroll/install.sh | bash', uninstallCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Streaming-Apps/Crunchyroll/uninstall.sh | bash' },
       { name: 'MX Player', slug: 'mxplayer', icon: './csc-main/logo/mx-player.png', readme: './csc-main/Streaming-Apps/MXPlayer/README.md', installCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Streaming-Apps/MXPlayer/install.sh | bash', uninstallCommand: 'curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Streaming-Apps/MXPlayer/uninstall.sh | bash' }
     ]
+  },
+  {
+    id: 'games',
+    name: 'Games',
+    description: 'Browser-based games you can play on Linux.',
+    apps: [
+      {
+        name: 'GTA 5',
+        slug: 'gta-5',
+        icon: './csc-main/logo/games.svg',
+        description: 'Play GTA 5 in a dedicated browser window on Ubuntu.',
+        url: 'https://v2.fiveplay.lol',
+        actionLabel: 'Play GTA 5',
+        desktopLauncher: true,
+        readme: './csc-main/Games/GTA5/README.md',
+        commands: {
+          ubuntuInstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/csc-main/Games/GTA5/install.sh | sh',
+          ubuntuUninstall: 'curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/csc-main/Games/GTA5/uninstall.sh | sh'
+        }
+      }
+    ]
   }
 ];
 
@@ -101,6 +122,7 @@ function getIconSrc(name) {
     outlook: './csc-main/logo/Microsoft_Office_Outlook_Logo_512px.png',
     roboflow: './csc-main/logo/Roboflow.png',
     codeforces: './csc-main/logo/codeforces.png',
+    'gta 5': './csc-main/logo/games.svg',
     qwen: './ai/Qwen/icon.svg',
     kimi: './ai/Kimi/logo.svg'
   };
@@ -166,10 +188,10 @@ function renderApps() {
         <div class="app-icon">
           <img src="${app.icon || getIconSrc(app.name)}" alt="${app.name}" />
         </div>
-        <span class="badge">Linux</span>
+        <span class="badge">${app.desktopLauncher ? 'Desktop launcher' : 'Linux'}</span>
       </div>
       <h3>${app.name}</h3>
-      <p>Desktop app wrapper for ${app.name}.</p>
+      <p>${escapeHtml(app.description || `Desktop app wrapper for ${app.name}.`)}</p>
       <div class="meta">
         <span></span>
         <a class="action-btn" href="./app.html?app=${encodeURIComponent(app.slug)}&category=${encodeURIComponent(selected.id)}">View</a>
@@ -202,8 +224,6 @@ const distroDefinitions = [
 ];
 
 function buildReadmeBlocks(app, markdown) {
-  if (!markdown) return '<p>README content is unavailable for this app.</p>';
-
   const installCommand = app.installCommand || 'Install command not found.';
   const uninstallCommand = app.uninstallCommand || 'Uninstall command not found.';
 
@@ -216,6 +236,8 @@ function buildReadmeBlocks(app, markdown) {
       <pre id="${id}">${escapeHtml(content || 'No command available for this section.')}</pre>
     </div>
   `;
+
+  if (!markdown) return '<p>README content is unavailable for this app.</p>';
 
   if (app.commands) {
     const commands = app.commands;
@@ -269,7 +291,7 @@ async function renderAppDetail() {
   const category = categories.find((item) => item.id === categoryId) || categories[0];
   const app = category.apps.find((item) => item.slug === appSlug) || category.apps[0];
 
-  const markdown = await fetchReadme(app.readme);
+  const markdown = app.readme ? await fetchReadme(app.readme) : null;
 
   detail.innerHTML = `
     <article class="app-detail-card">
@@ -285,12 +307,12 @@ async function renderAppDetail() {
 
       <div class="detail-actions">
         <a class="back-btn" href="./apps.html?category=${encodeURIComponent(category.id)}">Back to apps</a>
-        ${app.url ? `<a class="back-btn" href="${escapeHtml(app.url)}" target="_blank" rel="noopener noreferrer">Open Microsoft Azure</a>` : ''}
+        ${app.url ? `<a class="back-btn" href="${escapeHtml(app.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(app.actionLabel || `Open ${app.name}`)}</a>` : ''}
       </div>
 
       <div class="detail-intro">
         <p class="eyebrow">Installation commands</p>
-        <h2>${app.name} installation commands</h2>
+        <h2>${escapeHtml(app.name)} installation commands</h2>
       </div>
 
       <div class="copy-group">
