@@ -71,7 +71,7 @@ LOG_DIR=${XDG_STATE_HOME:-$HOME/.local/state}/gta-5
 LOG_FILE=$LOG_DIR/launch.log
 mkdir -p "$LOG_DIR"
 
-if "$APP_DIR/node_modules/.bin/electron" "$APP_DIR" "$@" >"$LOG_FILE" 2>&1; then
+if "$APP_DIR/node_modules/.bin/electron" --disable-setuid-sandbox "$APP_DIR" "$@" >"$LOG_FILE" 2>&1; then
   exit 0
 else
   status=$?

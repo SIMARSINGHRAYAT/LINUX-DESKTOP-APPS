@@ -7,7 +7,6 @@ const GAME_URL = 'https://v2.fiveplay.lol/launcher.html';
 const GAME_ORIGIN = new URL(GAME_URL).origin;
 const WINDOW_TITLE = 'GTA 5';
 
-app.commandLine.appendSwitch('disable-setuid-sandbox');
 app.setName(WINDOW_TITLE);
 app.setPath('userData', path.join(app.getPath('appData'), 'gta-5'));
 
