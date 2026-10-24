@@ -20,7 +20,7 @@ if [ ! -f "$META_AI_SOURCE/package.json" ] || ! grep -q '"name": "meta-ai-deskto
     mkdir -p "$(dirname "$REPOSITORY_DIR")"
     git clone "$REPOSITORY_URL" "$REPOSITORY_DIR"
   fi
-  META_AI_SOURCE=$REPOSITORY_DIR/ai/Meta AI
+  META_AI_SOURCE="$REPOSITORY_DIR/ai/Meta AI"
 fi
 
 if [ ! -d "$META_AI_SOURCE" ] || [ ! -f "$META_AI_SOURCE/package.json" ]; then
