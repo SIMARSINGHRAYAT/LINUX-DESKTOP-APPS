@@ -69,9 +69,33 @@ set -eu
 APP_DIR=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
 LOG_DIR=${XDG_STATE_HOME:-$HOME/.local/state}/gta-5
 LOG_FILE=$LOG_DIR/launch.log
+ELECTRON=$APP_DIR/node_modules/.bin/electron
 mkdir -p "$LOG_DIR"
 
-if "$APP_DIR/node_modules/.bin/electron" --disable-setuid-sandbox --enable-unsafe-webgpu "$APP_DIR" "$@" >"$LOG_FILE" 2>&1; then
+set -- --disable-setuid-sandbox --enable-unsafe-webgpu "$APP_DIR" "$@"
+
+if [ "$(cat /sys/module/apparmor/parameters/enabled 2>/dev/null || true)" = Y ] &&
+  [ "$(cat /proc/sys/kernel/apparmor_restrict_unprivileged_userns 2>/dev/null || true)" = 1 ]; then
+  if command -v aa-exec >/dev/null 2>&1 &&
+    command -v unshare >/dev/null 2>&1 &&
+    aa-exec -p chrome -- unshare --user --map-root-user true >/dev/null 2>&1; then
+    set -- aa-exec -p chrome -- "$ELECTRON" "$@"
+  else
+    printf '%s\n' \
+      'AppArmor blocks Electron user namespaces, and the Chrome AppArmor profile is unavailable or does not allow them.' \
+      'Enable a suitable AppArmor profile for Electron; do not disable Chromium sandboxing.' >"$LOG_FILE"
+    if command -v zenity >/dev/null 2>&1; then
+      zenity --error --title='GTA 5 could not start' \
+        --text="AppArmor is blocking Electron's browser sandbox. See $LOG_FILE for details." 2>/dev/null || true
+    fi
+    printf '%s\n' "GTA 5 could not start because AppArmor blocked Electron's browser sandbox. See $LOG_FILE for details." >&2
+    exit 1
+  fi
+else
+  set -- "$ELECTRON" "$@"
+fi
+
+if "$@" >"$LOG_FILE" 2>&1; then
   exit 0
 else
   status=$?
