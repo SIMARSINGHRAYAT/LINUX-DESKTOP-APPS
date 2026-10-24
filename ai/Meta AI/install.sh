@@ -48,6 +48,7 @@ if ! node -e 'const [major, minor] = process.versions.node.split(".").map(Number
 fi
 
 cd "$META_AI_SOURCE"
+PACKAGE_VERSION=$(node -e "console.log(require(process.argv[1]).version)" "$META_AI_SOURCE/package.json")
 npm_install_args='--no-audit --no-fund'
 npm_major=$(npm --version | cut -d. -f1)
 if [ "$npm_major" -ge 11 ]; then npm_install_args="$npm_install_args --allow-git=all"; fi
@@ -57,7 +58,7 @@ if [ -r /etc/os-release ]; then . /etc/os-release; fi
 INSTALL_DISTRO=${LINUX_DESKTOP_DISTRO:-${ID:-}}
 if [ "$INSTALL_DISTRO" = kali ]; then
   npx electron-builder --linux AppImage
-  APPIMAGE_PATH=$(find dist -maxdepth 1 -type f -name '*.AppImage' -print | sort | head -n 1)
+  APPIMAGE_PATH=$(find dist -maxdepth 1 -type f -name "Meta-AI-$PACKAGE_VERSION-*.AppImage" -print | sort | head -n 1)
   if [ -z "$APPIMAGE_PATH" ]; then printf '%s\n' 'No Meta AI AppImage was created.' >&2; exit 1; fi
   APPIMAGE_DIR=${XDG_DATA_HOME:-$HOME/.local/share}/linux-desktop-apps/meta-ai-desktop
   APPIMAGE_INSTALL=$APPIMAGE_DIR/meta-ai-desktop.AppImage
@@ -93,7 +94,7 @@ if [ "$INSTALL_DISTRO" != ubuntu ] && [ "$INSTALL_DISTRO" != debian ]; then
 fi
 
 npm run build:linux
-DEB_PATH=$(find dist -maxdepth 1 -type f -name '*.deb' -print | sort | head -n 1)
+DEB_PATH=$(find dist -maxdepth 1 -type f -name "Meta-AI-$PACKAGE_VERSION-*.deb" -print | sort | head -n 1)
 if [ -z "$DEB_PATH" ]; then printf '%s\n' 'No Meta AI Debian package was created.' >&2; exit 1; fi
 if [ "$(id -u)" -eq 0 ]; then SUDO=; elif command -v sudo >/dev/null 2>&1; then SUDO=sudo; else
   printf '%s\n' 'Run as root or install sudo to install the Debian package.' >&2

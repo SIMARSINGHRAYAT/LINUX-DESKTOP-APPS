@@ -1,6 +1,6 @@
 {
   "name": "meta-ai-desktop",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Unofficial Electron desktop wrapper for Meta AI.",
   "main": "main.js",
   "homepage": "https://www.meta.ai/",
@@ -24,7 +24,7 @@
     "productName": "Meta AI",
     "asar": true,
     "directories": { "output": "dist" },
-    "files": ["main.js", "preload.js", "offline.html", "icon.svg", "icon.png", "package.json"],
+    "files": ["main.js", "preload.js", "offline.html", "icon.png", "package.json"],
     "linux": {
       "target": ["AppImage", "deb"],
       "category": "Network;Chat;",

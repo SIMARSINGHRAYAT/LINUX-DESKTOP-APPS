@@ -2,6 +2,8 @@
 
 Unofficial Electron wrapper for [Meta AI](https://www.meta.ai/). It keeps the Meta AI session in a persistent desktop profile, supports downloads and notifications, and opens links outside Meta in the system browser.
 
+Current desktop app version: **1.0.1**.
+
 ## Ubuntu
 
 ```bash
@@ -15,6 +17,8 @@ curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/
 ```
 
 Kali receives an AppImage launcher. Ubuntu receives a Debian package. The installer requires Node.js 22+, npm, git, and an apt-based Linux system.
+
+To update an existing installation and refresh its logo, run the installer command for your distribution again.
 
 ## Uninstall
 
