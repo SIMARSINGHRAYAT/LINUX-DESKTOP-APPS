@@ -76,19 +76,17 @@ set -- --disable-setuid-sandbox --enable-unsafe-webgpu "$APP_DIR" "$@"
 
 if [ "$(cat /sys/module/apparmor/parameters/enabled 2>/dev/null || true)" = Y ] &&
   [ "$(cat /proc/sys/kernel/apparmor_restrict_unprivileged_userns 2>/dev/null || true)" = 1 ]; then
-  if command -v aa-exec >/dev/null 2>&1 &&
-    command -v unshare >/dev/null 2>&1 &&
-    aa-exec -p chrome -- unshare --user --map-root-user true >/dev/null 2>&1; then
-    set -- aa-exec -p chrome -- "$ELECTRON" "$@"
+  if command -v aa-exec >/dev/null 2>&1; then
+    set -- "$(command -v aa-exec)" -p chrome -- "$ELECTRON" "$@"
   else
     printf '%s\n' \
-      'AppArmor blocks Electron user namespaces, and the Chrome AppArmor profile is unavailable or does not allow them.' \
-      'Enable a suitable AppArmor profile for Electron; do not disable Chromium sandboxing.' >"$LOG_FILE"
+      'AppArmor restricts Electron user namespaces, but the aa-exec utility is unavailable.' \
+      'Install the AppArmor utilities package; do not disable Chromium sandboxing.' >"$LOG_FILE"
     if command -v zenity >/dev/null 2>&1; then
       zenity --error --title='GTA 5 could not start' \
-        --text="AppArmor is blocking Electron's browser sandbox. See $LOG_FILE for details." 2>/dev/null || true
+        --text="The aa-exec utility required by AppArmor is unavailable. See $LOG_FILE for details." 2>/dev/null || true
     fi
-    printf '%s\n' "GTA 5 could not start because AppArmor blocked Electron's browser sandbox. See $LOG_FILE for details." >&2
+    printf '%s\n' "GTA 5 could not start because the aa-exec utility required by AppArmor is unavailable. See $LOG_FILE for details." >&2
     exit 1
   fi
 else
