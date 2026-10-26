@@ -10,6 +10,9 @@ const TRUSTED_HOSTS = new Set([
   'meta.ai',
   'meta.com',
   'facebook.com',
+  'fb.com',
+  'instagram.com',
+  'threads.net',
   'google.com',
   'github.com',
   'microsoftonline.com'

@@ -1,6 +1,6 @@
 {
   "name": "meta-ai-desktop",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Unofficial Electron desktop wrapper for Meta AI.",
   "main": "main.js",
   "homepage": "https://www.meta.ai/",
