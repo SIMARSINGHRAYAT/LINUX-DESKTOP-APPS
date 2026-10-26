@@ -2,7 +2,9 @@
 
 Unofficial Electron wrapper for [Meta AI](https://www.meta.ai/). It keeps the Meta AI session in a persistent desktop profile, supports downloads and notifications, and opens links outside Meta in the system browser.
 
-Current desktop app version: **1.0.2**.
+Current desktop app version: **1.0.3**.
+
+HTTPS login and authentication popups stay inside the app and use its persistent session, so signing in does not switch to the system browser.
 
 ## Ubuntu
 

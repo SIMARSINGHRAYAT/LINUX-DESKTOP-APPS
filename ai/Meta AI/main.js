@@ -28,6 +28,14 @@ function isTrustedUrl(value) {
   }
 }
 
+function isHttpsUrl(value) {
+  try {
+    return new URL(value).protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
 function openExternal(value) {
   try {
     const url = new URL(value);
@@ -53,21 +61,21 @@ function saveWindowState() {
   fs.writeFileSync(windowStatePath, JSON.stringify(mainWindow.getNormalBounds()));
 }
 
-function applyNavigationPolicy(window) {
+function applyNavigationPolicy(window, isAuthenticationWindow = false) {
   const contents = window.webContents;
   contents.setWindowOpenHandler(({ url }) => {
-    if (isTrustedUrl(url)) {
+    if (isHttpsUrl(url)) {
       return {
         action: 'allow',
         overrideBrowserWindowOptions: {
           width: 1100,
           height: 800,
-          title: 'Meta AI',
+          title: 'Meta AI Login',
           webPreferences: {
-            preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
             nodeIntegration: false,
             sandbox: true,
+            webSecurity: true,
             partition: PARTITION
           }
         }
@@ -77,12 +85,13 @@ function applyNavigationPolicy(window) {
     return { action: 'deny' };
   });
 
-  contents.on('did-create-window', applyNavigationPolicy);
+  contents.on('did-create-window', (childWindow) => applyNavigationPolicy(childWindow, true));
   for (const eventName of ['will-navigate', 'will-redirect']) {
     contents.on(eventName, (event, url) => {
+      if (isAuthenticationWindow && isHttpsUrl(url)) return;
       if (!isTrustedUrl(url)) {
         event.preventDefault();
-        openExternal(url);
+        if (!isAuthenticationWindow) openExternal(url);
       }
     });
   }
