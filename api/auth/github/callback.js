@@ -3,7 +3,9 @@ const { cookieValue, redirectUri, setSession } = require('../../_github');
 module.exports = async (request, response) => {
   const { code, state, error } = request.query;
   const savedState = cookieValue(request, 'github_oauth_state');
-  if (error || !code || !state || state !== savedState) {
+  // Invalidate the one-time state cookie immediately so it cannot be replayed.
+  response.setHeader('Set-Cookie', 'github_oauth_state=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0');
+  if (error || !code || !state || !savedState || state !== savedState) {
     response.writeHead(302, { Location: '/signin.html?auth_error=github' });
     response.end();
     return;
