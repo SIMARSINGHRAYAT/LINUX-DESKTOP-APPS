@@ -21,6 +21,7 @@ curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/
 ```
 
 If APT update fails while a CD-ROM source is configured, the Mint installer warns and continues using available package indexes. If prerequisite installation still fails, disable the CD-ROM/DVD source in **Software Sources**, refresh the package lists, and retry.
+If the system Node.js version is older than 22.12, the installer downloads the matching Node.js 22 runtime and verifies its SHA-256 checksum before building.
 
 ## Fedora Linux Installation
 

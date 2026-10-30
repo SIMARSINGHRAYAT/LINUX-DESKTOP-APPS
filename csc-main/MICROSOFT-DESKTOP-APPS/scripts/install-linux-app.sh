@@ -1,6 +1,15 @@
 #!/bin/sh
 set -eu
 
+NODE_DOWNLOAD_DIR=
+
+cleanup_node_download() {
+  if [ -n "$NODE_DOWNLOAD_DIR" ]; then rm -rf "$NODE_DOWNLOAD_DIR"; fi
+}
+
+trap cleanup_node_download EXIT
+trap 'exit 1' HUP INT TERM
+
 if [ "$#" -lt 4 ] || [ "$#" -gt 5 ]; then
   printf '%s\n' "Usage: $0 APP_DIRECTORY DEB_PACKAGE DISPLAY_NAME LOGO_FILE [LOCAL_SOURCE_DIR]" >&2
   exit 2
@@ -125,6 +134,49 @@ if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1 || ! co
   exit 1
 fi
 
+node_is_supported() {
+  command -v node >/dev/null 2>&1 &&
+    command -v npm >/dev/null 2>&1 &&
+    node -e 'const [major, minor] = process.versions.node.split(".").map(Number); process.exit(major > 22 || (major === 22 && minor >= 12) ? 0 : 1)' >/dev/null 2>&1
+}
+
+if ! node_is_supported; then
+  case "$(uname -m)" in
+    x86_64) NODE_ARCH=x64 ;;
+    aarch64|arm64) NODE_ARCH=arm64 ;;
+    armv7l) NODE_ARCH=armv7l ;;
+    *) printf '%s\n' "No Node.js 22 runtime is available for architecture $(uname -m)." >&2; exit 1 ;;
+  esac
+  if ! command -v curl >/dev/null 2>&1 || ! command -v sha256sum >/dev/null 2>&1 || ! command -v tar >/dev/null 2>&1; then
+    printf '%s\n' 'curl, sha256sum, and tar are required to install the Node.js 22 runtime.' >&2
+    exit 1
+  fi
+
+  NODE_TOOLCHAIN_DIR=${XDG_DATA_HOME:-$HOME/.local/share}/linux-desktop-apps/toolchains
+  mkdir -p "$NODE_TOOLCHAIN_DIR"
+  NODE_DOWNLOAD_DIR=$(mktemp -d "$NODE_TOOLCHAIN_DIR/.powerbi-node.XXXXXX")
+  NODE_DIST_URL=https://nodejs.org/dist/latest-v22.x
+  curl -fsSL "$NODE_DIST_URL/SHASUMS256.txt" -o "$NODE_DOWNLOAD_DIR/SHASUMS256.txt"
+  NODE_ARCHIVE=$(awk -v suffix="linux-$NODE_ARCH.tar.xz" '$2 ~ /^node-v22[.][0-9]+[.][0-9]+-/ && $2 ~ ("-" suffix "$") { print $2; exit }' "$NODE_DOWNLOAD_DIR/SHASUMS256.txt")
+  if [ -z "$NODE_ARCHIVE" ]; then printf '%s\n' "No Node.js 22 archive is available for $NODE_ARCH." >&2; exit 1; fi
+  NODE_SHA256=$(awk -v archive="$NODE_ARCHIVE" '$2 == archive { print $1; exit }' "$NODE_DOWNLOAD_DIR/SHASUMS256.txt")
+  if [ -z "$NODE_SHA256" ]; then printf '%s\n' "No checksum found for $NODE_ARCHIVE." >&2; exit 1; fi
+
+  NODE_RUNTIME_DIR=$NODE_TOOLCHAIN_DIR/${NODE_ARCHIVE%.tar.xz}
+  if [ ! -x "$NODE_RUNTIME_DIR/bin/node" ] || [ ! -x "$NODE_RUNTIME_DIR/bin/npm" ]; then
+    curl -fsSL "$NODE_DIST_URL/$NODE_ARCHIVE" -o "$NODE_DOWNLOAD_DIR/$NODE_ARCHIVE"
+    (cd "$NODE_DOWNLOAD_DIR" && printf '%s  %s\n' "$NODE_SHA256" "$NODE_ARCHIVE" | sha256sum -c -)
+    mkdir "$NODE_DOWNLOAD_DIR/runtime"
+    tar -xJf "$NODE_DOWNLOAD_DIR/$NODE_ARCHIVE" --strip-components=1 -C "$NODE_DOWNLOAD_DIR/runtime"
+    if [ -e "$NODE_RUNTIME_DIR" ]; then rm -rf "$NODE_RUNTIME_DIR"; fi
+    mv "$NODE_DOWNLOAD_DIR/runtime" "$NODE_RUNTIME_DIR"
+  fi
+  rm -rf "$NODE_DOWNLOAD_DIR"
+  NODE_DOWNLOAD_DIR=
+  PATH=$NODE_RUNTIME_DIR/bin:$PATH
+  export PATH
+fi
+
 if [ -z "$LOCAL_SOURCE_DIR" ]; then
   if [ -d "$REPOSITORY_DIR/.git" ]; then
     current_remote=$(git -C "$REPOSITORY_DIR" remote get-url origin 2>/dev/null || true)
@@ -172,9 +224,8 @@ if [ ! -d "$LOCAL_SOURCE_DIR" ]; then
   exit 1
 fi
 
-node_major=$(node -p "process.versions.node.split('.')[0]")
-if [ "$node_major" -lt 22 ]; then
-  printf '%s\n' "Node.js 22 or newer is required to build $DISPLAY_NAME. Detected Node.js v$node_major." >&2
+if ! node_is_supported; then
+  printf '%s\n' "Node.js 22.12 or newer and npm are required to build $DISPLAY_NAME." >&2
   exit 1
 fi
 
