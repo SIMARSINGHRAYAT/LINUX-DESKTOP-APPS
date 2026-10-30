@@ -20,7 +20,7 @@ curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/
 curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/MICROSOFT-DESKTOP-APPS/PowerBI/install.sh | LINUX_DESKTOP_DISTRO=mint bash
 ```
 
-If installation stops during `apt-get update` with an error about a `cdrom://` repository, disable the CD-ROM/DVD source in **Software Sources**, refresh the package lists, and run the command again.
+If APT update fails while a CD-ROM source is configured, the Mint installer warns and continues using available package indexes. If prerequisite installation still fails, disable the CD-ROM/DVD source in **Software Sources**, refresh the package lists, and retry.
 
 ## Fedora Linux Installation
 

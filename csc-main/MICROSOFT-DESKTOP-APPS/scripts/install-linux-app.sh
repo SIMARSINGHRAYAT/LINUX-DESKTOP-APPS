@@ -80,7 +80,17 @@ fi
 install_prerequisites() {
   case "$PKG_TYPE" in
     deb)
-      $SUDO apt-get update
+      if [ "$DISTRO" = mint ]; then
+        if ! $SUDO apt-get update; then
+          if grep -RqsE '^[[:space:]]*(deb[[:space:]].*cdrom:|URIs:[[:space:]]*cdrom:)' /etc/apt/sources.list /etc/apt/sources.list.d 2>/dev/null; then
+            printf '%s\n' 'APT update failed while a CD-ROM source is configured. Continuing with available package indexes; if prerequisite installation fails, disable the CD-ROM source in Software Sources and retry.' >&2
+          else
+            return 1
+          fi
+        fi
+      else
+        $SUDO apt-get update
+      fi
       $SUDO apt-get install -y git ca-certificates curl nodejs npm build-essential
       ;;
     rpm)
