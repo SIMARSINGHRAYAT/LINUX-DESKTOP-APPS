@@ -119,6 +119,15 @@ EOF
 
 chmod 755 "$LAUNCHER_SCRIPT"
 
+ICON_SOURCE="$INSTALL_DIR/build/files/app/share/icons/hicolor/scalable/apps/$APP_ID.png"
+ICON_DIR="$HOME/.local/share/icons/hicolor/512x512/apps"
+if [ ! -f "$ICON_SOURCE" ]; then
+  printf '%s\n' "Built application icon not found: $ICON_SOURCE" >&2
+  exit 1
+fi
+mkdir -p "$ICON_DIR"
+install -m 644 "$ICON_SOURCE" "$ICON_DIR/$APP_ID.png"
+
 DESKTOP_DIR="$HOME/.local/share/applications"
 mkdir -p "$DESKTOP_DIR"
 DESKTOP_FILE="$DESKTOP_DIR/$APP_ID.desktop"

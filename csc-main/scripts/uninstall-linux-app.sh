@@ -11,7 +11,7 @@ EXECUTABLE_NAME=${2:-}
 flatpak uninstall --user -y "$APP_ID" 2>/dev/null || true
 flatpak uninstall --system -y "$APP_ID" 2>/dev/null || true
 rm -rf "${XDG_DATA_HOME:-$HOME/.local/share}/flatpak/app/$APP_ID" "${XDG_DATA_HOME:-$HOME/.local/share}/flatpak/exports"/share/applications/"$APP_ID".desktop
-rm -f "${XDG_DATA_HOME:-$HOME/.local/share}/applications/$APP_ID.desktop" "${XDG_DATA_HOME:-$HOME/.local/share}/icons/linux-desktop-apps/$APP_ID.png"
+rm -f "${XDG_DATA_HOME:-$HOME/.local/share}/applications/$APP_ID.desktop" "${XDG_DATA_HOME:-$HOME/.local/share}/icons/linux-desktop-apps/$APP_ID.png" "${XDG_DATA_HOME:-$HOME/.local/share}/icons/hicolor/512x512/apps/$APP_ID.png"
 if [ -n "$EXECUTABLE_NAME" ]; then
   rm -f "$HOME/.local/bin/$EXECUTABLE_NAME"
 fi
