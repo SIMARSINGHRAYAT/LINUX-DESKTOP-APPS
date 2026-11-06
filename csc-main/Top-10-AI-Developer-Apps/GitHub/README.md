@@ -10,6 +10,12 @@ This project packages GitHub.com as a standalone Electron application. It is ind
 curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Top-10-AI-Developer-Apps/GitHub/install.sh | bash
 ```
 
+## Debian Installation
+
+```bash
+curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Top-10-AI-Developer-Apps/GitHub/install.sh | bash
+```
+
 ## Kali Linux Installation
 
 ```bash
@@ -17,6 +23,12 @@ curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/
 ```
 
 ## Ubuntu Uninstallation
+
+```bash
+curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Top-10-AI-Developer-Apps/GitHub/uninstall.sh | bash
+```
+
+## Debian Uninstallation
 
 ```bash
 curl -fsSL https://github.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/raw/refs/heads/main/csc-main/Top-10-AI-Developer-Apps/GitHub/uninstall.sh | bash

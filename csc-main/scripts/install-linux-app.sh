@@ -22,7 +22,7 @@ if [ "$(uname -s)" != Linux ]; then
 fi
 
 if ! command -v apt-get >/dev/null 2>&1; then
-  printf '%s\n' 'An apt-based Debian-family system is required (Ubuntu or Kali).' >&2
+  printf '%s\n' 'An apt-based Debian-family system is required (Ubuntu, Debian, or Kali).' >&2
   exit 1
 fi
 
