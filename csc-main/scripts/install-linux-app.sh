@@ -120,13 +120,16 @@ EOF
 chmod 755 "$LAUNCHER_SCRIPT"
 
 ICON_SOURCE="$INSTALL_DIR/build/files/app/share/icons/hicolor/scalable/apps/$APP_ID.png"
-ICON_DIR="$HOME/.local/share/icons/hicolor/512x512/apps"
+ICON_THEME_DIR="$HOME/.local/share/icons/hicolor"
+ICON_DIR="$ICON_THEME_DIR/512x512/apps"
 if [ ! -f "$ICON_SOURCE" ]; then
   printf '%s\n' "Built application icon not found: $ICON_SOURCE" >&2
   exit 1
 fi
 mkdir -p "$ICON_DIR"
 install -m 644 "$ICON_SOURCE" "$ICON_DIR/$APP_ID.png"
+mkdir -p "$ICON_THEME_DIR/scalable/apps"
+install -m 644 "$ICON_SOURCE" "$ICON_THEME_DIR/scalable/apps/$APP_ID.png"
 
 DESKTOP_DIR="$HOME/.local/share/applications"
 mkdir -p "$DESKTOP_DIR"
@@ -147,6 +150,9 @@ X-Flatpak=$APP_ID
 EOF
 chmod 644 "$DESKTOP_FILE"
 update-desktop-database "$DESKTOP_DIR" 2>/dev/null || true
+if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+  gtk-update-icon-cache --force --ignore-theme-index "$ICON_THEME_DIR" >/dev/null 2>&1 || true
+fi
 
 printf '%s\n' "✓ ${DISPLAY_NAME} launcher installed to $LAUNCHER_SCRIPT"
 printf '%s\n' "✓ Desktop entry installed to $DESKTOP_FILE"
