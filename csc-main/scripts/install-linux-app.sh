@@ -119,15 +119,16 @@ EOF
 
 chmod 755 "$LAUNCHER_SCRIPT"
 
-ICON_SOURCE="$INSTALL_DIR/build/files/app/share/icons/hicolor/scalable/apps/$APP_ID.png"
+ICON_SOURCE="$INSTALL_DIR/build/files/share/icons/hicolor/scalable/apps/$APP_ID.png"
 ICON_THEME_DIR="$HOME/.local/share/icons/hicolor"
 ICON_DIR="$ICON_THEME_DIR/512x512/apps"
+ICON_PATH="$ICON_DIR/$APP_ID.png"
 if [ ! -f "$ICON_SOURCE" ]; then
   printf '%s\n' "Built application icon not found: $ICON_SOURCE" >&2
   exit 1
 fi
 mkdir -p "$ICON_DIR"
-install -m 644 "$ICON_SOURCE" "$ICON_DIR/$APP_ID.png"
+install -m 644 "$ICON_SOURCE" "$ICON_PATH"
 mkdir -p "$ICON_THEME_DIR/scalable/apps"
 install -m 644 "$ICON_SOURCE" "$ICON_THEME_DIR/scalable/apps/$APP_ID.png"
 
@@ -141,7 +142,7 @@ Type=Application
 Name=$DISPLAY_NAME
 Comment=Unofficial $DISPLAY_NAME for Linux
 Exec=$LAUNCHER_SCRIPT %U
-Icon=$APP_ID
+Icon=$ICON_PATH
 Terminal=false
 Categories=Development;Network;
 StartupNotify=true
