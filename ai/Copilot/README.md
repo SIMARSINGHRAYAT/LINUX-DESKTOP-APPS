@@ -5,13 +5,19 @@ Unofficial Electron wrapper for [Microsoft Copilot](https://copilot.com). It kee
 ## Ubuntu
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Copilot/install.sh | LINUX_DESKTOP_DISTRO=ubuntu sh
+curl -fsSL "https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Copilot/install.sh?v=2f264cd" | LINUX_DESKTOP_DISTRO=ubuntu sh
 ```
 
 ## Kali Linux
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Copilot/install.sh | LINUX_DESKTOP_DISTRO=kali sh
+curl -fsSL "https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Copilot/install.sh?v=2f264cd" | LINUX_DESKTOP_DISTRO=kali sh
+```
+
+## Debian
+
+```bash
+curl -fsSL "https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Copilot/install.sh?v=2f264cd" | LINUX_DESKTOP_DISTRO=debian sh
 ```
 
 Kali receives an AppImage launcher, and Ubuntu/Debian receive a Debian package. All distributions use a checksum-verified Node.js 22 runtime in the user data directory when the system Node.js is missing or too old. Git and curl are required.
