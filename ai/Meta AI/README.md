@@ -18,7 +18,7 @@ curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/
 curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Meta%20AI/install.sh | LINUX_DESKTOP_DISTRO=kali sh
 ```
 
-Kali receives an AppImage launcher. Ubuntu receives a Debian package. On Kali, the installer uses a checksum-verified local Node.js 22 runtime when the system Node.js version is missing or too old. The installer requires git, curl, and an apt-based Linux system.
+Kali receives an AppImage launcher. Ubuntu and Debian receive a Debian package. All distributions use a checksum-verified local Node.js 22 runtime when the system Node.js version is missing or too old. The installer requires git, curl, and an apt-based Linux system.
 
 To update an existing installation and refresh its logo, run the installer command for your distribution again.
 

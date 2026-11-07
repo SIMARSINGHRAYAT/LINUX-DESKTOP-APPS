@@ -61,11 +61,12 @@ node_is_supported() {
     node -e 'const [major, minor] = process.versions.node.split(".").map(Number); process.exit(major > 22 || (major === 22 && minor >= 12) ? 0 : 1)' >/dev/null 2>&1
 }
 
-if [ "$INSTALL_DISTRO" = kali ] && ! node_is_supported; then
+if ! node_is_supported; then
   case "$(uname -m)" in
     x86_64) NODE_ARCH=x64 ;;
     aarch64|arm64) NODE_ARCH=arm64 ;;
-    *) printf '%s\n' "Meta AI AppImage builds support x86_64 and ARM64, not $(uname -m)." >&2; exit 1 ;;
+    armv7l) NODE_ARCH=armv7l ;;
+    *) printf '%s\n' "No Node.js 22 runtime is available for architecture $(uname -m)." >&2; exit 1 ;;
   esac
   if ! command -v curl >/dev/null 2>&1 || ! command -v sha256sum >/dev/null 2>&1 || ! command -v tar >/dev/null 2>&1; then
     printf '%s\n' 'curl, sha256sum, and tar are required to set up the local Node.js runtime.' >&2
@@ -93,13 +94,6 @@ if [ "$INSTALL_DISTRO" = kali ] && ! node_is_supported; then
   fi
   PATH=$NODE_RUNTIME_DIR/bin:$PATH
   export PATH
-elif ! node_is_supported; then
-  if [ "$(id -u)" -eq 0 ]; then SUDO=; elif command -v sudo >/dev/null 2>&1; then SUDO=sudo; else
-    printf '%s\n' 'Install Node.js 22.12+, npm, and sudo before continuing.' >&2
-    exit 1
-  fi
-  $SUDO apt-get update
-  $SUDO apt-get install -y nodejs npm
 fi
 
 if ! node_is_supported; then
