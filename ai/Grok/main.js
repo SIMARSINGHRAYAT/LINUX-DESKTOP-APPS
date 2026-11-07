@@ -6,7 +6,17 @@ const path = require('node:path');
 
 const APP_URL = 'https://grok.com';
 const PARTITION = 'persist:grok-desktop';
-const TRUSTED_HOSTS = new Set(['grok.com', 'x.com', 'twitter.com', 'google.com', 'github.com', 'microsoftonline.com']);
+const TRUSTED_HOSTS = new Set([
+  'grok.com',
+  'x.com',
+  'twitter.com',
+  'google.com',
+  'google.co.in',
+  'googleusercontent.com',
+  'gstatic.com',
+  'github.com',
+  'microsoftonline.com'
+]);
 const ALLOWED_PERMISSIONS = new Set(['notifications', 'clipboard-read', 'clipboard-sanitized-write']);
 let mainWindow;
 let windowStatePath;
@@ -14,8 +24,13 @@ let windowStatePath;
 function isTrustedUrl(value) {
   try {
     const url = new URL(value);
-    return url.protocol === 'https:' && [...TRUSTED_HOSTS].some((host) =>
-      url.hostname === host || url.hostname.endsWith(`.${host}`));
+    if (url.protocol !== 'https:') return false;
+    const hostname = url.hostname.toLowerCase();
+    const trustedHost = [...TRUSTED_HOSTS].some((host) =>
+      hostname === host || hostname.endsWith(`.${host}`));
+    const googleAuthHost = /^accounts\.google\.[a-z.]+$/.test(hostname);
+    const grokAuthHost = /^(auth|oauth|login)\.(grok|x)\.com$/.test(hostname);
+    return trustedHost || googleAuthHost || grokAuthHost;
   } catch {
     return false;
   }
@@ -56,7 +71,12 @@ function applyNavigationPolicy(window) {
   });
   contents.on('did-create-window', applyNavigationPolicy);
   for (const eventName of ['will-navigate', 'will-redirect']) {
-    contents.on(eventName, (event, url) => { if (!isTrustedUrl(url)) { event.preventDefault(); openExternal(url); } });
+    contents.on(eventName, (event, url) => {
+      if (!isTrustedUrl(url)) {
+        event.preventDefault();
+        openExternal(url);
+      }
+    });
   }
   contents.on('will-download', (_event, item) => item.setSavePath(path.join(app.getPath('downloads'), item.getFilename())));
   contents.on('did-fail-load', (_event, errorCode, _description, _url, isMainFrame) => {

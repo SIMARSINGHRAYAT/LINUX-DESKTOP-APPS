@@ -6,6 +6,9 @@ The installer automatically uses a checksum-verified Node.js 22 runtime when the
 system Node.js is missing or too old, so the build does not fail on older Ubuntu,
 Debian, or Kali releases. Git and curl are required.
 
+Google, X, and Grok authentication popups remain inside the desktop app and
+share its persistent login session.
+
 ## Ubuntu
 
 ```bash
