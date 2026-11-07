@@ -6,7 +6,7 @@ const path = require('node:path');
 
 const APP_URL = 'https://grok.com';
 const PARTITION = 'persist:grok-desktop';
-const TRUSTED_HOSTS = new Set(['grok.com', 'x.com', 'google.com', 'github.com', 'microsoftonline.com']);
+const TRUSTED_HOSTS = new Set(['grok.com', 'x.com', 'twitter.com', 'google.com', 'github.com', 'microsoftonline.com']);
 const ALLOWED_PERMISSIONS = new Set(['notifications', 'clipboard-read', 'clipboard-sanitized-write']);
 let mainWindow;
 let windowStatePath;
