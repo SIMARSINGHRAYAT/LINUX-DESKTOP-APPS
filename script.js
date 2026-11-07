@@ -370,9 +370,12 @@ async function initSupportPage() {
     const response = await fetch('./api/auth/github/status', { credentials: 'same-origin' });
     if (!response.ok) throw new Error('not authenticated');
     const account = await response.json();
-    state.repo = account.repoStarred;
-    state.profile = account.profileFollowed;
-    status.textContent = `Signed in as @${account.user.login}.`;
+    const isOwner = account.isOwner === true;
+    state.repo = isOwner || account.repoStarred === true;
+    state.profile = isOwner || account.profileFollowed === true;
+    status.textContent = isOwner
+      ? `Signed in as @${account.user.login}. Creator access enabled.`
+      : `Signed in as @${account.user.login}.`;
     update();
   } catch {
     status.textContent = 'Your GitHub session is not available. Please start again.';
