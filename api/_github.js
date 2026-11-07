@@ -52,15 +52,13 @@ function clearSession(response) {
 }
 
 async function github(path, options = {}, token) {
-  const response = await fetch(`https://api.github.com${path}`, {
-    ...options,
-    headers: {
-      Accept: 'application/vnd.github+json',
-      'X-GitHub-Api-Version': '2022-11-28',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...(options.headers || {})
-    }
-  });
+  const headers = {
+    Accept: 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+    ...(token ? { Authorization: 'Bearer ' + token } : {}),
+    ...(options.headers || {})
+  };
+  const response = await fetch(`https://api.github.com${path}`, { ...options, headers });
   const text = await response.text();
   let data;
   try { data = text ? JSON.parse(text) : null; } catch { data = text; }
