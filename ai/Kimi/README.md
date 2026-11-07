@@ -2,6 +2,15 @@
 
 Unofficial Electron wrapper for [Kimi](https://www.kimi.ai/en).
 
+The installer automatically uses a checksum-verified Node.js 22 runtime when
+the system Node.js is missing or too old.
+
+## Debian
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Kimi/install.sh?v=node22 | LINUX_DESKTOP_DISTRO=debian sh
+```
+
 ## Ubuntu
 
 ```bash
