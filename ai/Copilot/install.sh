@@ -58,7 +58,7 @@ node_is_supported() {
     node -e 'const [major, minor] = process.versions.node.split(".").map(Number); process.exit(major > 22 || (major === 22 && minor >= 12) ? 0 : 1)' >/dev/null 2>&1
 }
 
-if [ "$INSTALL_DISTRO" = kali ] && ! node_is_supported; then
+if ! node_is_supported; then
   NODE_ARCH=$(uname -m)
   case "$NODE_ARCH" in
     x86_64) NODE_ARCH=x64 ;;
@@ -92,10 +92,6 @@ if [ "$INSTALL_DISTRO" = kali ] && ! node_is_supported; then
   fi
   PATH=$NODE_RUNTIME_DIR/bin:$PATH
   export PATH
-elif ! node_is_supported; then
-  if [ "$(id -u)" -eq 0 ]; then SUDO=; elif command -v sudo >/dev/null 2>&1; then SUDO=sudo; else printf '%s\n' 'Install Node.js 22+, npm, and sudo before continuing.' >&2; exit 1; fi
-  $SUDO apt-get -o DPkg::Lock::Timeout=600 update
-  $SUDO apt-get -o DPkg::Lock::Timeout=600 install -y nodejs npm
 fi
 if ! node_is_supported; then
   printf '%s\n' 'Node.js 22.12 or newer and npm are required to build Copilot.' >&2

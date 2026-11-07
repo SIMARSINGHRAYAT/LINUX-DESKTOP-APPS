@@ -14,7 +14,7 @@ curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/
 curl -fsSL https://raw.githubusercontent.com/SIMARSINGHRAYAT/LINUX-DESKTOP-APPS/main/ai/Copilot/install.sh | LINUX_DESKTOP_DISTRO=kali sh
 ```
 
-Kali receives an AppImage launcher, with a checksum-verified Node.js 22 runtime installed in the user data directory so the build does not require APT or dpkg. Ubuntu and Debian receive a Debian package and use APT to install Node.js and npm when missing. Git and curl are required.
+Kali receives an AppImage launcher, and Ubuntu/Debian receive a Debian package. All distributions use a checksum-verified Node.js 22 runtime in the user data directory when the system Node.js is missing or too old. Git and curl are required.
 
 ## Uninstall
 
